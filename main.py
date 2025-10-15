@@ -49,17 +49,14 @@ def process_dataset():
 
     print(segmented_data_list[0])
 
-    text_list = [segmented_data[0][1:-1] for segmented_data in segmented_data_list]
-    score_list = [segmented_data[6] for segmented_data in segmented_data_list]
-
     data_dict = {
-        "Text": text_list,
+        "Text": [segmented_data[0][1:-1] for segmented_data in segmented_data_list],
         "Sentiments": [segmented_data[1] for segmented_data in segmented_data_list],
         "Source": [segmented_data[2] for segmented_data in segmented_data_list],
         "Data/Time": [segmented_data[3] for segmented_data in segmented_data_list],
         "User ID": [segmented_data[4] for segmented_data in segmented_data_list],
         "Location": [segmented_data[5] for segmented_data in segmented_data_list],
-        "Confidence Score": score_list,
+        "Confidence Score": [segmented_data[6] for segmented_data in segmented_data_list],
     }
 
     new_df = pd.DataFrame(data_dict)
