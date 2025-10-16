@@ -1,24 +1,37 @@
 import pandas as pd
-import nltk
+import nltk, os
+from dotenv import load_dotenv
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.metrics import accuracy_score
+from google import genai
+from google.genai import types
 
+load_dotenv()
+
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
+client = genai.Client(api_key=GEMINI_API_KEY)
+response = client.models.generate_content(
+    model="gemini-flash-latest",
+    contents="Explain how AI works in a few words",
+)
+print(response.text)
 
 def main():
     process_dataset()
     create_test_dataset()
 
-    df = pd.read_csv("data/test.csv")
+    df = pd.read_csv("data/data0.csv")
     print(df.info())
     print(df.head())
     text_list = df["Text"].apply(process_text).values.tolist()
     sentiment_list = sentiment_analysis(text_list)
-    print(sentiment_list[:5])
+    # print(sentiment_list[:5])
     df["Sentiment"] = sentiment_list
-    print(df.head())
+    df.to_csv("data/res.csv", index=False)
 
-    real = pd.read_csv("data/data.csv")["Sentiments"].values.tolist()
-    test_sentiment_analysis(real, sentiment_list)
+    # real = pd.read_csv("data/data.csv")["Sentiments"].values.tolist()
+    # test_sentiment_analysis(real, sentiment_list)
 
 
 def process_text(text) -> str:
@@ -99,10 +112,20 @@ def sentiment_analysis(text_list: list) -> list:
     sentiment_list = [
         SentimentIntensityAnalyzer().polarity_scores(text) for text in text_list
     ]
+    print(sentiment_list[:5])
+
     return [
-        "Positive" if sentiment["compound"] >= 0.01 else "Negative"
+        convert_sentiment(sentiment['compound']) + f' ({sentiment["compound"]:.2f})'
         for sentiment in sentiment_list
     ]
+
+def convert_sentiment(compound: float) -> str:
+    if compound >= 0.01:
+        return 'Positive'
+    elif compound <= -0.01:
+        return 'Negative'
+    else:
+        return 'Neutral'
 
 
 if __name__ == "__main__":
