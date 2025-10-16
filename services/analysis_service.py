@@ -1,11 +1,8 @@
 import pandas as pd
-import nltk, os
-from dotenv import load_dotenv
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.metrics import accuracy_score
-from google import genai
-from google.genai import types
 from services.file_handler_service import get_dataset
+from services.llm_service import generate_feedback_responce
 
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
@@ -17,16 +14,6 @@ model = AutoModelForSequenceClassification.from_pretrained("lxyuan/distilbert-ba
 
 nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
 
-load_dotenv()
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-
-client = genai.Client(api_key=GEMINI_API_KEY)
-response = client.models.generate_content(
-    model="gemini-flash-latest",
-    contents="Explain how AI works in a few words",
-)
-print(response.text)
-
 def generate_analysis():
     df = get_dataset("data/data.csv")
     print(df.info())
@@ -34,6 +21,9 @@ def generate_analysis():
     text_list = df["Text"].apply(process_text).values.tolist()
     sentiment_list = sentiment_analysis(text_list)
     df["Sentiment"] = sentiment_list
+    feedback_responses = generate_feedback_responce(text_list)
+    df["Feedback Response"] = feedback_responses
+
     df.to_csv("data/res.csv", index=False)
 
 def get_sentiment(text):
