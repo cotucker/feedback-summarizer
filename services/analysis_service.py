@@ -2,7 +2,7 @@ import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.metrics import accuracy_score
 from services.file_handler_service import get_dataset
-from services.llm_service import generate_feedback_responce
+from services.llm_service import generate_feedback_responce, generate_analysis
 
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
@@ -14,17 +14,21 @@ model = AutoModelForSequenceClassification.from_pretrained("lxyuan/distilbert-ba
 
 nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
 
-def generate_analysis():
+def analysis():
     df = get_dataset("data/data.csv")
     print(df.info())
     print(df.head())
     text_list = df["Text"].apply(process_text).values.tolist()
     sentiment_list = sentiment_analysis(text_list)
     df["Sentiment"] = sentiment_list
-    feedback_responses = generate_feedback_responce(text_list)
-    df["Feedback Response"] = feedback_responses
-
+    # feedback_responses = generate_feedback_responce(text_list)
+    # df["Feedback Response"] = feedback_responses
     df.to_csv("data/res.csv", index=False)
+
+    analysis = generate_analysis(text_list)
+    print(analysis)
+
+
 
 def get_sentiment(text):
 
@@ -118,4 +122,4 @@ def convert_sentiment(compound: float) -> str:
 
 
 if __name__ == "__main__":
-    generate_analysis()
+    analysis()

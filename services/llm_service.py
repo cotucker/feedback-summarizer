@@ -28,6 +28,37 @@ load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 client = genai.Client(api_key=GEMINI_API_KEY)
 
+def generate_analysis(text_list: list):
+    client = genai.Client()
+    response = client.models.generate_content(
+        model="gemini-flash-latest",
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text="Analyze the following feedbacks and provide a summary, topics, and quotes:",
+                    ),
+                ],
+            ),
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"{text_list}",
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": Analysis,
+        },
+    )
+
+    # my_analysis: Analysis = response.parsed
+    return response.text
+
 def generate_feedback_responce(text_list: list) -> list:
     response_list = []
 
@@ -105,5 +136,3 @@ def test_generate_feedback_responce():
     print(my_feedback_responses)
 
     assert len(my_feedback_responses) == len(text_list)
-
-test_generate_feedback_responce()

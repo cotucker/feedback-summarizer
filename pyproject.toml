@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "dotenv>=0.9.9",
+    "fastapi>=0.119.0",
     "google-genai>=1.44.0",
     "ipykernel>=7.0.0",
     "nltk>=3.9.2",
