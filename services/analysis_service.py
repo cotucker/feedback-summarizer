@@ -1,18 +1,22 @@
 import pandas as pd
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.metrics import accuracy_score
 from services.file_handler_service import get_dataset
-from services.llm_service import generate_feedback_responce, generate_analysis
+# from services.llm_service import generate_feedback_responce, generate_analysis
 
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device set to use {device}")
-tokenizer = AutoTokenizer.from_pretrained("lxyuan/distilbert-base-multilingual-cased-sentiments-student")
-model = AutoModelForSequenceClassification.from_pretrained("lxyuan/distilbert-base-multilingual-cased-sentiments-student").to(device)
+tokenizer = AutoTokenizer.from_pretrained(
+    "lxyuan/distilbert-base-multilingual-cased-sentiments-student"
+)
+model = AutoModelForSequenceClassification.from_pretrained(
+    "lxyuan/distilbert-base-multilingual-cased-sentiments-student"
+).to(device)
 
 nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
+
 
 def analysis():
     df = get_dataset("data/data.csv")
@@ -25,13 +29,11 @@ def analysis():
     # df["Feedback Response"] = feedback_responses
     df.to_csv("data/res.csv", index=False)
 
-    analysis = generate_analysis(text_list)
-    print(analysis)
-
+    # analysis = generate_analysis(text_list)
+    # print(analysis)
 
 
 def get_sentiment(text):
-
     sentiment = nlp(text)
     return sentiment[0]["label"]
 
@@ -71,7 +73,9 @@ def process_dataset():
         "Data/Time": [segmented_data[3] for segmented_data in segmented_data_list],
         "User ID": [segmented_data[4] for segmented_data in segmented_data_list],
         "Location": [segmented_data[5] for segmented_data in segmented_data_list],
-        "Confidence Score": [segmented_data[6] for segmented_data in segmented_data_list],
+        "Confidence Score": [
+            segmented_data[6] for segmented_data in segmented_data_list
+        ],
     }
 
     new_df = pd.DataFrame(data_dict)
@@ -106,7 +110,6 @@ def test_sentiment_analysis(real: list, pred: list):
 
 
 def sentiment_analysis(text_list: list) -> list:
-
     sentiment_list = nlp(text_list)
     sentiment_list = [sentiment["label"] for sentiment in sentiment_list]
     return sentiment_list
@@ -114,11 +117,11 @@ def sentiment_analysis(text_list: list) -> list:
 
 def convert_sentiment(compound: float) -> str:
     if compound >= 0.01:
-        return 'Positive'
+        return "Positive"
     elif compound <= -0.01:
-        return 'Negative'
+        return "Negative"
     else:
-        return 'Neutral'
+        return "Neutral"
 
 
 if __name__ == "__main__":
