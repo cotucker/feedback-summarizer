@@ -3,6 +3,11 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio # To simulate processing delay
+import os
+from dotenv import load_dotenv
+load_dotenv()
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+PORT = os.getenv('PORT')
 
 app = FastAPI()
 
@@ -11,7 +16,7 @@ app = FastAPI()
 # ==========================================
 # This allows requests from your React app running on localhost:3000
 origins = [
-    "http://localhost:3000",
+    f"http://localhost:{PORT}",
 ]
 
 app.add_middleware(
