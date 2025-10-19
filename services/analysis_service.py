@@ -1,9 +1,11 @@
 import pandas as pd
 from sklearn.metrics import accuracy_score
-from services.file_handler_service import get_dataset
+from fastapi.datastructures import UploadFile
+from services.file_handler_service import get_dataset_from_file_path, get_dataset_from_file
 from services.llm_service import generate_sentiments_feedback_responce, generate_analysis
 
-import torch, json
+import torch
+import json
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -18,8 +20,9 @@ model = AutoModelForSequenceClassification.from_pretrained(
 nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
 
 
-def analysis():
-    df = get_dataset("data/data.csv")
+def analysis(file: UploadFile) -> str:
+    # df = get_dataset_from_file_path("data/data.csv")
+    df = get_dataset_from_file(file)
     print(df.info())
     print(df.head())
     text_list = df["Text"].apply(process_text).values.tolist()
@@ -36,7 +39,7 @@ def analysis():
         if key in counts:
             counts[key] += 1
     analysis["sentiment"] = counts
-    print(analysis)
+    return analysis
 
 
 def get_sentiment(text):
