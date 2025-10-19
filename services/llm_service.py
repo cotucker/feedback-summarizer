@@ -1,10 +1,15 @@
 from google import genai
 from google.genai import types
 from google.genai.types import GenerationConfig
-import os
+import os, enum
 from dotenv import load_dotenv
 import pandas as pd
 from pydantic import BaseModel
+
+class Sentiment(enum.Enum):
+    POSITIVE = "Positive"
+    NEGATIVE = "Negative"
+    NEUTRAL = "Neutral"
 
 class Topic(BaseModel):
     topic: str
@@ -13,7 +18,7 @@ class Topic(BaseModel):
 class Quote(BaseModel):
     text: str
     topic: str
-    sentiment: str
+    sentiment: Sentiment
 
 class Analysis(BaseModel):
     summary: str
@@ -22,6 +27,7 @@ class Analysis(BaseModel):
 
 class FeedbackResponse(BaseModel):
     response: str
+    sentiment: Sentiment
     
 
 load_dotenv()
@@ -56,10 +62,10 @@ def generate_analysis(text_list: list):
         },
     )
 
-    # my_analysis: Analysis = response.parsed
+    my_analysis: Analysis = response.parsed
     return response.text
 
-def generate_feedback_responce(text_list: list) -> list:
+def generate_sentiments_feedback_responce(text_list: list) -> list:
     response_list = []
 
     client = genai.Client()
@@ -91,9 +97,11 @@ def generate_feedback_responce(text_list: list) -> list:
 
     my_feedback_responses: list[FeedbackResponse] = response.parsed
     response_list = [feedback_response.response for feedback_response in my_feedback_responses]
+    sentiment_list = [feedback_response.sentiment.value for feedback_response in my_feedback_responses]
 
-    assert len(my_feedback_responses) == len(text_list)
-    return response_list
+    assert len(response_list) == len(text_list)
+    assert len(sentiment_list) == len(text_list)
+    return response_list, sentiment_list
 
 def test_generate_feedback_responce():
 

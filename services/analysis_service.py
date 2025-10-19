@@ -1,9 +1,9 @@
 import pandas as pd
 from sklearn.metrics import accuracy_score
 from services.file_handler_service import get_dataset
-# from services.llm_service import generate_feedback_responce, generate_analysis
+from services.llm_service import generate_sentiments_feedback_responce, generate_analysis
 
-import torch
+import torch, json
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -23,14 +23,20 @@ def analysis():
     print(df.info())
     print(df.head())
     text_list = df["Text"].apply(process_text).values.tolist()
-    sentiment_list = sentiment_analysis(text_list)
+    feedback_list, sentiment_list = generate_sentiments_feedback_responce(text_list)
     df["Sentiment"] = sentiment_list
-    # feedback_responses = generate_feedback_responce(text_list)
-    # df["Feedback Response"] = feedback_responses
+    df["Feedback Response"] = feedback_list
     df.to_csv("data/res.csv", index=False)
 
-    # analysis = generate_analysis(text_list)
-    # print(analysis)
+    analysis = generate_analysis(text_list)
+    analysis = json.loads(analysis)
+    counts = {"positive": 0, "negative": 0, "neutral": 0}
+    for s in sentiment_list:
+        key = str(s).lower()
+        if key in counts:
+            counts[key] += 1
+    analysis["sentiment"] = counts
+    print(analysis)
 
 
 def get_sentiment(text):
