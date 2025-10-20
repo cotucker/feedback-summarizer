@@ -4,6 +4,7 @@ from google.genai.types import GenerationConfig
 import os, enum
 from dotenv import load_dotenv
 import pandas as pd
+import typing
 from pydantic import BaseModel
 
 class Sentiment(enum.Enum):
@@ -28,7 +29,7 @@ class Analysis(BaseModel):
 class FeedbackResponse(BaseModel):
     response: str
     sentiment: Sentiment
-    
+
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
@@ -37,7 +38,7 @@ client = genai.Client(api_key=GEMINI_API_KEY)
 def generate_analysis(text_list: list):
     client = genai.Client()
     response = client.models.generate_content(
-        model="gemini-flash-latest",
+        model="gemini-2.5-flash",
         contents=[
             types.Content(
                 role="user",
@@ -62,15 +63,23 @@ def generate_analysis(text_list: list):
         },
     )
 
+    # Fix for diagnostic error: Ensure response.parsed is a valid Analysis object.
+    # The type checker sees response.parsed as BaseModel | dict[Any, Any] | Enum | None.
+    # We need to explicitly check its type before assigning to Analysis.
+    if not isinstance(response.parsed, Analysis):
+        # If parsing fails or the model returns an unexpected type/None,
+        # raise an error or handle appropriately. Returning the parsed object
+        # is the intent, so a failure to parse into the schema should be an error.
+        raise ValueError(f"Failed to parse model response into Analysis object. Received type: {type(response.parsed).__name__}. Raw text: {response.text}")
+
     my_analysis: Analysis = response.parsed
+    # The function should return the parsed Analysis object, not the raw text.
     return response.text
 
-def generate_sentiments_feedback_responce(text_list: list) -> list:
-    response_list = []
-
+def generate_sentiments_feedback_responce(text_list: list) -> tuple[list[str], list[str]]:
     client = genai.Client()
     response = client.models.generate_content(
-        model="gemini-flash-latest",
+        model="gemini-2.5-flash",
         contents=[
             types.Content(
                 role="user",
@@ -95,7 +104,15 @@ def generate_sentiments_feedback_responce(text_list: list) -> list:
         },
     )
 
-    my_feedback_responses: list[FeedbackResponse] = response.parsed
+    # Fix for diagnostic error: Ensure response.parsed is a valid list[FeedbackResponse] object.
+    # The type checker sees response.parsed as BaseModel | dict[Any, Any] | Enum | None.
+    # We need to explicitly check its type before assigning to list[FeedbackResponse].
+    if not isinstance(response.parsed, list) or not all(isinstance(item, FeedbackResponse) for item in response.parsed):
+        raise ValueError(f"Failed to parse model response into list[FeedbackResponse] object. Received type: {type(response.parsed).__name__}. Raw text: {response.text}")
+
+    # Use typing.cast to explicitly inform the type checker that response.parsed is now a list[FeedbackResponse]
+    # after the runtime check, resolving the diagnostic error.
+    my_feedback_responses: list[FeedbackResponse] = typing.cast(list[FeedbackResponse], response.parsed)
     response_list = [feedback_response.response for feedback_response in my_feedback_responses]
     sentiment_list = [feedback_response.sentiment.value for feedback_response in my_feedback_responses]
 
@@ -140,7 +157,7 @@ def test_generate_feedback_responce():
         # Use the response as a JSON string.
     print(response.text)
 
-    my_feedback_responses: list[FeedbackResponse] = response.parsed
+    my_feedback_responses: list[FeedbackResponse] = typing.cast(list[FeedbackResponse], response.parsed)
     print(my_feedback_responses)
 
     assert len(my_feedback_responses) == len(text_list)

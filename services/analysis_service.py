@@ -3,21 +3,21 @@ from sklearn.metrics import accuracy_score
 from fastapi.datastructures import UploadFile
 from services.file_handler_service import get_dataset_from_file_path, get_dataset_from_file
 from services.llm_service import generate_sentiments_feedback_responce, generate_analysis
-
-import torch
 import json
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"Device set to use {device}")
-tokenizer = AutoTokenizer.from_pretrained(
-    "lxyuan/distilbert-base-multilingual-cased-sentiments-student"
-)
-model = AutoModelForSequenceClassification.from_pretrained(
-    "lxyuan/distilbert-base-multilingual-cased-sentiments-student"
-).to(device)
+# import torch
+# from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
-nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# print(f"Device set to use {device}")
+# tokenizer = AutoTokenizer.from_pretrained(
+#     "lxyuan/distilbert-base-multilingual-cased-sentiments-student"
+# )
+# model = AutoModelForSequenceClassification.from_pretrained(
+#     "lxyuan/distilbert-base-multilingual-cased-sentiments-student"
+# ).to(device)
+
+# nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
 
 
 def analysis(file: UploadFile) -> str:
@@ -32,6 +32,7 @@ def analysis(file: UploadFile) -> str:
     df.to_csv("data/res.csv", index=False)
 
     analysis = generate_analysis(text_list)
+    print(analysis)
     analysis = json.loads(analysis)
     counts = {"positive": 0, "negative": 0, "neutral": 0}
     for s in sentiment_list:
@@ -42,9 +43,9 @@ def analysis(file: UploadFile) -> str:
     return analysis
 
 
-def get_sentiment(text):
-    sentiment = nlp(text)
-    return sentiment[0]["label"]
+# def get_sentiment(text):
+#     sentiment = nlp(text)
+#     return sentiment[0]["label"]
 
 
 def process_text(text) -> str:
@@ -118,10 +119,10 @@ def test_sentiment_analysis(real: list, pred: list):
     print(f"Accuracy: {accuracy:.2f}")
 
 
-def sentiment_analysis(text_list: list) -> list:
-    sentiment_list = nlp(text_list)
-    sentiment_list = [sentiment["label"] for sentiment in sentiment_list]
-    return sentiment_list
+# def sentiment_analysis(text_list: list) -> list:
+#     sentiment_list = nlp(text_list)
+#     sentiment_list = [sentiment["label"] for sentiment in sentiment_list]
+#     return sentiment_list
 
 
 def convert_sentiment(compound: float) -> str:
@@ -131,7 +132,3 @@ def convert_sentiment(compound: float) -> str:
         return "Negative"
     else:
         return "Neutral"
-
-
-if __name__ == "__main__":
-    analysis()
