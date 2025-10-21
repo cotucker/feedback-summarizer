@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import pandas as pd
 import typing
 from pydantic import BaseModel
+from services.file_handler_service import create_dataset_from_sentiment_response_list
 
 class Sentiment(enum.Enum):
     POSITIVE = "Positive"
@@ -30,13 +31,16 @@ class FeedbackResponse(BaseModel):
     response: str
     sentiment: Sentiment
 
+class SentimentResponse(BaseModel):
+    text: str
+    topic: str
+    sentiment: Sentiment
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 def generate_analysis(text_list: list):
-    client = genai.Client()
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=[
@@ -76,8 +80,63 @@ def generate_analysis(text_list: list):
     # The function should return the parsed Analysis object, not the raw text.
     return response.text
 
+
+def generate_single_sentiments_feedback_responce(feedback_text: str, topics: list[str] | None) -> list[SentimentResponse]:
+    if topics is None:
+        topics = []
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text="Extract sentiment or subsentities from customer feedback text, if topic of text is not included in the topics list - create new topic",
+                    ),
+                ],
+            ),
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"Feedback text: {feedback_text}",
+                    ),
+                ],
+            ),
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"Topics: {', '.join(topics)}",
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": list[SentimentResponse],
+        },
+    )
+    print(response.text)
+    sentiments: list[SentimentResponse] = typing.cast(list[SentimentResponse], response.parsed)
+    return sentiments
+
+
+def feedback_list_analysis(feedback_list: list[str]):
+    topics: list[str] = []
+    sentiments_list: list[SentimentResponse] = []
+    for feedback in feedback_list:
+        sentiments = generate_single_sentiments_feedback_responce(feedback, topics)
+        for sentiment in sentiments:
+            if sentiment.topic not in topics:
+                topics.append(sentiment.topic)
+        sentiments_list.extend(sentiments)
+    create_dataset_from_sentiment_response_list(sentiments_list)
+
+
+
 def generate_sentiments_feedback_responce(text_list: list) -> tuple[list[str], list[str]]:
-    client = genai.Client()
+
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=[
@@ -128,7 +187,6 @@ def test_generate_feedback_responce():
         "I had a bad experience with the product. The customer service team was unhelpful and rude. I will not buy this product again.",
     ]
 
-    client = genai.Client()
     response = client.models.generate_content(
         model="gemini-flash-latest",
         contents=[
@@ -154,10 +212,15 @@ def test_generate_feedback_responce():
             "response_schema": list[FeedbackResponse],
         },
     )
-        # Use the response as a JSON string.
     print(response.text)
-
     my_feedback_responses: list[FeedbackResponse] = typing.cast(list[FeedbackResponse], response.parsed)
     print(my_feedback_responses)
-
     assert len(my_feedback_responses) == len(text_list)
+
+if __name__ == "__main__":
+    feedback_list = [
+        "Their customer support for a minor billing issue was absolutely abysmal. Took 4 different transfers and two weeks to resolve.",
+        "Salesforce's CRM platform is indispensable for our sales team, but the cost of add-ons quickly spirals out of control.",
+        "The cloud infrastructure rollout was flawless. Zero downtime and everything scaled perfectly on day one. A true enterprise solution."
+    ]
+    feedback_list_analysis(feedback_list)

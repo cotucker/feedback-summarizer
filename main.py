@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import asyncio # To simulate processing delay
 import os
 from dotenv import load_dotenv
+from services.analysis_service import analysis
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 PORT = os.getenv('PORT')
@@ -80,7 +81,6 @@ async def analyze_feedback(file: UploadFile = File(...)):
 
     # 2. Simulate AI processing time (fake loading bar progress)
     # In real life, this is where we read the CSV and call OpenAI
-    from services.analysis_service import analysis
     responce = analysis(file)
 
     print("Analysis complete. Sending mock results.")
