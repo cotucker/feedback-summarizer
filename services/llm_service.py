@@ -124,15 +124,21 @@ def generate_single_sentiments_feedback_responce(feedback_text: str, topics: str
 
 def feedback_list_analysis(topics_text: str):
     topics: list[str] = generate_topics_list(topics_text)
-    filter: bool = not topics
+    filter = not topics
     sentiments_list: list[SentimentResponse] = []
     feedback_list: list[str] = get_feedback_list()
     for feedback in feedback_list:
         sentiments = generate_single_sentiments_feedback_responce(feedback, ', '.join(topics))
         for sentiment in sentiments:
-            if sentiment.topic not in topics:
-                topics.append(sentiment.topic)
-                sentiments_list.append(sentiment)
+            if filter:
+                if sentiment.topic not in topics:
+                    topics.append(sentiment.topic)
+                    sentiments_list.append(sentiment)
+                else:
+                    sentiments_list.append(sentiment)
+            else:
+                if sentiment.topic in topics:
+                    sentiments_list.append(sentiment)
         # sentiments_list.extend(sentiments)
     create_dataset_from_sentiment_response_list(sentiments_list)
 
@@ -148,7 +154,7 @@ def generate_topics_list(topics_text: str):
                 role="user",
                 parts=[
                     types.Part(
-                        text="Create Topics list of customers feedback from query",
+                        text="Create Topics list of customers feedback from query, keep original topics names, if there is no information about topics in query return empty list",
                     ),
                 ],
             ),

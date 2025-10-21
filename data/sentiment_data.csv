@@ -1,4 +1,3 @@
 text,sentiment,topic
-Salesforce's CRM platform is indispensable for our sales team,Positive,CRM Platform Usability
-but the cost of add-ons quickly spirals out of control,Negative,Pricing and Add-ons Cost
-Their customer support for a minor billing issue was absolutely abysmal. Took  different transfers and two weeks to resolve.,Negative,Billing Issue Resolution Time
+the cost of add-ons quickly spirals out of control,Negative,cost
+Their customer support for a minor billing issue was absolutely abysmal. Took  different transfers and two weeks to resolve.,Negative,billing
