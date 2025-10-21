@@ -1,3 +1,13 @@
 text,sentiment,topic
-the cost of add-ons quickly spirals out of control,Negative,cost
-Their customer support for a minor billing issue was absolutely abysmal. Took  different transfers and two weeks to resolve.,Negative,billing
+Salesforce's CRM platform is indispensable for our sales team,Positive,Core CRM Functionality
+the cost of add-ons quickly spirals out of control,Negative,Pricing and Cost
+Their customer support for a minor billing issue was absolutely abysmal.,Negative,Customer Support
+Took  different transfers and two weeks to resolve.,Negative,Customer Support
+"Zoom's video quality is excellent, even with a large number of participants.",Positive,Video Quality
+The meeting management features are intuitive.,Positive,Meeting Management Features
+HubSpot's marketing automation tools are powerful,Positive,Marketing Automation Features
+the learning curve for a small team is much steeper than advertised,Negative,Usability and Learning Curve
+N-iX delivered our custom mobile app ahead of schedule,Positive,Project Delivery Timeline
+N-iX delivered our custom mobile app under budget,Positive,Pricing and Cost
+High technical competency,Positive,Technical Competency
+excellent project management,Positive,Project Management

@@ -7,7 +7,7 @@ import os
 from typing import Annotated, Optional
 from dotenv import load_dotenv
 from services.analysis_service import analysis
-from services.llm_service import feedback_list_analysis
+from services.llm_service import feedback_list_analysis, filter_feedback_analysis
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 PORT = os.getenv('PORT')
@@ -87,8 +87,8 @@ async def analyze_feedback(file: UploadFile = File(...)):
     return responce
 
 @app.get('/test')
-async def get_test():
-    return MOCK_RESPONSE
+async def get_test(topics: str):
+    return filter_feedback_analysis(topics)
 
 @app.get('/api/sentiments')
 async def get_sentiments(topics: str):

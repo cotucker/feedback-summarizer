@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import pandas as pd
 import typing
 from pydantic import BaseModel
-from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list
+from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_topics_list, get_feedback_analysis
 
 class Sentiment(enum.Enum):
     POSITIVE = "Positive"
@@ -91,7 +91,10 @@ def generate_single_sentiments_feedback_responce(feedback_text: str, topics: str
                 role="user",
                 parts=[
                     types.Part(
-                        text="Extract sentiment or subsentities from customer feedback text, if topic of text is not included in the topics list - create new topic",
+                        text="""You are an expert Customer Feedback Analyst
+                        whose task is to decompose complex user reviews into individual
+                        , atomic entities, assessing the sentiment and topic for each.
+                        If topic of entitie is not included in the topics list - create new topic""",
                     ),
                 ],
             ),
@@ -145,6 +148,18 @@ def feedback_list_analysis(topics_text: str):
     print(sentiments_list)
     return sentiments_list
 
+def filter_feedback_analysis(selected_topics: str):
+
+    all_topics = get_topics_list()
+    print(all_topics)
+    selected_topics: list[str] = generate_topics_list(selected_topics)
+    print(selected_topics)
+    filtered_topics =  filter_topics(all_topics, selected_topics)
+    print(filtered_topics)
+    feedback_analysis = get_feedback_analysis(filtered_topics)
+    return feedback_analysis
+
+
 
 def generate_topics_list(topics_text: str):
     response = client.models.generate_content(
@@ -163,6 +178,43 @@ def generate_topics_list(topics_text: str):
                 parts=[
                     types.Part(
                         text=f"Query: {topics_text}",
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": list[str],
+        },
+    )
+    topics_list: list[str] = typing.cast(list[str], response.parsed)
+    return topics_list
+
+def filter_topics(all_topics: list[str], selected_topics: list[str]) -> list[str]:
+    response = client.models.generate_content(
+        model=f'{MODEL}',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text="Filter all existing topics by what topics customer wants to see",
+                    ),
+                ],
+            ),
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"All topics : {all_topics}",
+                    ),
+                ],
+            ),
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"Selected topics : {selected_topics}",
                     ),
                 ],
             ),
@@ -204,14 +256,9 @@ def generate_sentiments_feedback_responce(text_list: list) -> tuple[list[str], l
         },
     )
 
-    # Fix for diagnostic error: Ensure response.parsed is a valid list[FeedbackResponse] object.
-    # The type checker sees response.parsed as BaseModel | dict[Any, Any] | Enum | None.
-    # We need to explicitly check its type before assigning to list[FeedbackResponse].
     if not isinstance(response.parsed, list) or not all(isinstance(item, FeedbackResponse) for item in response.parsed):
         raise ValueError(f"Failed to parse model response into list[FeedbackResponse] object. Received type: {type(response.parsed).__name__}. Raw text: {response.text}")
 
-    # Use typing.cast to explicitly inform the type checker that response.parsed is now a list[FeedbackResponse]
-    # after the runtime check, resolving the diagnostic error.
     my_feedback_responses: list[FeedbackResponse] = typing.cast(list[FeedbackResponse], response.parsed)
     response_list = [feedback_response.response for feedback_response in my_feedback_responses]
     sentiment_list = [feedback_response.sentiment.value for feedback_response in my_feedback_responses]
