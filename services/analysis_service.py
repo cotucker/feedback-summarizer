@@ -5,27 +5,13 @@ from services.file_handler_service import get_dataset_from_file_path, get_datase
 from services.llm_service import generate_sentiments_feedback_responce, generate_analysis
 import json
 
-# import torch
-# from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
-
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# print(f"Device set to use {device}")
-# tokenizer = AutoTokenizer.from_pretrained(
-#     "lxyuan/distilbert-base-multilingual-cased-sentiments-student"
-# )
-# model = AutoModelForSequenceClassification.from_pretrained(
-#     "lxyuan/distilbert-base-multilingual-cased-sentiments-student"
-# ).to(device)
-
-# nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
-
-
 def analysis(file: UploadFile) -> str:
     # df = get_dataset_from_file_path("data/data.csv")
     df = get_dataset_from_file(file)
     print(df.info())
     print(df.head())
     text_list = df["Text"].apply(process_text).values.tolist()
+    df.to_csv("data/dataset.csv", index=False)
     feedback_list, sentiment_list = generate_sentiments_feedback_responce(text_list)
     df["Sentiment"] = sentiment_list
     df["Feedback Response"] = feedback_list
@@ -41,12 +27,6 @@ def analysis(file: UploadFile) -> str:
             counts[key] += 1
     analysis["sentiment"] = counts
     return analysis
-
-
-# def get_sentiment(text):
-#     sentiment = nlp(text)
-#     return sentiment[0]["label"]
-
 
 def process_text(text) -> str:
     import re

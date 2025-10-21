@@ -19,3 +19,14 @@ def create_dataset_from_sentiment_response_list(sentiments_list) -> pd.DataFrame
     })
     df.to_csv('data/sentiment_data.csv', index=False)
     return df
+
+def get_feedback_list() -> list[str]:
+    df = pd.read_csv('data/test.csv')
+    return df["Text"].apply(process_text).values.tolist()
+
+def process_text(text) -> str:
+    import re
+
+    if not isinstance(text, str):
+        text = str(text)
+    return re.sub(r"\d+", "", text)

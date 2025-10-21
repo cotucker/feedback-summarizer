@@ -1,21 +1,19 @@
 # backend/main.py
 
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio # To simulate processing delay
 import os
+from typing import Annotated, Optional
 from dotenv import load_dotenv
 from services.analysis_service import analysis
+from services.llm_service import feedback_list_analysis
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 PORT = os.getenv('PORT')
 
 app = FastAPI()
 
-# ==========================================
-# 1. CORS Configuration (Crucial for React)
-# ==========================================
-# This allows requests from your React app running on localhost:3000
 origins = [
     f"http://localhost:{PORT}",
 ]
@@ -88,15 +86,10 @@ async def analyze_feedback(file: UploadFile = File(...)):
     # 3. Return the mock data
     return responce
 
-@app.post("/test")
-async def analyze_test():
-    await asyncio.sleep(3)
-
-    print("Analysis complete. Sending mock results.")
-
-    # 3. Return the mock data
-    return MOCK_RESPONSE
-
 @app.get('/test')
 async def get_test():
     return MOCK_RESPONSE
+
+@app.get('/api/sentiments')
+async def get_sentiments(topics: str):
+    return feedback_list_analysis(topics)

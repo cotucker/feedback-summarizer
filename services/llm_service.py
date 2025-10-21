@@ -1,12 +1,12 @@
 from google import genai
 from google.genai import types
 from google.genai.types import GenerationConfig
-import os, enum
+import os, enum, json
 from dotenv import load_dotenv
 import pandas as pd
 import typing
 from pydantic import BaseModel
-from services.file_handler_service import create_dataset_from_sentiment_response_list
+from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list
 
 class Sentiment(enum.Enum):
     POSITIVE = "Positive"
@@ -38,11 +38,12 @@ class SentimentResponse(BaseModel):
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 def generate_analysis(text_list: list):
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=f'{MODEL}',
         contents=[
             types.Content(
                 role="user",
@@ -81,11 +82,10 @@ def generate_analysis(text_list: list):
     return response.text
 
 
-def generate_single_sentiments_feedback_responce(feedback_text: str, topics: list[str] | None) -> list[SentimentResponse]:
-    if topics is None:
-        topics = []
+def generate_single_sentiments_feedback_responce(feedback_text: str, topics: str) -> list[SentimentResponse]:
+
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=f'{MODEL}',
         contents=[
             types.Content(
                 role="user",
@@ -107,7 +107,7 @@ def generate_single_sentiments_feedback_responce(feedback_text: str, topics: lis
                 role="user",
                 parts=[
                     types.Part(
-                        text=f"Topics: {', '.join(topics)}",
+                        text=f"Topics: {topics}",
                     ),
                 ],
             ),
@@ -122,23 +122,58 @@ def generate_single_sentiments_feedback_responce(feedback_text: str, topics: lis
     return sentiments
 
 
-def feedback_list_analysis(feedback_list: list[str]):
-    topics: list[str] = []
+def feedback_list_analysis(topics_text: str):
+    topics: list[str] = generate_topics_list(topics_text)
+    filter: bool = not topics
     sentiments_list: list[SentimentResponse] = []
+    feedback_list: list[str] = get_feedback_list()
     for feedback in feedback_list:
-        sentiments = generate_single_sentiments_feedback_responce(feedback, topics)
+        sentiments = generate_single_sentiments_feedback_responce(feedback, ', '.join(topics))
         for sentiment in sentiments:
             if sentiment.topic not in topics:
                 topics.append(sentiment.topic)
-        sentiments_list.extend(sentiments)
+                sentiments_list.append(sentiment)
+        # sentiments_list.extend(sentiments)
     create_dataset_from_sentiment_response_list(sentiments_list)
 
+    print(sentiments_list)
+    return sentiments_list
+
+
+def generate_topics_list(topics_text: str):
+    response = client.models.generate_content(
+        model=f'{MODEL}',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text="Create Topics list of customers feedback from query",
+                    ),
+                ],
+            ),
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"Query: {topics_text}",
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": list[str],
+        },
+    )
+    topics_list: list[str] = typing.cast(list[str], response.parsed)
+    return topics_list
 
 
 def generate_sentiments_feedback_responce(text_list: list) -> tuple[list[str], list[str]]:
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=f'{MODEL}',
         contents=[
             types.Content(
                 role="user",
@@ -188,7 +223,7 @@ def test_generate_feedback_responce():
     ]
 
     response = client.models.generate_content(
-        model="gemini-flash-latest",
+        model=f'{MODEL}',
         contents=[
             types.Content(
                 role="user",
@@ -218,9 +253,4 @@ def test_generate_feedback_responce():
     assert len(my_feedback_responses) == len(text_list)
 
 if __name__ == "__main__":
-    feedback_list = [
-        "Their customer support for a minor billing issue was absolutely abysmal. Took 4 different transfers and two weeks to resolve.",
-        "Salesforce's CRM platform is indispensable for our sales team, but the cost of add-ons quickly spirals out of control.",
-        "The cloud infrastructure rollout was flawless. Zero downtime and everything scaled perfectly on day one. A true enterprise solution."
-    ]
-    feedback_list_analysis(feedback_list)
+    pass
