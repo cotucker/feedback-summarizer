@@ -2,30 +2,44 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 from fastapi.datastructures import UploadFile
 from services.file_handler_service import get_dataset_from_file_path, get_dataset_from_file
-from services.llm_service import generate_sentiments_feedback_responce, generate_analysis
+from services.llm_service import generate_sentiments_feedback_responce, generate_analysis, feedback_list_analysis, topics_analysis, generate_total_summary, SentimentResponse
 import json
 
-def analysis(file: UploadFile) -> str:
-    # df = get_dataset_from_file_path("data/data.csv")
+def analysis(file: UploadFile, topics: str):
     df = get_dataset_from_file(file)
     print(df.info())
     print(df.head())
     text_list = df["Text"].apply(process_text).values.tolist()
     df.to_csv("data/dataset.csv", index=False)
-    feedback_list, sentiment_list = generate_sentiments_feedback_responce(text_list)
-    df["Sentiment"] = sentiment_list
-    df["Feedback Response"] = feedback_list
-    df.to_csv("data/res.csv", index=False)
 
-    analysis = generate_analysis(text_list)
-    print(analysis)
-    analysis = json.loads(analysis)
+    analysis: dict = {}
+
+
+    feedback_list_analysis_results = feedback_list_analysis(topics)
+    analysis["feedback_analysis"] = [
+        {
+            "text": sentiment_response.text,
+            "topic": sentiment_response.topic,
+            "sentiment": sentiment_response.sentiment.value
+        }
+
+        for sentiment_response in feedback_list_analysis_results
+    ]
+
+    topics_analysis_results = topics_analysis(feedback_list_analysis_results)
+    analysis["topics"] = topics_analysis_results
+
+    analysis["summary"] = generate_total_summary(topics_analysis_results)
+
     counts = {"positive": 0, "negative": 0, "neutral": 0}
-    for s in sentiment_list:
-        key = str(s).lower()
+    for s in feedback_list_analysis_results:
+        key = str(s.sentiment.value).lower()
         if key in counts:
             counts[key] += 1
     analysis["sentiment"] = counts
+
+
+
     return analysis
 
 def process_text(text) -> str:

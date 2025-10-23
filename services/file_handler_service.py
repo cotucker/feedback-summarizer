@@ -21,7 +21,7 @@ def create_dataset_from_sentiment_response_list(sentiments_list) -> pd.DataFrame
     return df
 
 def get_feedback_list() -> list[str]:
-    df = pd.read_csv('data/test.csv')
+    df = pd.read_csv('data/dataset.csv')
     return df["Text"].apply(process_text).values.tolist()
 
 def process_text(text) -> str:

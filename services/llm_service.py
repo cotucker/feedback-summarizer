@@ -89,7 +89,7 @@ def generate_analysis(text_list: list):
     return response.text
 
 
-def generate_single_sentiments_feedback_responce(feedback_text: str, topics: str) -> list[SentimentResponse]:
+def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str) -> list[SentimentResponse]:
 
     response = client.models.generate_content(
         model=f'{MODEL}',
@@ -216,13 +216,13 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
     summary: TopicSummary = typing.cast(TopicSummary, response.parsed)
     return summary.summary
 
-def feedback_list_analysis(topics_text: str = ''):
+def feedback_list_analysis(topics_text: str = '') -> list[SentimentResponse]:
     topics: list[str] = generate_topics_list(topics_text)
     filter = not topics
     sentiments_list: list[SentimentResponse] = []
     feedback_list: list[str] = get_feedback_list()
     for feedback in feedback_list:
-        sentiments = generate_single_sentiments_feedback_responce(feedback, ', '.join(topics))
+        sentiments = generate_single_sentiments_feedback_analysis(feedback, ', '.join(topics))
         for sentiment in sentiments:
             if filter:
                 if sentiment.topic not in topics:
