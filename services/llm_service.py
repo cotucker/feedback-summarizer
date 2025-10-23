@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import pandas as pd
 import typing
 from pydantic import BaseModel
-from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_topics_list, get_feedback_analysis
+from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_topics_list, get_feedback_analysis_by_topic
 
 class Sentiment(enum.Enum):
     POSITIVE = "Positive"
@@ -35,6 +35,10 @@ class SentimentResponse(BaseModel):
     text: str
     topic: str
     sentiment: Sentiment
+
+class TopicSummary(BaseModel):
+    topic: str
+    summary: str
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
@@ -124,8 +128,62 @@ def generate_single_sentiments_feedback_responce(feedback_text: str, topics: str
     sentiments: list[SentimentResponse] = typing.cast(list[SentimentResponse], response.parsed)
     return sentiments
 
+def topics_analysis(feedback_analysis: list[SentimentResponse]):
+    topics: dict = {}
+    for sentiment in feedback_analysis:
+        if sentiment.topic not in topics:
+            topics[sentiment.topic] = 1
+        else:
+            topics[sentiment.topic] += 1
 
-def feedback_list_analysis(topics_text: str):
+    for topic in topics:
+        print(f"{topic}: {topics[topic]}")
+
+    return [
+        {
+            "topic": topic,
+            "count": topics[topic],
+            "summary": generate_topic_summary(get_feedback_analysis_by_topic(topic), topic)
+        }
+        for topic in topics
+    ]
+
+
+
+
+def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
+    print(f"Generating summary for topic: {topic_name}, texts: {topic_texts}")
+    response = client.models.generate_content(
+        model=f'{MODEL}',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"""
+                        You are an expert Data Analyst specializing in synthesizing qualitative user feedback into actionable business insights.
+                        Analyze the provided list of user feedback comments, which all relate to the single topic of "{topic_name}".
+                        Your task is to generate a concise, neutral, and informative summary that captures the main points from the feedback list.
+                        """,
+                    ),
+                    types.Part(
+                        text=f"""
+                        - topic name: "{topic_name}"
+                        - feedback texts list: {topic_texts}
+                        """,
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": TopicSummary,
+        },
+    )
+    summary: TopicSummary = typing.cast(TopicSummary, response.parsed)
+    return summary.summary
+
+def feedback_list_analysis(topics_text: str = ''):
     topics: list[str] = generate_topics_list(topics_text)
     filter = not topics
     sentiments_list: list[SentimentResponse] = []
@@ -148,16 +206,16 @@ def feedback_list_analysis(topics_text: str):
     print(sentiments_list)
     return sentiments_list
 
-def filter_feedback_analysis(selected_topics: str):
+# def filter_feedback_analysis(selected_topics: str):
 
-    all_topics = get_topics_list()
-    print(all_topics)
-    selected_topics: list[str] = generate_topics_list(selected_topics)
-    print(selected_topics)
-    filtered_topics =  filter_topics(all_topics, selected_topics)
-    print(filtered_topics)
-    feedback_analysis = get_feedback_analysis(filtered_topics)
-    return feedback_analysis
+#     all_topics = get_topics_list()
+#     print(all_topics)
+#     selected_topics: list[str] = generate_topics_list(selected_topics)
+#     print(selected_topics)
+#     filtered_topics =  filter_topics(all_topics, selected_topics)
+#     print(filtered_topics)
+#     feedback_analysis = get_feedback_analysis(filtered_topics)
+#     return feedback_analysis
 
 
 

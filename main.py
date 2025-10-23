@@ -70,23 +70,6 @@ MOCK_RESPONSE = {
       "summary": "Users are generally satisfied with the project delivery, but some have expressed concerns about the timeline."
     }
   ],
-  "quotes": [
-    {
-      "text": "The new dashboard looks amazing, so much easier to use!",
-      "topic": "UI/UX Design",
-      "sentiment": "positive"
-    },
-    {
-      "text": "It takes forever to load on my iPhone since the update.",
-      "topic": "Mobile Performance",
-      "sentiment": "negative"
-    },
-    {
-      "text": "Support replied fast, but didn't really solve my issue.",
-      "topic": "Customer Support",
-      "sentiment": "neutral"
-    }
-  ],
   "feedback_analysis": [
     {
       "text": "It takes forever to load on my iPhone since the update.",
