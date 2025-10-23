@@ -28,8 +28,9 @@ class Analysis(BaseModel):
     quotes: list[Quote]
 
 class FeedbackResponse(BaseModel):
+    feedback_text: str
     response: str
-    sentiment: Sentiment
+    score: int
 
 class SentimentResponse(BaseModel):
     text: str
@@ -319,7 +320,7 @@ def filter_topics(all_topics: list[str], selected_topics: list[str]) -> list[str
     return topics_list
 
 
-def generate_sentiments_feedback_responce(text_list: list) -> tuple[list[str], list[str]]:
+def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
 
     response = client.models.generate_content(
         model=f'{MODEL}',
@@ -328,35 +329,33 @@ def generate_sentiments_feedback_responce(text_list: list) -> tuple[list[str], l
                 role="user",
                 parts=[
                     types.Part(
-                        text=f"Write a context-aware reply to a every feedback in the list ({len(text_list)} total), taking its topic and sentiment into account. The reply should be short and engaging to appease the customer as much as possible",
+                        text=f"""
+                        You are a highly skilled Customer Support Professional with a talent for crafting empathetic, concise, and effective replies.
+                        Your primary goal is to make the customer feel heard and valued, aiming to de-escalate negative experiences and reinforce positive ones.
+                        Analyze the provided customer feedback and its accompanying rating.
+                        Generate the best possible reply that is tailored to the specific situation.
+                        """,
                     ),
-                ],
-            ),
-            types.Content(
-                role="user",
-                parts=[
                     types.Part(
-                        text=f"{text_list}",
+                        text=f"""
+                        - feedbacks info: {feedback_info}
+                        """,
                     ),
                 ],
             ),
         ],
         config={
             "response_mime_type": "application/json",
-            "response_schema": list[FeedbackResponse],
+            "response_schema": FeedbackResponse,
         },
     )
 
-    if not isinstance(response.parsed, list) or not all(isinstance(item, FeedbackResponse) for item in response.parsed):
-        raise ValueError(f"Failed to parse model response into list[FeedbackResponse] object. Received type: {type(response.parsed).__name__}. Raw text: {response.text}")
+    feedback_responce: FeedbackResponse = typing.cast(FeedbackResponse, response.parsed)
 
-    my_feedback_responses: list[FeedbackResponse] = typing.cast(list[FeedbackResponse], response.parsed)
-    response_list = [feedback_response.response for feedback_response in my_feedback_responses]
-    sentiment_list = [feedback_response.sentiment.value for feedback_response in my_feedback_responses]
+    return feedback_responce
 
-    assert len(response_list) == len(text_list)
-    assert len(sentiment_list) == len(text_list)
-    return response_list, sentiment_list
+def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
+    return [generate_feedback_responce(feedback_info) for feedback_info in feedbacks_info ]
 
 def test_generate_feedback_responce():
 

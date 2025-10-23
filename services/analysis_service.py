@@ -1,8 +1,8 @@
 import pandas as pd
 from sklearn.metrics import accuracy_score
 from fastapi.datastructures import UploadFile
-from services.file_handler_service import get_dataset_from_file_path, get_dataset_from_file
-from services.llm_service import generate_sentiments_feedback_responce, generate_analysis, feedback_list_analysis, topics_analysis, generate_total_summary, SentimentResponse
+from services.file_handler_service import get_dataset_from_file_path, get_dataset_from_file, get_feedbacks_info
+from services.llm_service import generate_analysis, feedback_list_analysis, topics_analysis, generate_total_summary, feedback_responces, SentimentResponse
 import json
 
 def analysis(file: UploadFile, topics: str):
@@ -36,8 +36,17 @@ def analysis(file: UploadFile, topics: str):
         key = str(s.sentiment.value).lower()
         if key in counts:
             counts[key] += 1
+
     analysis["sentiment"] = counts
 
+    analysis["feedback_replies"] = [
+        {
+            "feedback_text": feedback_response.feedback_text,
+            "feedback_reply": feedback_response.response,
+            "score": feedback_response.score
+        }
+        for feedback_response in feedback_responces(get_feedbacks_info())
+    ]
 
 
     return analysis

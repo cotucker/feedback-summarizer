@@ -35,9 +35,14 @@ def get_topics_list() -> list[str]:
     df = pd.read_csv('data/sentiment_data.csv')
     return df["topic"].apply(process_text).values.tolist()
 
+
 def get_feedback_analysis_by_topic(topic: str | None) -> list[str]:
     df = pd.read_csv('data/sentiment_data.csv')
     if topic:
         df = df[df['topic'] == topic]
 
     return df['text'].values.tolist()
+
+def get_feedbacks_info() -> list[str]:
+    df = pd.read_csv('data/dataset.csv')
+    return (df['Text'] + ", " + str(df['Rating'])).tolist()
