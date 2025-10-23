@@ -219,6 +219,7 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
 
 def feedback_list_analysis(topics_text: str = '') -> list[SentimentResponse]:
     topics: list[str] = generate_topics_list(topics_text)
+    print(f"Generaled topics: {topics}")
     filter = not topics
     sentiments_list: list[SentimentResponse] = []
     feedback_list: list[str] = get_feedback_list()

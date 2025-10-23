@@ -9,7 +9,6 @@ def analysis(file: UploadFile, topics: str):
     df = get_dataset_from_file(file)
     print(df.info())
     print(df.head())
-    text_list = df["Text"].apply(process_text).values.tolist()
     df.to_csv("data/dataset.csv", index=False)
 
     analysis: dict = {}

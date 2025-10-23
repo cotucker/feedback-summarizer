@@ -1,4 +1,184 @@
-Text,Company,Rating,Sentiment,Feedback Response
-The cloud infrastructure rollout was flawless. Zero downtime and everything scaled perfectly on day one. A true enterprise solution.,Microsoft,5,Positive,Fantastic to hear! We're thrilled our cloud rollout met your enterprise needs flawlessly. We strive for excellence!
-"Salesforce's CRM platform is indispensable for our sales team, but the cost of add-ons quickly spirals out of control.",Salesforce,4,Neutral,Glad our CRM is indispensable for your team! We understand cost concerns and are always here to help optimize your solution. Let's connect!
-Their customer support for a minor billing issue was absolutely abysmal. Took 4 different transfers and two weeks to resolve.,Google,1,Negative,"We sincerely apologize for the abysmal billing support you experienced. That's unacceptable, and we're committed to improving. Please reach out directly!"
+Text,Rating
+"The project management was flawless. Our dedicated manager, Alex, was always on top of things and communication was crystal clear. A bit pricey, but worth every penny for the peace of mind.",5
+"We are extremely disappointed with the technical skills of the junior developers assigned to us. The code was buggy and required constant oversight from our in-house team.",1
+"Their support team is incredibly responsive. We had a critical issue over the weekend and they had it resolved within two hours. Truly impressive.",5
+"The final product was delivered on time and met all our specifications. Solid work from a reliable team.",5
+"Billing is a complete mess. We were overcharged for hours that were not worked, and getting it corrected has been a nightmare.",1
+"The developers are technically brilliant, but their project manager seems completely overwhelmed. Deadlines were missed repeatedly due to poor planning.",2
+"Good value for the price. The quality isn't top-tier, but for our budget, it's more than acceptable. You get what you pay for.",4
+"They promised expertise in cloud migration, but their team was clearly learning on the job. The project was delayed by two months and went over budget.",1
+"The platform they provided for tracking progress is intuitive and a huge help. It makes collaboration seamless.",5
+"I'm giving three stars because the developers are skilled, but the communication from the management team is severely lacking. We often felt in the dark about progress.",3
+"A fantastic partner for our startup. They understood our vision and delivered a high-quality MVP well within our tight deadline.",5
+"The time zone difference was a much bigger issue than we anticipated. Getting timely responses to urgent questions was a constant struggle.",2
+"Their QA process needs a serious overhaul. We found so many obvious bugs in the final delivery that it felt like it wasn't tested at all.",1
+"The initial consultation was amazing. They really took the time to understand our business needs before proposing a solution.",5
+"While the project was successful, the constant upselling was exhausting. Every call felt like a new sales pitch for another service.",3
+"Technically, the work is fine. But their team shows zero proactivity. They only do exactly what is asked and never suggest improvements.",3
+"We've been working with them for over two years now, and they've become an indispensable part of our team. Highly recommend.",5
+"The lead developer we worked with, Maria, was a rockstar. Her expertise in AI was a game-changer for our project.",5
+"The cost savings are significant, but be prepared to invest a lot of your own time in managing the project and clarifying requirements.",3
+"They completely missed the deadline for our critical launch, and the communication leading up to the failure was poor. We can't trust them again.",1
+"Their ability to scale the team up or down based on our needs has been incredibly valuable for our fluctuating workload.",5
+"The code quality is excellent. It's clean, well-documented, and follows best practices. Our internal team was very impressed.",5
+"Customer support is friendly, but they don't seem empowered to solve problems. Every issue has to be escalated, causing delays.",2
+"The project was a disaster from start to finish. Poor communication, missed deadlines, and a buggy final product.",1
+"Their pricing is transparent and fair. No hidden fees or surprises, which we really appreciate.",5
+"The team is eager and hardworking, but lacks the senior-level experience we needed for a complex architectural project.",2
+"They did a great job on the UI/UX design. The app they delivered is beautiful and a pleasure to use.",5
+"It feels like we're working with a black box. We send requirements, and code comes back, but there's no collaboration or discussion.",2
+"For basic website maintenance, they are a cost-effective and reliable choice. No complaints.",4
+"They assigned a new project manager halfway through, and the transition was chaotic. It completely derailed our progress.",1
+"The security audit they performed on our application was incredibly thorough and identified several critical vulnerabilities. Great work.",5
+"Their English proficiency was a barrier. Technical details were often lost in translation, leading to rework.",2
+"A truly agile team. They adapted to our changing requirements without any fuss and delivered great results.",5
+"The project started strong but lost momentum. It feels like our project was de-prioritized in favor of other clients.",2
+"We were promised a team of senior developers, but the code we received suggests otherwise. Very disappointed in the bait-and-switch.",1
+"The onboarding process was seamless. We were up and running with our new team in less than a week.",5
+"Their expertise in legacy system modernization saved us from a complete rewrite. They know their stuff.",5
+"The contract negotiation was painful and rigid. They were not willing to accommodate any of our standard clauses.",2
+"I'm impressed by their commitment to quality. They have a rigorous code review and testing process that caught issues early.",5
+"They are great at execution but lack strategic input. We were hoping for a partner, not just a team of coders.",3
+"The project was a huge success and delivered under budget. Management is very happy. We will be using them for future projects.",5
+"Turnover on their team is high. We've had three different lead developers in six months, which has been disruptive.",2
+"Their documentation is top-notch. It makes handing over the project to our internal team so much easier.",5
+"The initial estimates were way off. The project ended up costing nearly double what was quoted.",1
+"They are very process-oriented, which brings a level of predictability and stability that we appreciate.",4
+"The team seems burnt out. The quality of work and communication has noticeably declined over the past few months.",2
+"An excellent choice for staff augmentation. The developers they provided integrated perfectly with our existing team.",5
+"Their legal and compliance team was a nightmare to work with. It slowed down the project start by over a month.",1
+"They went above and beyond to help us meet a critical investor deadline. We couldn't have done it without them.",5
+"The user acceptance testing phase was a mess. The product was nowhere near ready for us to review.",1
+"Their understanding of our industry's specific regulations was a huge asset. It saved us a lot of time and potential legal issues.",5
+"The project manager is a great communicator but lacks the technical depth to understand the challenges our project faced.",3
+"They delivered the project, but the architecture is not scalable. We're already facing issues as our user base grows.",2
+"The daily stand-up meetings are efficient and keep everyone aligned. Great project management practice.",5
+"We had to pull the plug halfway through. The team was just not capable of delivering on their promises.",1
+"Their design team is fantastic. They took our vague ideas and turned them into a stunning and functional interface.",5
+"The reporting they provide is vague and not very useful. We have little visibility into the actual work being done.",2
+"They are a reliable, no-frills outsourcing partner. They do the job as specified, on time, and on budget.",4
+"We experienced significant data loss during the migration they handled. A catastrophic failure.",1
+"Their proactive suggestions for improving our app's performance have been incredibly valuable.",5
+"The support ticketing system they use is clunky and outdated. It's frustrating to submit and track issues.",2
+"We've seen a massive improvement in our development velocity since partnering with them.",5
+"The final invoice included charges for software licenses we were told were included. Felt dishonest.",1
+"Their expertise in DevOps has streamlined our entire release process. We're deploying code faster and more reliably than ever.",5
+"They are very rigid in their interpretation of the scope. Any minor change requires a new contract and lengthy negotiation.",2
+"The team is friendly and has a great attitude, which makes working with them a pleasure.",5
+"The project failed to meet basic accessibility standards, which is a major compliance issue for us.",1
+"They have a deep pool of talent to draw from. When we needed a specialist in a niche technology, they had someone ready.",5
+"Communication is sporadic. We sometimes go days without hearing anything, even when deadlines are approaching.",2
+"The quality of their work is consistently high. We can always trust that what they deliver will be solid.",5
+"They were acquired by another company mid-project, and the resulting chaos completely derailed our timeline.",1
+"Their commitment to our success feels genuine. They act like true partners, not just vendors.",5
+"The time tracking is not transparent. We have no way of verifying the hours they are billing us for.",2
+"They were able to salvage a failing project that another vendor had botched. They are lifesavers.",5
+"The code is a tangled mess of spaghetti. It works, but it will be impossible to maintain.",1
+"Their CEO was personally involved in ensuring our project was a success. That level of commitment is rare.",5
+"They are slow to adopt new technologies. It feels like we are paying for solutions that are already becoming outdated.",2
+"The handoff at the end of the project was seamless. They provided excellent documentation and training for our team.",5
+"We had a major security breach that was traced back to a vulnerability in the code they wrote. Unacceptable.",1
+"They are great at what they do, but they are not cheap. You are paying a premium for their quality.",4
+"The project manager is too passive. They don't push back on bad ideas or manage expectations effectively.",2
+"They consistently deliver high-quality work ahead of schedule. We couldn't be happier.",5
+"The language barrier was a significant issue, leading to frequent misunderstandings and rework.",2
+"Their flexibility in adapting to our internal tools and processes was a huge help.",5
+"We were sold a dream during the sales process that the delivery team simply could not execute on.",1
+"Their deep expertise in the fintech domain was evident. They understood our challenges without needing much explanation.",5
+"The team is spread too thin across too many projects. We never felt like we had their full attention.",2
+"The solution they built is robust, scalable, and has had zero downtime since launch. Excellent engineering.",5
+"The contract is very one-sided and offers us little protection if things go wrong. We had to walk away.",1
+"They provide detailed weekly reports that give us full visibility into progress and potential blockers.",5
+"They are just a body shop. There's no innovation or thought leadership. You have to provide all the direction.",3
+"The team's positive attitude and can-do spirit are infectious. It's a pleasure to work with them.",5
+"They missed a critical security requirement in the specifications, which could have had severe consequences.",1
+"Their ability to quickly build and deploy a proof-of-concept was instrumental in getting stakeholder buy-in.",5
+"The project manager is a bottleneck. All communication has to go through them, which slows everything down.",2
+"We've been with them for years and consider them a long-term strategic partner.",5
+"The code they delivered was not optimized at all. It was slow and resource-intensive.",2
+"Their QA testers are incredibly thorough. They find bugs that our own team misses.",5
+"They seem to have a high rate of employee attrition, leading to a lack of continuity on our project.",2
+"The project was a textbook example of how outsourcing should work. Great communication, on-time delivery, and high-quality results.",5
+"Their initial discovery phase was a bit slow, but it paid off in the long run by ensuring there were no surprises later.",4
+"They are very resistant to feedback and get defensive when we point out issues in their work.",1
+"The mobile app they developed has received rave reviews from our users. It's a huge success.",5
+"The project felt disorganized and chaotic from day one. There was no clear plan or direction.",1
+"Their expertise in UI/UX has dramatically improved the usability of our product.",5
+"The time zone overlap is only a few hours, which makes real-time collaboration very difficult.",2
+"They are a very professional and well-run organization. We have been impressed at every stage.",5
+"The final product was functional but lacked the polish and attention to detail we were expecting.",3
+"Their ability to integrate with our complex legacy systems was impressive.",5
+"We had to micromanage every aspect of the project. It ended up taking more of our time than if we had done it ourselves.",1
+"The project was delivered on time, on budget, and exceeded our expectations. An absolute home run.",5
+"The developers are good, but the project management tools they use are terrible, making it hard to track progress.",3
+"They have a very strong company culture that emphasizes quality and client satisfaction, and it shows.",5
+"They are very secretive about their development process. We have no visibility into the code until it's delivered.",2
+"Their post-launch support has been excellent. They are quick to address any bugs or issues that come up.",5
+"The sales team overpromised on the team's capabilities. The developers we got were not as experienced as we were led to believe.",2
+"They are a great partner for augmenting our internal team with specific skill sets we lack.",5
+"The project was constantly blocked waiting for decisions or approvals from their side.",2
+"They are incredibly organized and efficient. The project ran like a well-oiled machine.",5
+"The code is not self-explanatory and lacks comments, which will make future maintenance difficult.",2
+"Their ability to understand our complex business logic and translate it into a functional application was outstanding.",5
+"They are very inflexible with their work hours, which makes it hard to schedule meetings.",2
+"The team is passionate about their work and genuinely invested in our project's success.",5
+"They delivered a product that technically works but completely missed the mark on user experience.",2
+"Their knowledge of cybersecurity best practices is impressive. We feel our application is in safe hands.",5
+"The project manager is great at shielding the team from distractions, but it also means we have limited direct access to the developers.",3
+"They have a very structured and transparent development process. We always know what's going on.",5
+"The team seems to lack a sense of ownership. They are just completing tasks without thinking about the bigger picture.",2
+"They were able to turn our vague requirements into a detailed technical specification that was spot on.",5
+"The project was a constant struggle due to cultural differences and communication styles.",2
+"They provide a dedicated QA engineer for the project, which has significantly improved the quality of the deliverables.",5
+"The team is not very good at estimating effort. Their timelines are consistently underestimated.",2
+"They are a true partner, not just a vendor. They are always looking for ways to add value beyond the contract.",5
+"The code is poorly structured and will be difficult to refactor in the future.",2
+"Their design mockups were beautiful, but the final product didn't quite capture the same level of polish.",3
+"They have a very strong grasp of agile methodologies and run sprints very effectively.",5
+"The team is very junior and requires a lot of hand-holding from our senior engineers.",2
+"Their ability to deliver a complex feature under a tight deadline was nothing short of heroic.",5
+"The project manager is not very organized, leading to missed details and confusion.",2
+"They have a very collaborative and open communication style. We feel like we are part of the same team.",5
+"The final product is not very intuitive. We are getting a lot of support tickets from confused users.",2
+"Their expertise in data analytics has helped us unlock valuable insights from our data.",5
+"They are very slow to respond to emails and messages, which can be frustrating.",2
+"They are a very reliable and trustworthy partner. We have been working with them for over 5 years.",5
+"The project was a technical success but a commercial failure because they didn't understand our users.",2
+"Their ability to provide end-to-end services, from design to deployment and maintenance, is a huge advantage.",5
+"They are very resistant to using our internal project management tools, which creates friction.",2
+"The team is incredibly smart and talented. They are always coming up with innovative solutions to our problems.",5
+"The project manager is a bit of a micromanager, which can be frustrating for our team.",3
+"They have a very strong focus on user experience, and it shows in the quality of their work.",5
+"The team seems to be juggling too many projects at once, and the quality of their work on our project has suffered.",2
+"They are a great partner for rapid prototyping and building MVPs.",5
+"The project was a constant source of stress and frustration. I would not recommend them.",1
+"Their ability to adapt to our changing priorities has been a huge asset.",5
+"The team is not very proactive about identifying potential risks or issues.",2
+"They have a very strong engineering culture that values clean code and good design.",5
+"The project manager is not very good at communicating bad news, which leads to surprises.",2
+"They are a true pleasure to work with. Professional, friendly, and talented.",5
+"The final product is not very well-documented, which will make it hard for us to maintain.",2
+"Their expertise in our niche industry is a huge advantage. They get it.",5
+"The team is not very good at following our coding standards.",2
+"They are a great partner for long-term, complex projects.",5
+"The project was a complete mess. I would give them zero stars if I could.",1
+"Their ability to work independently and with minimal supervision is a huge plus.",5
+"The team is not very good at providing regular status updates.",2
+"They are a great partner for companies that need to scale their development team quickly.",5
+"The project was a huge waste of time and money. I would never work with them again.",1
+"Their ability to provide a full-service team, including developers, QA, and a project manager, is very convenient.",5
+"The team is not very good at taking feedback.",2
+"They are a great partner for companies that need to build a high-quality product from scratch.",5
+"The project was a complete disaster. I would not recommend them to my worst enemy.",1
+"Their ability to provide a dedicated team that feels like an extension of our own is a huge advantage.",5
+"The team is not very good at communicating their progress.",2
+"They are a great partner for companies that need to modernize their legacy systems.",5
+"The project was a complete failure. I would not recommend them to anyone.",1
+"Their ability to provide a cost-effective solution without sacrificing quality is a huge plus.",5
+"The team is not very good at meeting deadlines.",2
+"They are a great partner for companies that need to build a complex, enterprise-grade application.",5
+"The project was a complete and utter nightmare. I would not wish this experience on anyone.",1
+"Their ability to provide a flexible and scalable team that can grow with our needs is a huge plus.",5
+"The team is not very good at providing clear and concise documentation.",2
+"They are a great partner for companies that need to build a beautiful and intuitive user interface.",5
+"The project was a complete and utter failure. I would not recommend them to anyone.",1
