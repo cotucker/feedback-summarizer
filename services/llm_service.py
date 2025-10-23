@@ -40,6 +40,9 @@ class TopicSummary(BaseModel):
     topic: str
     summary: str
 
+class TotalSummary(BaseModel):
+    summary: str
+
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 MODEL = os.getenv('MODEL')
@@ -128,7 +131,7 @@ def generate_single_sentiments_feedback_responce(feedback_text: str, topics: str
     sentiments: list[SentimentResponse] = typing.cast(list[SentimentResponse], response.parsed)
     return sentiments
 
-def topics_analysis(feedback_analysis: list[SentimentResponse]):
+def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
     topics: dict = {}
     for sentiment in feedback_analysis:
         if sentiment.topic not in topics:
@@ -149,6 +152,36 @@ def topics_analysis(feedback_analysis: list[SentimentResponse]):
     ]
 
 
+def generate_total_summary(topics_analysis: list[dict]) -> str:
+    response = client.models.generate_content(
+        model=f'{MODEL}',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"""
+                        You are a Senior Product Analyst responsible for creating a high-level executive summary for leadership.
+                        Your goal is to synthesize a list of pre-analyzed topic summaries into a single, cohesive paragraph.
+                        This total summary must provide a bird's-eye view of the most critical takeaways from all customer feedback,
+                        highlighting both key strengths and major pain points.
+                        """,
+                    ),
+                    types.Part(
+                        text=f"""
+                            - topics summaries:
+                            {topics_analysis}""",
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": TotalSummary,
+        },
+    )
+    total_summary: TotalSummary = typing.cast(TotalSummary, response.parsed)
+    return total_summary.summary
 
 
 def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
