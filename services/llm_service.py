@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import pandas as pd
 import typing
 from pydantic import BaseModel
+from fastapi import HTTPException
 from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_topics_list, get_feedback_analysis_by_topic
 
 class Sentiment(enum.Enum):
@@ -100,10 +101,10 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                 parts=[
                     types.Part(
                         text="""You are an expert Customer Feedback Analyst
-                        whose task is to decompose complex user reviews into individual
-                        , atomic entities, assessing the sentiment and topic for each.
+                        whose task is to decompose complex user reviews by topics into individual
+                        , atomic entities , assessing the sentiment and topic for each.
                         If topic of entitie is not included in the topics list - create new topic
-                        IF feedback doesnt provide any information assign it to "General Feedback"
+                        If atomic entitie doesnt provide any information assign it to "General Feedback"
                         """,
                     ),
                 ],
@@ -220,7 +221,13 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
     return summary.summary
 
 def feedback_list_analysis(topics_text: str = '') -> list[SentimentResponse]:
-    topics: list[str] = generate_topics_list(topics_text)
+    if topics_text.replace(' ', '') == '':
+        topics = []
+    else:
+        topics: list[str] = generate_topics_list(topics_text)
+        if not topics:
+            raise HTTPException(status_code=400, detail="Invalid topics")
+
     print(f"Generaled topics: {topics}")
     filter = not topics
     sentiments_list: list[SentimentResponse] = []
@@ -271,6 +278,48 @@ def generate_topics_list(topics_text: str):
     )
     topics_list: list[str] = typing.cast(list[str], response.parsed)
     return topics_list
+
+def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
+    response = client.models.generate_content(
+        model=f'{MODEL}',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"""
+                        You are an expert Data Schema Analyst. Your task is to analyze a given list of column headers from a CSV file and identify which columns contain user feedback text and a numerical user score, respectively.
+
+                        **OBJECTIVE:**
+                        Based on the provided list of column names, identify the single best candidate for the "Feedback Text" column and the single best candidate for the "Numerical Score" column. Your response MUST be a single, valid JSON array containing exactly two elements in the specified order: `["<FEEDBACK_COLUMN_NAME>", "<SCORE_COLUMN_NAME>"]`.
+
+                        **INPUT DATA:**
+                        - **COLUMN_NAMES:** `{list_of_column_names}`
+
+                        **RULES:**
+                        1.  **Feedback Text Column:** This column should contain the main body of the user's review or comment. Common names include `review`, `text`, `comment`, `feedback`, `описание`, `отзыв`. It must be the primary text column, not an ID, title, or summary.
+                        2.  **Numerical Score Column:** This column should contain a numerical rating provided by the user (e.g., 1-5, 1-10). Common names include `rating`, `score`, `stars`, `оценка`, `рейтинг`.
+                        3.  **Case-Insensitive Analysis:** Analyze the column names in a case-insensitive manner, but you MUST return the original, exact names as they appeared in the input list.
+                        4.  **Handling Missing Columns:** If you cannot find a suitable candidate for one of the columns, skip it.
+                        ---
+                        **EXAMPLES (for reference):**
+
+                        **Input:** `["Review Text", "Date", "Rating", "User_ID"]`
+                        **Expected Output:**
+                        ```json
+                        ["Review Text", "Rating"]
+                        """,
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": list[str],
+        },
+    )
+    selected_columns: list[str] = typing.cast(list[str], response.parsed)
+    return selected_columns
 
 def filter_topics(all_topics: list[str], selected_topics: list[str]) -> list[str]:
     response = client.models.generate_content(

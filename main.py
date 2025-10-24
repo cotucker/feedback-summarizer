@@ -93,17 +93,8 @@ MOCK_RESPONSE = {
 
 @app.post("/api/feedback/analyze")
 async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
-    if file.filename is None:
-        raise HTTPException(status_code=400, detail="No filename provided for the uploaded file.")
-    if not file.filename.endswith('.csv'):
-        raise HTTPException(status_code=400, detail="Invalid file type. Please upload a CSV.")
 
-    print(f"Receiving file: {file.filename}, Parameters: {topics}")
-
-    if topics is None:
-        topics = ''
-
-    analysis_results = analysis(file, topics)
+    analysis_results = await analysis(file, topics if topics else '')
     print("Analysis complete. Sending mock results.")
 
     return analysis_results

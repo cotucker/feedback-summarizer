@@ -1,14 +1,57 @@
 from fastapi.datastructures import UploadFile
+from fastapi import HTTPException
 import pandas as pd
-
-
+import io
 
 def get_dataset_from_file_path(file_path: str) -> pd.DataFrame:
     df = pd.read_csv(file_path)
     return df
 
-def get_dataset_from_file(file: UploadFile) -> pd.DataFrame:
-    df = pd.read_csv(file.file)
+async def get_dataset_from_file(file: UploadFile, process_columns, topics: str = '') -> pd.DataFrame:
+
+    if file.filename is None:
+        raise HTTPException(status_code=400, detail="No filename provided for the uploaded file.")
+    filetype = file.filename.split('.')[-1]
+    if filetype not in ['csv', 'txt', 'json', 'xlsx']:
+        raise HTTPException(status_code=400, detail="Invalid file type. Please upload a CSV | TXT | JSON | XLSX.")
+
+    print(f"Receiving file: {file.filename}, Parameters: {topics}")
+
+    try:
+        match filetype:
+            case 'csv':
+                df = pd.read_csv(file.file)
+            case 'txt':
+                df = pd.read_csv(file.file, sep='\t')
+            case 'json':
+                df = pd.read_json(file.file)
+            case 'xlsx':
+                contents = await file.read()
+                buffer = io.BytesIO(contents)
+                df = pd.read_excel(buffer)
+
+        print("Columns:", df.columns.tolist())
+        flag1, flag2 = False, False
+        for col in df.columns.tolist():
+            match col.lower():
+                case 'text':
+                    df.rename(columns={col: 'Text'}, inplace=True)
+                    flag1 = True
+                case 'rating':
+                    df.rename(columns={col: 'Rating'}, inplace=True)
+                    flag2 = True
+            if flag1 and flag2:
+                df = df[['Text', 'Rating']]
+                break
+
+        if not (flag1 and flag2):
+            selected_columns = process_columns(df.columns.tolist())
+            if len(selected_columns) == 2:
+                df = df[selected_columns]
+                df.rename(columns={selected_columns[0]: 'Text', selected_columns[1]: 'Rating'}, inplace=True)
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error loading file: {e}")
     return df
 
 def create_dataset_from_sentiment_response_list(sentiments_list) -> pd.DataFrame:
