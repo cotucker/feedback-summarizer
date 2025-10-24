@@ -1,3 +1,6 @@
 text,sentiment,topic
-y,Neutral,General Feedback
-x,Neutral,General Feedback
+"Our dedicated manager, Alex, was always on top of things",Positive,Customer support
+Their support team is incredibly responsive.,Positive,Customer support
+Truly impressive.,Positive,Customer support
+getting it corrected has been a nightmare.,Negative,Customer support
+Getting timely responses to urgent questions was a constant struggle.,Negative,Customer support
