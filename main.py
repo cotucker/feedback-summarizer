@@ -1,5 +1,3 @@
-# backend/main.py
-
 from fastapi import FastAPI, File, UploadFile, HTTPException, Body, Query
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio # To simulate processing delay
@@ -27,11 +25,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ==========================================
-# 2. Mock Data (Matches frontend structure)
-# ==========================================
-# Since we don't have OpenAI connected yet, we return this fake data
-# so the frontend can render the charts.
 MOCK_RESPONSE = {
   "summary": "Users are generally happy with the new UI update, finding it more intuitive. However, there is a significant cluster of complaints regarding slow loading times on mobile devices. Pricing seems to be a neutral topic.",
   "sentiment": {
@@ -98,9 +91,6 @@ MOCK_RESPONSE = {
 }
 
 
-# ==========================================
-# 3. The API Endpoint
-# ==========================================
 @app.post("/api/feedback/analyze")
 async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
     if file.filename is None:
@@ -117,7 +107,3 @@ async def analyze_feedback(topics: str | None = Query(default=None), file: Uploa
     print("Analysis complete. Sending mock results.")
 
     return analysis_results
-
-# @app.get('/api/sentiments')
-# async def get_sentiments(topics: str):
-#     return feedback_list_analysis(topics)

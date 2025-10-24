@@ -28,7 +28,7 @@ class Analysis(BaseModel):
     quotes: list[Quote]
 
 class FeedbackResponse(BaseModel):
-    feedback_text: str
+    original_feedback_text: str
     response: str
     score: int
 
@@ -102,7 +102,9 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                         text="""You are an expert Customer Feedback Analyst
                         whose task is to decompose complex user reviews into individual
                         , atomic entities, assessing the sentiment and topic for each.
-                        If topic of entitie is not included in the topics list - create new topic""",
+                        If topic of entitie is not included in the topics list - create new topic
+                        IF feedback doesnt provide any information assign it to "General Feedback"
+                        """,
                     ),
                 ],
             ),
@@ -241,19 +243,6 @@ def feedback_list_analysis(topics_text: str = '') -> list[SentimentResponse]:
     print(sentiments_list)
     return sentiments_list
 
-# def filter_feedback_analysis(selected_topics: str):
-
-#     all_topics = get_topics_list()
-#     print(all_topics)
-#     selected_topics: list[str] = generate_topics_list(selected_topics)
-#     print(selected_topics)
-#     filtered_topics =  filter_topics(all_topics, selected_topics)
-#     print(filtered_topics)
-#     feedback_analysis = get_feedback_analysis(filtered_topics)
-#     return feedback_analysis
-
-
-
 def generate_topics_list(topics_text: str):
     response = client.models.generate_content(
         model=f'{MODEL}',
@@ -339,7 +328,7 @@ def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
                     ),
                     types.Part(
                         text=f"""
-                        - feedbacks info: {feedback_info}
+                        - feedback text and rating: {feedback_info}
                         """,
                     ),
                 ],

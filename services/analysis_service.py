@@ -40,7 +40,7 @@ def analysis(file: UploadFile, topics: str):
 
     analysis["feedback_replies"] = [
         {
-            "feedback_text": feedback_response.feedback_text,
+            "feedback_text": feedback_response.original_feedback_text,
             "feedback_reply": feedback_response.response,
             "score": feedback_response.score
         }

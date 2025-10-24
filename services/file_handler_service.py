@@ -22,7 +22,7 @@ def create_dataset_from_sentiment_response_list(sentiments_list) -> pd.DataFrame
 
 def get_feedback_list() -> list[str]:
     df = pd.read_csv('data/dataset.csv')
-    return df["Text"].apply(process_text).values.tolist()
+    return df["Text"].dropna().apply(process_text).values.tolist()
 
 def process_text(text) -> str:
     import re
@@ -45,4 +45,4 @@ def get_feedback_analysis_by_topic(topic: str | None) -> list[str]:
 
 def get_feedbacks_info() -> list[str]:
     df = pd.read_csv('data/dataset.csv')
-    return (df['Text'] + ", " + str(df['Rating'])).tolist()
+    return ("'" + df['Text'].astype(str) + "'. " + df['Rating'].astype(str)).tolist()
