@@ -45,6 +45,9 @@ class TopicSummary(BaseModel):
 class TotalSummary(BaseModel):
     summary: str
 
+class Separator(BaseModel):
+    separator: str
+
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 MODEL = os.getenv('MODEL')
@@ -134,6 +137,42 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
     print(response.text)
     sentiments: list[SentimentResponse] = typing.cast(list[SentimentResponse], response.parsed)
     return sentiments
+
+def get_separator(row: str) -> str:
+    response = client.models.generate_content(
+        model=f'{MODEL}',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"""
+                        You are an expert Data Parsing utility. Your task is to analyze the first line of a text file and determine the most likely column separator (delimiter) used.
+                        Based on the provided first line of text, identify the single character used as a delimiter.
+                        This line must contain at least two columns about customer feedback and feedback rating.
+                        the most common delimiters in this order of precedence: comma (`,`), semicolon (`;`), tab (`\t`), pipe (`|`)
+                        If no consistent delimiter from the list above is found (e.g.
+                        , the line is a single-column header or a natural language sentence)
+                        , the value for the "separator" MUST be string 'null'.
+                        """,
+                    ),
+                    types.Part(
+                        text=f"""
+                        input:
+                        - first line of text: {row}
+                        """
+                    )
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": Separator,
+        },
+    )
+    separator: Separator = typing.cast(Separator, response.parsed)
+    print(separator)
+    return separator.separator
 
 def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
     topics: dict = {}

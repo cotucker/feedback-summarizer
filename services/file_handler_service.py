@@ -7,7 +7,7 @@ def get_dataset_from_file_path(file_path: str) -> pd.DataFrame:
     df = pd.read_csv(file_path)
     return df
 
-async def get_dataset_from_file(file: UploadFile, process_columns, topics: str = '') -> pd.DataFrame:
+async def get_dataset_from_file(file: UploadFile, process_columns, get_separator, topics: str = '') -> pd.DataFrame:
 
     if file.filename is None:
         raise HTTPException(status_code=400, detail="No filename provided for the uploaded file.")
@@ -22,7 +22,17 @@ async def get_dataset_from_file(file: UploadFile, process_columns, topics: str =
             case 'csv':
                 df = pd.read_csv(file.file)
             case 'txt':
-                df = pd.read_csv(file.file, sep='\t')
+                contents = await file.read()
+                file.file.seek(0)
+                decoded_content = contents.decode('utf-8')
+                lines = decoded_content.splitlines()
+                if len(lines) > 1:
+                    print(f"Second row of TXT file content: {lines[0]}")
+                separator = get_separator(lines[0])
+                if separator == 'null':
+                    print("Separator not detected")
+                    raise ValueError("Separator not detected")
+                df = pd.read_csv(file.file, sep=separator)
             case 'json':
                 df = pd.read_json(file.file)
             case 'xlsx':
@@ -46,6 +56,7 @@ async def get_dataset_from_file(file: UploadFile, process_columns, topics: str =
 
         if not (flag1 and flag2):
             selected_columns = process_columns(df.columns.tolist())
+            print(f"Selected columns: {selected_columns}")
             if len(selected_columns) == 2:
                 df = df[selected_columns]
                 df.rename(columns={selected_columns[0]: 'Text', selected_columns[1]: 'Rating'}, inplace=True)
