@@ -1,8 +1,6 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Body, Query
+from fastapi import FastAPI, File, UploadFile, Query
 from fastapi.middleware.cors import CORSMiddleware
-import asyncio
 import os
-from typing import Annotated, Optional
 from dotenv import load_dotenv
 from services.analysis_service import analysis
 

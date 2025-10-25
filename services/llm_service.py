@@ -1,13 +1,12 @@
 from google import genai
 from google.genai import types
-from google.genai.types import GenerationConfig
-import os, enum, json
+import os
+import enum
 from dotenv import load_dotenv
-import pandas as pd
 import typing
 from pydantic import BaseModel
 from fastapi import HTTPException
-from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_topics_list, get_feedback_analysis_by_topic
+from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_feedback_analysis_by_topic
 
 class Sentiment(enum.Enum):
     POSITIVE = "Positive"
@@ -52,47 +51,6 @@ load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
-
-def generate_analysis(text_list: list):
-    response = client.models.generate_content(
-        model=f'{MODEL}',
-        contents=[
-            types.Content(
-                role="user",
-                parts=[
-                    types.Part(
-                        text="Analyze the following feedbacks and provide a summary, topics, and quotes:",
-                    ),
-                ],
-            ),
-            types.Content(
-                role="user",
-                parts=[
-                    types.Part(
-                        text=f"{text_list}",
-                    ),
-                ],
-            ),
-        ],
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": Analysis,
-        },
-    )
-
-    # Fix for diagnostic error: Ensure response.parsed is a valid Analysis object.
-    # The type checker sees response.parsed as BaseModel | dict[Any, Any] | Enum | None.
-    # We need to explicitly check its type before assigning to Analysis.
-    if not isinstance(response.parsed, Analysis):
-        # If parsing fails or the model returns an unexpected type/None,
-        # raise an error or handle appropriately. Returning the parsed object
-        # is the intent, so a failure to parse into the schema should be an error.
-        raise ValueError(f"Failed to parse model response into Analysis object. Received type: {type(response.parsed).__name__}. Raw text: {response.text}")
-
-    my_analysis: Analysis = response.parsed
-    # The function should return the parsed Analysis object, not the raw text.
-    return response.text
-
 
 def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str) -> list[SentimentResponse]:
 
@@ -146,7 +104,7 @@ def get_separator(row: str) -> str:
                 role="user",
                 parts=[
                     types.Part(
-                        text=f"""
+                        text="""
                         You are an expert Data Parsing utility. Your task is to analyze the first line of a text file and determine the most likely column separator (delimiter) used.
                         Based on the provided first line of text, identify the single character used as a delimiter.
                         This line must contain at least two columns about customer feedback and feedback rating.
@@ -203,7 +161,7 @@ def generate_total_summary(topics_analysis: list[dict]) -> str:
                 role="user",
                 parts=[
                     types.Part(
-                        text=f"""
+                        text="""
                         You are a Senior Product Analyst responsible for creating a high-level executive summary for leadership.
                         Your goal is to synthesize a list of pre-analyzed topic summaries into a single, cohesive paragraph.
                         This total summary must provide a bird's-eye view of the most critical takeaways from all customer feedback,
@@ -236,7 +194,7 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
                 role="user",
                 parts=[
                     types.Part(
-                        text=f"""
+                        text="""
                         You are an expert Data Analyst specializing in synthesizing qualitative user feedback into actionable business insights.
                         Analyze the provided list of user feedback comments, which all relate to the single topic of "{topic_name}".
                         Your task is to generate a concise, neutral, and informative summary that captures the main points from the feedback list.
@@ -407,7 +365,7 @@ def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
                 role="user",
                 parts=[
                     types.Part(
-                        text=f"""
+                        text="""
                         You are a highly skilled Customer Support Professional with a talent for crafting empathetic, concise, and effective replies.
                         Your primary goal is to make the customer feel heard and valued, aiming to de-escalate negative experiences and reinforce positive ones.
                         Analyze the provided customer feedback and its accompanying rating.
