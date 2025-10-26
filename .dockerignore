@@ -1,0 +1,19 @@
+# Ignore Docker-related files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Ignore Git
+.git
+.gitignore
+
+# Ignore Python cache and virtual environment
+.venv
+__pycache__
+.ruff_cache
+
+# Ignore Node.js dependencies
+frontend/node_modules
+
+# Ignore the entire frontend directory for the backend image
+frontend/

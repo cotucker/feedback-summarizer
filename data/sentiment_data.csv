@@ -1,35 +1,7 @@
 text,sentiment,topic
-The project management was flawless.,Positive,Project Management
-"Our dedicated manager, Alex, was always on top of things and communication was crystal clear.",Positive,Manager Performance and Communication
-"A bit pricey, but worth every penny for the peace of mind.",Positive,Pricing and Value
-We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Staff Quality/Skills
-The code was buggy and required constant oversight from our in-house team.,Negative,Code Quality
-Their support team is incredibly responsive.,Positive,Staff Quality/Skills
-We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Staff Quality/Skills
-Truly impressive.,Positive,General Feedback
-The final product was delivered on time,Positive,Project Management
-met all our specifications,Positive,Project Management
-Solid work,Positive,Staff Quality/Skills
-from a reliable team,Positive,Staff Quality/Skills
-Billing is a complete mess.,Negative,Pricing and Value
-We were overcharged for hours that were not worked,Negative,Pricing and Value
-getting it corrected has been a nightmare.,Negative,General Feedback
-The developers are technically brilliant,Positive,Staff Quality/Skills
-their project manager seems completely overwhelmed,Negative,Manager Performance and Communication
-Deadlines were missed repeatedly,Negative,Project Management
-due to poor planning,Negative,Project Management
-Good value for the price.,Positive,Pricing and Value
-"The quality isn't top-tier, but for our budget, it's more than acceptable.",Neutral,General Feedback
-You get what you pay for.,Neutral,Pricing and Value
-"They promised expertise in cloud migration, but their team was clearly learning on the job.",Negative,Staff Quality/Skills
-The project was delayed by two months,Negative,Project Management
-and went over budget.,Negative,Pricing and Value
-The platform they provided for tracking progress is intuitive and a huge help.,Positive,Project Management
-It makes collaboration seamless.,Positive,Project Management
-I'm giving three stars because the developers are skilled,Positive,Staff Quality/Skills
-the communication from the management team is severely lacking,Negative,Manager Performance and Communication
-We often felt in the dark about progress.,Negative,Project Management
-A fantastic partner for our startup.,Positive,General Feedback
-They understood our vision,Positive,Manager Performance and Communication
-delivered a high-quality MVP,Positive,Code Quality
-well within our tight deadline.,Positive,Project Management
+communication was crystal clear.,Positive,Communication
+Their support team is incredibly responsive.,Positive,Communication
+It makes collaboration seamless.,Positive,Communication
+the communication from the management team is severely lacking,Negative,Communication
+We often felt in the dark about progress.,Negative,Communication
+They understood our vision,Positive,Communication
