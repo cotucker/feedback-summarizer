@@ -12,3 +12,4 @@ wheels/
 
 pyrightconfig.json
 .env
+.ruff_cache
