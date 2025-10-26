@@ -30,19 +30,9 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                         If atomic entitie doesnt provide any information assign it to "General Feedback"
                         """,
                     ),
-                ],
-            ),
-            types.Content(
-                role="user",
-                parts=[
                     types.Part(
                         text=f"Feedback text: {feedback_text}",
                     ),
-                ],
-            ),
-            types.Content(
-                role="user",
-                parts=[
                     types.Part(
                         text=f"Topics: {topics}",
                     ),
@@ -218,11 +208,6 @@ def generate_topics_list(topics_text: str):
                     types.Part(
                         text="Create Topics list of customers feedback from query, keep original topics names, if there is no information about topics in query return empty list",
                     ),
-                ],
-            ),
-            types.Content(
-                role="user",
-                parts=[
                     types.Part(
                         text=f"Query: {topics_text}",
                     ),
@@ -289,19 +274,9 @@ def filter_topics(all_topics: list[str], selected_topics: list[str]) -> list[str
                     types.Part(
                         text="Filter all existing topics by what topics customer wants to see",
                     ),
-                ],
-            ),
-            types.Content(
-                role="user",
-                parts=[
                     types.Part(
                         text=f"All topics : {all_topics}",
                     ),
-                ],
-            ),
-            types.Content(
-                role="user",
-                parts=[
                     types.Part(
                         text=f"Selected topics : {selected_topics}",
                     ),
@@ -353,44 +328,6 @@ def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
 
 def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
     return [generate_feedback_responce(feedback_info) for feedback_info in feedbacks_info ]
-
-def test_generate_feedback_responce():
-
-    text_list = [
-        "I really like the new features you added to the product. They are very helpful and easy to use.",
-        "The customer service team was very responsive and helpful. They resolved my issue quickly and efficiently.",
-        "I had a bad experience with the product. The customer service team was unhelpful and rude. I will not buy this product again.",
-    ]
-
-    response = client.models.generate_content(
-        model=f'{MODEL}',
-        contents=[
-            types.Content(
-                role="user",
-                parts=[
-                    types.Part(
-                        text=f"Write a context-aware reply to a every feedback in the list ({len(text_list)} total), taking its topic and sentiment into account. The reply should be short and engaging to appease the customer as much as possible",
-                    ),
-                ],
-            ),
-            types.Content(
-                role="user",
-                parts=[
-                    types.Part(
-                        text=f"{text_list}",
-                    ),
-                ],
-            ),
-        ],
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": list[FeedbackResponse],
-        },
-    )
-    print(response.text)
-    my_feedback_responses: list[FeedbackResponse] = typing.cast(list[FeedbackResponse], response.parsed)
-    print(my_feedback_responses)
-    assert len(my_feedback_responses) == len(text_list)
 
 if __name__ == "__main__":
     pass
