@@ -75,23 +75,140 @@ Follow these instructions to get the project up and running on your local machin
 
 ### ⚙️ Installation
 
-*(**In Progress**)*
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/feedback-summarizer.git
+    cd feedback-summarizer
+    ```
+
+2.  **Set up the Backend:**
+    - Create a virtual environment and install Python dependencies.
+    ```bash
+    # Create and activate a virtual environment (recommended)
+    python -m venv .venv
+    source .venv/bin/activate
+
+    # Install dependencies using uv
+    pip install uv
+    uv sync
+    ```
+
+3.  **Set up the Frontend:**
+    - Navigate to the frontend directory and install Node.js dependencies.
+    ```bash
+    cd frontend
+    npm install
+    ```
+
+4.  **Configure Environment Variables:**
+    - Create a `.env` file in the root directory of the project.
+    - Add your Gemini API key to the file:
+    ```env
+    GEMINI_API_KEY="your_gemini_api_key_here"
+    ```
 
 ### 🏃‍♀️ Running the Application
 
-*(**In Progress**)*
+You can run the application in two ways: locally for development or using Docker for a containerized environment.
+
+**Option 1: Running Locally**
+
+This method uses `concurrently` to run both the frontend and backend servers with a single command.
+
+1.  Navigate to the `frontend` directory:
+    ```bash
+    cd frontend
+    ```
+
+2.  Run the `dev` script:
+    ```bash
+    npm run dev
+    ```
+    - The frontend will be available at `http://localhost:3000`.
+    - The backend server will be running at `http://localhost:8000`.
+
+**Option 2: Running with Docker Compose**
+
+This is the recommended way to run the application in a stable, isolated environment.
+
+1.  Make sure you have Docker and Docker Compose installed.
+
+2.  From the root of the project, run:
+    ```bash
+    docker-compose up --build
+    ```
+    - The frontend will be available at `http://localhost:3000`.
+    - The backend API will be available at `http://localhost:8000`.
 
 ## 🎈 Usage
 
-*(**In Progress**)*
+1.  **Open the Application:** Navigate to `http://localhost:3000` in your web browser.
+2.  **Upload a File:** Click the "Upload CSV" button and select a CSV file containing customer feedback. The file should have a column with the feedback text.
+3.  **(Optional) Add Topics:** Enter a comma-separated list of topics you are interested in (e.g., "pricing, support, performance"). This helps the AI focus its analysis.
+4.  **Analyze:** Click the "Analyze" button. The application will send the data to the backend for processing.
+5.  **View Dashboard:** Once the analysis is complete, the dashboard will populate with:
+    - A high-level summary.
+    - Sentiment distribution charts.
+    - Key topics and their summaries.
+    - AI-generated replies to specific feedback points.
 
 ## 📡 API Endpoints
 
-*(**In Progress**)*
+The backend exposes a single primary REST API endpoint for feedback analysis.
+
+#### `POST /api/feedback/analyze`
+
+Analyzes a CSV file of customer feedback.
+
+-   **Request Type:** `multipart/form-data`
+-   **Query Parameters:**
+    -   `topics` (optional, string): A comma-separated string of topics to guide the analysis.
+-   **Form Data:**
+    -   `file` (required, File): The CSV file containing the feedback.
+-   **Successful Response (`200 OK`):**
+    ```json
+    {
+      "summary": "A high-level summary of all feedback.",
+      "sentiment": { "positive": 10, "negative": 5, "neutral": 2 },
+      "topics": [
+        { "topic": "Pricing", "count": 5, "summary": "Summary of feedback related to pricing." }
+      ],
+      "feedback_analysis": [
+        { "text": "The app is too expensive.", "topic": "Pricing", "sentiment": "negative" }
+      ],
+      "feedback_replies": [
+        { "feedback_text": "The app is too expensive.", "feedback_reply": "Thank you for your feedback...", "score": 4 }
+      ]
+    }
+    ```
 
 ## 📂 Project Structure
 
-*(**In Progress**)*
+The project is organized into a separate frontend and backend, promoting a clean separation of concerns.
+
+```
+feedback-summarizer/
+├── .dockerignore         # Files to ignore in the backend Docker image
+├── .gitignore            # Files to ignore for Git
+├── Dockerfile            # Dockerfile for the Python backend
+├── docker-compose.yml    # Docker Compose file to run both services
+├── main.py               # FastAPI application entry point
+├── pyproject.toml        # Python project metadata and dependencies
+├── README.md             # This file
+├── services/             # Backend business logic
+│   ├── analysis_service.py
+│   └── ...
+├── frontend/
+│   ├── .dockerignore     # Files to ignore in the frontend Docker image
+│   ├── Dockerfile        # Dockerfile for the React frontend
+│   ├── package.json      # Frontend dependencies and scripts
+│   ├── public/           # Public assets for the React app
+│   └── src/              # React application source code
+│       ├── api/          # API client (axios)
+│       ├── components/   # React components
+│       └── App.jsx       # Main React app component
+└── ...
+```
 
 ## ✅ Running Tests
 *(**In Progress**)*

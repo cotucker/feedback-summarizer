@@ -1,7 +1,37 @@
 text,sentiment,topic
+The project management was flawless.,Positive,Project Management
+"Our dedicated manager, Alex, was always on top of things",Positive,Account Manager Performance
 communication was crystal clear.,Positive,Communication
-Their support team is incredibly responsive.,Positive,Communication
+"A bit pricey, but worth every penny for the peace of mind.",Positive,Pricing/Value
+We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Staff Quality
+The code was buggy,Negative,Code Quality
+required constant oversight from our in-house team.,Negative,Support Level
+Their support team is incredibly responsive.,Positive,Support Level
+We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Support Level
+Truly impressive.,Positive,General Feedback
+The final product was delivered on time,Positive,Project Management
+met all our specifications,Positive,Code Quality
+Solid work from a reliable team.,Positive,Staff Quality
+Billing is a complete mess.,Negative,Pricing/Value
+We were overcharged for hours that were not worked,Negative,Pricing/Value
+getting it corrected has been a nightmare.,Negative,Support Level
+The developers are technically brilliant,Positive,Staff Quality
+their project manager seems completely overwhelmed,Negative,Project Management
+Deadlines were missed repeatedly due to poor planning,Negative,Project Management
+Good value for the price.,Positive,Pricing/Value
+The quality isn't top-tier,Negative,Staff Quality
+"for our budget, it's more than acceptable.",Positive,Pricing/Value
+You get what you pay for.,Neutral,Pricing/Value
+"They promised expertise in cloud migration, but their team was clearly learning on the job.",Negative,Staff Quality
+The project was delayed by two months,Negative,Project Management
+and went over budget.,Negative,Pricing/Value
+The platform they provided for tracking progress is intuitive and a huge help.,Positive,Project Management
 It makes collaboration seamless.,Positive,Communication
+I'm giving three stars,Neutral,General Feedback
+the developers are skilled,Positive,Staff Quality
 the communication from the management team is severely lacking,Negative,Communication
-We often felt in the dark about progress.,Negative,Communication
+We often felt in the dark about progress.,Negative,Project Management
+A fantastic partner for our startup.,Positive,Staff Quality
 They understood our vision,Positive,Communication
+delivered a high-quality MVP,Positive,Code Quality
+well within our tight deadline.,Positive,Project Management
