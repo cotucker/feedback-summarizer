@@ -4,48 +4,10 @@ import os
 import enum
 from dotenv import load_dotenv
 import typing
+from models.models import FeedbackResponse, SentimentResponse, TopicSummary, TotalSummary, Separator
 from pydantic import BaseModel
 from fastapi import HTTPException
 from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_feedback_analysis_by_topic
-
-class Sentiment(enum.Enum):
-    POSITIVE = "Positive"
-    NEGATIVE = "Negative"
-    NEUTRAL = "Neutral"
-
-class Topic(BaseModel):
-    topic: str
-    count: int
-
-class Quote(BaseModel):
-    text: str
-    topic: str
-    sentiment: Sentiment
-
-class Analysis(BaseModel):
-    summary: str
-    topics: list[Topic]
-    quotes: list[Quote]
-
-class FeedbackResponse(BaseModel):
-    original_feedback_text: str
-    response: str
-    score: int
-
-class SentimentResponse(BaseModel):
-    text: str
-    topic: str
-    sentiment: Sentiment
-
-class TopicSummary(BaseModel):
-    topic: str
-    summary: str
-
-class TotalSummary(BaseModel):
-    summary: str
-
-class Separator(BaseModel):
-    separator: str
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
