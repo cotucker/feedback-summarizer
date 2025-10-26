@@ -24,17 +24,18 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                 parts=[
                     types.Part(
                         text="""You are an expert Customer Feedback Analyst
-                        whose task is to decompose complex user reviews by topics into individual
+                        whose task is to decompose complex customer feedback text by topics into individual
                         , atomic entities , assessing the sentiment and topic for each.
+                        Atomic entities MUST be a part of Feedback text.
                         If topic of entitie is not included in the topics list - create new topic
                         If atomic entitie doesnt provide any information assign it to "General Feedback"
                         """,
                     ),
                     types.Part(
-                        text=f"Feedback text: {feedback_text}",
+                        text=f"Customer Feedback text: '{feedback_text}'",
                     ),
                     types.Part(
-                        text=f"Topics: {topics}",
+                        text=f"Topics list: {topics}",
                     ),
                 ],
             ),
@@ -44,7 +45,7 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
             "response_schema": list[SentimentResponse],
         },
     )
-    print(response.text)
+    print(f"Original feedback text: {feedback_text}\n{response.text}")
     sentiments: list[SentimentResponse] = typing.cast(list[SentimentResponse], response.parsed)
     return sentiments
 
@@ -200,13 +201,15 @@ def feedback_list_analysis(topics_text: str = '') -> list[SentimentResponse]:
 
 def generate_topics_list(topics_text: str):
     response = client.models.generate_content(
-        model=f'{MODEL}',
+        model="gemini-flash-lite-latest",
         contents=[
             types.Content(
                 role="user",
                 parts=[
                     types.Part(
-                        text="Create Topics list of customers feedback from query, keep original topics names, if there is no information about topics in query return empty list",
+                        text="""Create Topics list of customers feedback from query
+                        , keep original topics names
+                        , if there is no information about topics in query return empty list""",
                     ),
                     types.Part(
                         text=f"Query: {topics_text}",

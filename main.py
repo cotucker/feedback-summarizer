@@ -7,12 +7,11 @@ from services.analysis_service import analysis
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-PORT = os.getenv('PORT')
 
 app = FastAPI()
 
 origins = [
-    f"http://localhost:{PORT}",
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
