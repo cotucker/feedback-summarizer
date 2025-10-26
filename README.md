@@ -144,7 +144,7 @@ This is the recommended way to run the application in a stable, isolated environ
 
 1.  **Open the Application:** Navigate to `http://localhost:3000` in your web browser.
 2.  **Upload a File:** Click the "Upload CSV" button and select a CSV file containing customer feedback. The file should have a column with the feedback text.
-3.  **(Optional) Add Topics:** Enter a comma-separated list of topics you are interested in (e.g., "pricing, support, performance"). This helps the AI focus its analysis.
+3.  **(Optional) Add Topics:** Enter a list of topics you are interested in (e.g., "pricing, support, performance"). This helps the AI focus its analysis.
 4.  **Analyze:** Click the "Analyze" button. The application will send the data to the backend for processing.
 5.  **View Dashboard:** Once the analysis is complete, the dashboard will populate with:
     - A high-level summary.
@@ -162,7 +162,7 @@ Analyzes a CSV file of customer feedback.
 
 -   **Request Type:** `multipart/form-data`
 -   **Query Parameters:**
-    -   `topics` (optional, string): A comma-separated string of topics to guide the analysis.
+    -   `topics` (optional, string): A string of topics to guide the analysis.
 -   **Form Data:**
     -   `file` (required, File): The CSV file containing the feedback.
 -   **Successful Response (`200 OK`):**
@@ -222,3 +222,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 <div align="center">
   <small>Inspired by <a href="https://github.com/matiassingers/awesome-readme">awesome-readme</a>.</small>
 </div>
+
