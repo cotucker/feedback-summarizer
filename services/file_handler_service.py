@@ -80,7 +80,6 @@ def get_feedback_list() -> list[str]:
 
 def process_text(text) -> str:
     import re
-
     if not isinstance(text, str):
         text = str(text)
     return re.sub(r"\d+", "", text)
@@ -94,7 +93,6 @@ def get_feedback_analysis_by_topic(topic: str | None) -> list[str]:
     df = pd.read_csv('data/sentiment_data.csv')
     if topic:
         df = df[df['topic'] == topic]
-
     return df['text'].values.tolist()
 
 def get_feedbacks_info() -> list[str]:

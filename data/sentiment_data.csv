@@ -1,35 +1,33 @@
 text,sentiment,topic
 The project management was flawless.,Positive,Project Management
-"Our dedicated manager, Alex, was always on top of things",Positive,Customer Support
-communication was crystal clear.,Positive,Communication
-A bit pricey,Negative,Pricing
-worth every penny for the peace of mind.,Positive,Value for Money
+"Our dedicated manager, Alex, was always on top of things and communication was crystal clear.",Positive,Customer Service
+"A bit pricey, but worth every penny for the peace of mind.",Positive,Pricing
 We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Developer Competency
 The code was buggy and required constant oversight from our in-house team.,Negative,Code Quality
-Their support team is incredibly responsive.,Positive,Customer Support
-We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Customer Support
-Truly impressive.,Positive,Customer Support
+Their support team is incredibly responsive.,Positive,Customer Service
+We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Customer Service
+Truly impressive.,Positive,Customer Service
 The final product was delivered on time,Positive,Project Management
 met all our specifications,Positive,Developer Competency
 Solid work from a reliable team,Positive,Developer Competency
 Billing is a complete mess.,Negative,Pricing
 We were overcharged for hours that were not worked,Negative,Pricing
-getting it corrected has been a nightmare.,Negative,Customer Support
+getting it corrected has been a nightmare.,Negative,Customer Service
 The developers are technically brilliant,Positive,Developer Competency
 their project manager seems completely overwhelmed,Negative,Project Management
 Deadlines were missed repeatedly due to poor planning,Negative,Project Management
-Good value for the price.,Positive,Value for Money
+Good value for the price.,Positive,Pricing
 "The quality isn't top-tier, but for our budget, it's more than acceptable.",Neutral,Code Quality
-You get what you pay for.,Neutral,Value for Money
+You get what you pay for.,Neutral,General Feedback
 "They promised expertise in cloud migration, but their team was clearly learning on the job.",Negative,Developer Competency
 The project was delayed by two months,Negative,Project Management
-and went over budget.,Negative,Pricing
+and went over budget.,Negative,Project Management
 The platform they provided for tracking progress is intuitive and a huge help.,Positive,Project Management
-It makes collaboration seamless.,Positive,Communication
+It makes collaboration seamless.,Positive,Project Management
 the developers are skilled,Positive,Developer Competency
-the communication from the management team is severely lacking,Negative,Communication
+the communication from the management team is severely lacking,Negative,Project Management
 We often felt in the dark about progress,Negative,Project Management
 A fantastic partner for our startup.,Positive,General Feedback
-They understood our vision,Positive,Communication
+They understood our vision,Positive,Customer Service
 delivered a high-quality MVP,Positive,Code Quality
 well within our tight deadline.,Positive,Project Management

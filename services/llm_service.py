@@ -203,7 +203,6 @@ def feedback_list_analysis(topics_text: str = '') -> list[SentimentResponse]:
             else:
                 if sentiment.topic in topics:
                     sentiments_list.append(sentiment)
-        # sentiments_list.extend(sentiments)
     create_dataset_from_sentiment_response_list(sentiments_list)
 
     print(sentiments_list)
