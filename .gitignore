@@ -15,15 +15,15 @@ pyrightconfig.json
 .ruff_cache
 
 # dependencies
-/node_modules
-/.pnp
+/frontend/node_modules
+/frontend/.pnp
 .pnp.js
 
 # testing
-/coverage
+/frontend/coverage
 
 # production
-/build
+/frontendbuild
 
 # misc
 .DS_Store
