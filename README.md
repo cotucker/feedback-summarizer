@@ -105,6 +105,7 @@ Follow these instructions to get the project up and running on your local machin
     - Add your Gemini API key to the file:
     ```env
     GEMINI_API_KEY="your_gemini_api_key_here"
+    MODEL="gemini_model_name (e.g. gemini-flash-lite-latest)"
     ```
 
 ### 🏃‍♀️ Running the Application
@@ -222,4 +223,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 <div align="center">
   <small>Inspired by <a href="https://github.com/matiassingers/awesome-readme">awesome-readme</a>.</small>
 </div>
+
 
