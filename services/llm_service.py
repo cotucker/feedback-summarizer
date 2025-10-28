@@ -150,7 +150,7 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
                         text="""
                         You are an expert Data Analyst specializing in synthesizing qualitative user feedback into actionable business insights.
                         Analyze the provided list of user feedback comments, which all relate to the single topic of "{topic_name}".
-                        Your task is to generate a concise, neutral, and informative summary that captures the main points from the feedback list.
+                        Your task is to explain topic name in simple terms, generate a concise, neutral, and informative summary that captures the main points from the feedback list.
                         """,
                     ),
                     types.Part(
