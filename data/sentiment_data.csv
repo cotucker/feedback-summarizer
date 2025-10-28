@@ -1,70 +1,12 @@
 text,sentiment,topic
 communication was crystal clear.,Positive,Communication
-"A bit pricey,",Negative,Pricing
+A bit pricey,Negative,Pricing
 Their support team is incredibly responsive.,Positive,Communication
 We were overcharged for hours that were not worked,Negative,Pricing
 getting it corrected has been a nightmare.,Negative,Communication
 Good value for the price.,Positive,Pricing
-and went over budget.,Negative,Pricing
-It makes collaboration seamless.,Positive,Communication
+"for our budget, it's more than acceptable.",Positive,Pricing
+went over budget,Negative,Pricing
 the communication from the management team is severely lacking,Negative,Communication
 We often felt in the dark about progress,Negative,Communication
 They understood our vision,Positive,Communication
-Getting timely responses to urgent questions was a constant struggle.,Negative,Communication
-The initial consultation was amazing.,Positive,Communication
-Every call felt like a new sales pitch for another service.,Negative,Communication
-They only do exactly what is asked and never suggest improvements.,Negative,Communication
-The cost savings are significant,Positive,Pricing
-clarifying requirements,Neutral,Communication
-the communication leading up to the failure was poor,Negative,Communication
-Customer support is friendly,Positive,Communication
-Poor communication,Negative,Communication
-Their pricing is transparent and fair.,Positive,Pricing
-"No hidden fees or surprises, which we really appreciate.",Positive,Pricing
-but there's no collaboration or discussion.,Negative,Communication
-"For basic website maintenance, they are a cost-effective and reliable choice.",Positive,Pricing
-Their English proficiency was a barrier.,Negative,Communication
-"Technical details were often lost in translation, leading to rework.",Negative,Communication
-Very disappointed in the bait-and-switch.,Negative,Communication
-delivered under budget,Positive,Pricing
-The initial estimates were way off.,Negative,Pricing
-The project ended up costing nearly double what was quoted.,Negative,Pricing
-The quality of work and communication has noticeably declined over the past few months.,Negative,Communication
-The project manager is a great communicator,Positive,Communication
-The daily stand-up meetings are efficient,Positive,Communication
-keep everyone aligned,Positive,Communication
-and on budget.,Positive,Pricing
-The final invoice included charges for software licenses we were told were included.,Negative,Pricing
-Felt dishonest.,Negative,Communication
-Communication is sporadic.,Negative,Communication
-"We sometimes go days without hearing anything, even when deadlines are approaching.",Negative,Communication
-It feels like we are paying for solutions that are already becoming outdated.,Negative,Pricing
-they are not cheap,Negative,Pricing
-You are paying a premium for their quality,Neutral,Pricing
-The language barrier was a significant issue,Negative,Communication
-leading to frequent misunderstandings,Negative,Communication
-We were sold a dream during the sales process,Positive,Communication
-They understood our challenges without needing much explanation.,Positive,Communication
-They provide detailed weekly reports,Positive,Communication
-You have to provide all the direction.,Negative,Communication
-"All communication has to go through them, which slows everything down.",Negative,Communication
-Great communication,Positive,Communication
-They are very resistant to feedback,Negative,Communication
-get defensive when we point out issues in their work,Negative,Communication
-The time zone overlap is only a few hours,Negative,Communication
-on budget,Positive,Pricing
-They are very secretive about their development process.,Negative,Communication
-The sales team overpromised on the team's capabilities.,Negative,Communication
-makes it hard to schedule meetings,Negative,Communication
-it also means we have limited direct access to the developers,Negative,Communication
-We always know what's going on.,Positive,Communication
-The project was a constant struggle due to communication styles,Negative,Communication
-They have a very collaborative and open communication style.,Positive,Communication
-They are very slow to respond to emails and messages,Negative,Communication
-they didn't understand our users,Negative,Communication
-The project manager is not very good at communicating bad news,Negative,Communication
-friendly,Positive,Communication
-The team is not very good at providing regular status updates.,Negative,Communication
-The team is not very good at taking feedback.,Negative,Communication
-The team is not very good at communicating their progress.,Negative,Communication
-Their ability to provide a cost-effective solution,Positive,Pricing
