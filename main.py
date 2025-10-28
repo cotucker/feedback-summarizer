@@ -28,7 +28,7 @@ MOCK_DATA = json.load(open('mock_response.json'))
 @app.post("/api/feedback/analyze")
 async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
 
-    # analysis_results = await analysis(file, topics if topics else '')
+    analysis_results = await analysis(file, topics if topics else '')
     print("Analysis complete. Sending mock results.")
 
-    return MOCK_DATA
+    return analysis_results

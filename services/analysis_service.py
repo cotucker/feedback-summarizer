@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.metrics import accuracy_score
 from fastapi.datastructures import UploadFile
+from services.clustering_service import cluster_texts
 from services.file_handler_service import get_dataset_from_file, get_feedbacks_info
 from services.llm_service import feedback_list_analysis, topics_analysis, generate_total_summary, feedback_responces, process_columnes_names, get_separator
 
@@ -23,8 +24,10 @@ async def analysis(file: UploadFile, topics: str = ''):
         for sentiment_response in feedback_list_analysis_results
     ]
 
+
     topics_analysis_results = topics_analysis(feedback_list_analysis_results)
     analysis["topics"] = topics_analysis_results
+    analysis["phrase_clusters"] = cluster_texts(feedback_list_analysis_results, len(topics_analysis_results))
 
     analysis["summary"] = generate_total_summary(topics_analysis_results)
 
