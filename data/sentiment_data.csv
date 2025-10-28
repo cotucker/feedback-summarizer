@@ -1,37 +1,6 @@
 text,sentiment,topic
-The project management was flawless.,Positive,Project Management
-"Our dedicated manager, Alex, was always on top of things",Positive,Staff Performance
 communication was crystal clear.,Positive,Communication
-A bit pricey,Negative,Pricing
-worth every penny for the peace of mind.,Positive,Value for Money
-We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Staff Performance
-The code was buggy and required constant oversight from our in-house team.,Negative,Staff Performance
-Their support team is incredibly responsive.,Positive,Staff Performance
-We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Staff Performance
-Truly impressive.,Positive,General Feedback
-The final product was delivered on time,Positive,Project Management
-met all our specifications,Positive,Project Management
-Solid work from a reliable team,Positive,Staff Performance
-Billing is a complete mess.,Negative,Pricing
-We were overcharged for hours that were not worked,Negative,Pricing
-getting it corrected has been a nightmare.,Negative,Communication
-The developers are technically brilliant,Positive,Staff Performance
-their project manager seems completely overwhelmed,Negative,Staff Performance
-Deadlines were missed repeatedly due to poor planning,Negative,Project Management
-Good value for the price.,Positive,Value for Money
-The quality isn't top-tier,Neutral,Product Quality
-"but for our budget, it's more than acceptable.",Positive,Pricing
-You get what you pay for.,Neutral,Value for Money
-"They promised expertise in cloud migration, but their team was clearly learning on the job.",Negative,Staff Performance
-The project was delayed by two months,Negative,Project Management
-and went over budget.,Negative,Pricing
-The platform they provided for tracking progress is intuitive,Positive,Product Quality
-and a huge help,Positive,Value for Money
-It makes collaboration seamless,Positive,Communication
-the developers are skilled,Positive,Staff Performance
+It makes collaboration seamless.,Positive,Communication
 the communication from the management team is severely lacking,Negative,Communication
-We often felt in the dark about progress,Negative,Project Management
-A fantastic partner for our startup.,Positive,Value for Money
+We often felt in the dark about progress,Negative,Communication
 They understood our vision,Positive,Communication
-delivered a high-quality MVP,Positive,Product Quality
-well within our tight deadline.,Positive,Project Management

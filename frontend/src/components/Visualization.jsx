@@ -23,6 +23,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
+import { ScatterChart } from "@mui/x-charts/ScatterChart";
 import { DataGrid } from "@mui/x-data-grid";
 
 // === ИЗМЕНЕНИЕ: Создаем вспомогательную функцию для рендеринга ячеек с подсказками ===
@@ -86,6 +87,7 @@ const topicDetailColumns = [
 export const Visualization = ({ results }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTopicData, setSelectedTopicData] = useState(null);
+  const [isClusterDialogOpen, setIsClusterDialogOpen] = useState(false);
 
   const topicLabels = results.topics.map((t) => t.topic);
   const topicCounts = results.topics.map((t) => t.count);
@@ -119,6 +121,49 @@ export const Visualization = ({ results }) => {
     ...row,
     id: index,
   }));
+
+  // Обработка данных для ScatterChart
+  const clusterData = results.phrase_clusters || [];
+  const clusters = clusterData.reduce((acc, point) => {
+    const cluster = point.cluster;
+    if (!acc[cluster]) {
+      acc[cluster] = [];
+    }
+    acc[cluster].push({
+      x: point.x,
+      y: point.y,
+      id: point.phrase,
+      label: point.phrase, // Добавляем label для отображения во всплывающей подсказке
+    });
+    return acc;
+  }, {});
+
+  const scatterSeries = Object.keys(clusters).map((clusterKey) => ({
+    label: `Cluster ${clusterKey}`,
+    data: clusters[clusterKey],
+  }));
+
+  // Рассчитываем границы осей с отступами для графика кластеров
+  const axisConfig = {};
+  if (clusterData.length > 0) {
+    const xValues = clusterData.map((p) => p.x);
+    const yValues = clusterData.map((p) => p.y);
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    const minY = Math.min(...yValues);
+    const maxY = Math.max(...yValues);
+
+    // Добавляем 10% отступ с каждой стороны
+    const xPadding = (maxX - minX) * 0.1 || 0.1;
+    const yPadding = (maxY - minY) * 0.1 || 0.1;
+
+    axisConfig.xAxis = [
+      { min: minX - xPadding, max: maxX + xPadding, hide: true },
+    ];
+    axisConfig.yAxis = [
+      { min: minY - yPadding, max: maxY + yPadding, hide: true },
+    ];
+  }
 
   const handleBarClick = (event, d) => {
     if (!d || d.dataIndex === undefined) return;
@@ -185,6 +230,18 @@ export const Visualization = ({ results }) => {
             />
           </Paper>
         </Grid>
+
+        {scatterSeries.length > 0 && (
+          <Grid item xs={12}>
+            <Button
+              variant="outlined"
+              onClick={() => setIsClusterDialogOpen(true)}
+              fullWidth
+            >
+              Show Phrase Clusters
+            </Button>
+          </Grid>
+        )}
 
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
@@ -287,6 +344,34 @@ export const Visualization = ({ results }) => {
           </DialogActions>
         </Dialog>
       )}
+
+      <Dialog
+        open={isClusterDialogOpen}
+        onClose={() => setIsClusterDialogOpen(false)}
+        fullWidth
+        maxWidth="xl"
+      >
+        <DialogTitle variant="h4">Phrase-Semantic Clusters</DialogTitle>
+        <DialogContent>
+          <Box sx={{ height: "70vh", width: "100%", mt: 2 }}>
+            <ScatterChart
+              series={scatterSeries}
+              {...axisConfig}
+              tooltip={{
+                trigger: "item",
+                valueFormatter: (params) => params.item.label,
+              }}
+              legend={{
+                direction: "row",
+                position: { vertical: "top", horizontal: "middle" },
+              }}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsClusterDialogOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
@@ -305,5 +390,13 @@ Visualization.propTypes = {
     quotes: PropTypes.array,
     feedback_analysis: PropTypes.array,
     feedback_replies: PropTypes.array,
+    phrase_clusters: PropTypes.arrayOf(
+      PropTypes.shape({
+        x: PropTypes.number,
+        y: PropTypes.number,
+        cluster: PropTypes.number,
+        phrase: PropTypes.string,
+      }),
+    ),
   }).isRequired,
 };

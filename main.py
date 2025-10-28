@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
 from services.analysis_service import analysis
+import json
 
 
 load_dotenv()
@@ -22,10 +23,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+MOCK_DATA = json.load(open('mock_response.json'))
+
 @app.post("/api/feedback/analyze")
 async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
 
-    analysis_results = await analysis(file, topics if topics else '')
+    # analysis_results = await analysis(file, topics if topics else '')
     print("Analysis complete. Sending mock results.")
 
-    return analysis_results
+    return MOCK_DATA
