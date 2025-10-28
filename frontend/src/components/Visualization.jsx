@@ -355,12 +355,12 @@ export const Visualization = ({ results }) => {
         <DialogContent>
           <Box sx={{ height: "70vh", width: "100%", mt: 2 }}>
             <ScatterChart
-              series={scatterSeries}
+              series={scatterSeries.map((s) => ({
+                ...s,
+                valueFormatter: (point) =>
+                  `${point.label} (${point.x.toFixed(2)}, ${point.y.toFixed(2)})`,
+              }))}
               {...axisConfig}
-              tooltip={{
-                trigger: "item",
-                valueFormatter: (params) => params.item.label,
-              }}
               legend={{
                 direction: "row",
                 position: { vertical: "top", horizontal: "middle" },
