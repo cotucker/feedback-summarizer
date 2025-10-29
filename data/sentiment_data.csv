@@ -1,12 +1,30 @@
 text,sentiment,topic
-communication was crystal clear.,Positive,Communication
-A bit pricey,Negative,Pricing
+Customer support is awesome,Positive,Communication
+"Our dedicated manager, Alex, was always on top of things and communication was crystal clear.",Positive,Communication
+"A bit pricey, but worth every penny for the peace of mind.",Positive,Pricing
 Their support team is incredibly responsive.,Positive,Communication
-We were overcharged for hours that were not worked,Negative,Pricing
-getting it corrected has been a nightmare.,Negative,Communication
+Billing is a complete mess.,Negative,Pricing
+"We were overcharged for hours that were not worked, and getting it corrected has been a nightmare.",Negative,Pricing
 Good value for the price.,Positive,Pricing
-"for our budget, it's more than acceptable.",Positive,Pricing
-went over budget,Negative,Pricing
-the communication from the management team is severely lacking,Negative,Communication
-We often felt in the dark about progress,Negative,Communication
-They understood our vision,Positive,Communication
+You get what you pay for.,Neutral,Pricing
+but the communication from the management team is severely lacking.,Negative,Communication
+We often felt in the dark about progress.,Negative,Communication
+Getting timely responses to urgent questions was a constant struggle.,Negative,Communication
+the constant upselling was exhausting.,Negative,Pricing
+Every call felt like a new sales pitch for another service.,Negative,Communication
+The cost savings are significant,Positive,Pricing
+and clarifying requirements.,Neutral,Communication
+and the communication leading up to the failure was poor.,Negative,Communication
+Customer support is friendly,Positive,Communication
+Poor communication,Negative,Communication
+Their pricing is transparent and fair.,Positive,Pricing
+"No hidden fees or surprises, which we really appreciate.",Positive,Pricing
+"We send requirements, and code comes back, but there's no collaboration or discussion.",Negative,Communication
+"For basic website maintenance, they are a cost-effective and reliable choice.",Positive,Pricing
+Their English proficiency was a barrier.,Negative,Communication
+"Technical details were often lost in translation, leading to rework.",Negative,Communication
+Very disappointed in the bait-and-switch.,Negative,Communication
+The contract negotiation was painful and rigid.,Negative,Communication
+The project was a huge success and delivered under budget.,Positive,Pricing
+The initial estimates were way off.,Negative,Pricing
+The project ended up costing nearly double what was quoted.,Negative,Pricing

@@ -4,6 +4,7 @@ import os
 import enum
 from dotenv import load_dotenv
 import typing
+import numpy as np
 from models.models import FeedbackResponse, SentimentResponse, TopicSummary, TotalSummary, Separator
 from pydantic import BaseModel
 from fastapi import HTTPException
@@ -13,6 +14,20 @@ load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
+
+def get_embedding(texts: list[str]) -> list:
+
+    result = [
+        e.values for e in client.models.embed_content(
+            model="models/embedding-001",
+            contents=texts[:100],
+            config= types.EmbedContentConfig(task_type = "CLUSTERING")).embeddings
+    ]
+    embeddings_matrix = np.array(result)
+    if embeddings_matrix.ndim == 3:
+        embeddings_matrix = embeddings_matrix.squeeze(axis=1)
+    return embeddings_matrix.tolist()
+
 
 def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str) -> list[SentimentResponse]:
 
@@ -24,11 +39,10 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                 parts=[
                     types.Part(
                         text="""You are an expert Customer Feedback Analyst
-                        whose task is to decompose complex customer feedback text by topics into individual
-                        , atomic entities , assessing the sentiment and topic for each.
-                        Atomic entities MUST be a part of Feedback text.
-                        If topic of entitie is not included in the topics list - create new topic
-                        If atomic entitie doesnt provide any information assign it to "General Feedback"
+                        whose task is segmenting Customers feedback text into meaningful chunks , assessing the sentiment and topic for each chunk.
+                        chunks MUST be a part of Feedback text.
+                        If topic of chunk is not included in the topics list - create new topic
+                        If chunk doesnt provide any information assign it to "General Feedback"
                         """,
                     ),
                     types.Part(
@@ -333,4 +347,4 @@ def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
     return [generate_feedback_responce(feedback_info) for feedback_info in feedbacks_info ]
 
 if __name__ == "__main__":
-    pass
+    get_embedding(["Hello", "hi"])

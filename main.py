@@ -27,6 +27,4 @@ app.add_middleware(
 async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
 
     analysis_results = await analysis(file, topics if topics else '')
-    print("Analysis complete. Sending mock results.")
-
     return analysis_results
