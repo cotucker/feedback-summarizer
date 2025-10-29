@@ -27,7 +27,7 @@ async def analysis(file: UploadFile, topics: str = ''):
 
     topics_analysis_results = topics_analysis(feedback_list_analysis_results)
     analysis["topics"] = topics_analysis_results
-    analysis["phrase_clusters"] = cluster_texts(feedback_list_analysis_results, len(topics_analysis_results))
+    analysis["phrase_clusters"] = cluster_texts(feedback_list_analysis_results)
 
     analysis["summary"] = generate_total_summary(topics_analysis_results)
 

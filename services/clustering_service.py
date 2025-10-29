@@ -1,45 +1,46 @@
 import numpy as np
-import pandas as pd
-import requests
 from sklearn.decomposition import PCA
-from sklearn.cluster import KMeans
 from models.models import SentimentResponse
 from services.llm_service import get_embedding
 
-def cluster_texts(sentiment_responses: list[SentimentResponse], n_clusters=5) -> list[dict]:
-
+def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
+    if not sentiment_responses:
+        return []
 
     texts_list = [response.text for response in sentiment_responses]
+    topics = [response.topic for response in sentiment_responses]
 
-    embeddings = get_embedding(texts_list)
+    embeddings = np.array(get_embedding(texts_list))
+
+    if len(sentiment_responses) < 2:
+        return [{
+            "x": 0,
+            "y": 0,
+            "cluster": sentiment_responses[0].topic,
+            "phrase": sentiment_responses[0].text
+        }]
 
     pca = PCA(n_components=2)
     reduced_data = pca.fit_transform(embeddings)
 
-    reduced_data_list: list[list] = reduced_data.tolist()
-    print(reduced_data_list[0][0])
+    unique_topics = sorted(list(set(topics)))
+    topic_map = {topic: i for i, topic in enumerate(unique_topics)}
 
-    kmeans = KMeans(n_clusters=n_clusters, n_init=5, max_iter=500, random_state=42)
-    kmeans.fit(embeddings)
+    y_coords = reduced_data[:, 1]
+    y_range = np.max(y_coords) - np.min(y_coords)
+    spread_factor = y_range * 2.0 if y_range > 0 else 1.0
 
-    results = pd.DataFrame()
+    phrase_clusters: list[dict] = []
+    for i, response in enumerate(sentiment_responses):
+        x = reduced_data[i, 0]
+        y = reduced_data[i, 1]
+        topic_offset = topic_map[response.topic] * spread_factor
 
-    if kmeans.labels_ is not None:
-        clusters_list = kmeans.labels_.tolist()
-    else:
-        raise ValueError("KMeans failed to converge")
-
-    # assert (len(texts_list) == len(reduced_data_list))
-
-    phrase_clusters: list[dict] = [
-        {
-            "x": x[0],
-            "y": x[1],
-            "cluster": sentiment_responses[i].sentiment,
-            "phrase": texts_list[i]
-        }
-
-        for i, x in enumerate(reduced_data_list)
-    ]
+        phrase_clusters.append({
+            "x": x,
+            "y": y + topic_offset,
+            "cluster": response.topic,
+            "phrase": response.text
+        })
 
     return phrase_clusters
