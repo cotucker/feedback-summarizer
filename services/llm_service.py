@@ -16,14 +16,22 @@ MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 def get_embedding(texts: list[str]) -> list:
+    all_embeddings = []
+    for i in range(0, len(texts), 100):
+        chunk = texts[i:i + 100]
+        result = [
+            e.values for e in client.models.embed_content(
+                model="models/embedding-001",
+                contents=chunk,
+                config=types.EmbedContentConfig(task_type="CLUSTERING")
+            ).embeddings
+        ]
+        all_embeddings.extend(result)
 
-    result = [
-        e.values for e in client.models.embed_content(
-            model="models/embedding-001",
-            contents=texts[:100],
-            config= types.EmbedContentConfig(task_type = "CLUSTERING")).embeddings
-    ]
-    embeddings_matrix = np.array(result)
+    if not all_embeddings:
+        return []
+
+    embeddings_matrix = np.array(all_embeddings)
     if embeddings_matrix.ndim == 3:
         embeddings_matrix = embeddings_matrix.squeeze(axis=1)
     return embeddings_matrix.tolist()

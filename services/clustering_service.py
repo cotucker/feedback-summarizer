@@ -1,20 +1,16 @@
 import numpy as np
 import pandas as pd
 import requests
-# from sentence_transformers import SentenceTransformer
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from models.models import SentimentResponse
 from services.llm_service import get_embedding
-
-# model = SentenceTransformer('all-MiniLM-L12-v2')
 
 def cluster_texts(sentiment_responses: list[SentimentResponse], n_clusters=5) -> list[dict]:
 
 
     texts_list = [response.text for response in sentiment_responses]
 
-    # embeddings = model.encode(texts_list, device='cpu')
     embeddings = get_embedding(texts_list)
 
     pca = PCA(n_components=2)
