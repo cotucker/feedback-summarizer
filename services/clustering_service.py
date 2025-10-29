@@ -57,7 +57,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
         phrase_clusters.append({
             "x": point_x,
             "y": point_y,
-            "cluster": topics_list[i],
+            "cluster": closest_topic,
             "phrase": texts_list[i] + " " + topics_list[i]
         })
 
