@@ -41,3 +41,36 @@ export const uploadAndAnalyzeCsv = async (file, topics, onUploadProgress) => {
     throw new Error("Network error or server is not responding.");
   }
 };
+
+/**
+ * Sends analysis data to the backend to generate a PDF report and downloads it.
+ * @param {object} analysisData The analysis results data.
+ * @returns {Promise<void>}
+ */
+export const downloadPdfReport = async (analysisData) => {
+  try {
+    const response = await apiClient.post("/api/feedback/report", analysisData, {
+      responseType: 'blob', // Important to handle the binary PDF data
+    });
+
+    // Create a URL for the blob
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'feedback_report.pdf'); // or any other filename
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up and remove the link
+    link.parentNode.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      // Handle blob error response
+      const errorText = await new Response(error.response.data).text();
+      const errorJson = JSON.parse(errorText);
+      throw new Error(errorJson.detail || "An unexpected error occurred while generating the report.");
+    }
+    throw new Error("Network error or server is not responding.");
+  }
+};

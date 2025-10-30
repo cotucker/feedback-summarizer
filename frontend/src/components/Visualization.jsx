@@ -18,13 +18,17 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Tooltip, // === ИЗМЕНЕНИЕ: Импортируем Tooltip ===
+  Tooltip,
+  CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { ScatterChart } from "@mui/x-charts/ScatterChart";
 import { DataGrid } from "@mui/x-data-grid";
+import { downloadPdfReport } from "../api/apiClient"; // Импортируем функцию
 
 // === ИЗМЕНЕНИЕ: Создаем вспомогательную функцию для рендеринга ячеек с подсказками ===
 // Это поможет избежать дублирования кода.
@@ -100,6 +104,8 @@ export const Visualization = ({ results }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTopicData, setSelectedTopicData] = useState(null);
   const [isClusterDialogOpen, setIsClusterDialogOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [error, setError] = useState(null);
 
   const topicLabels = results.topics.map((t) => t.topic);
   const topicCounts = results.topics.map((t) => t.count);
@@ -204,14 +210,35 @@ export const Visualization = ({ results }) => {
     setIsDialogOpen(true);
   };
 
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    setError(null);
+    try {
+      await downloadPdfReport(results);
+    } catch (err) {
+      setError(err.message || "Failed to download the report.");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <Box sx={{ mt: 4 }}>
-      {/* Весь остальной JSX остается без изменений */}
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Card variant="outlined">
             <CardContent>
-              <Typography variant="h5">Overall Summary</Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h5">Overall Summary</Typography>
+                <Button
+                  variant="contained"
+                  onClick={handleDownload}
+                  disabled={isDownloading}
+                  startIcon={isDownloading ? <CircularProgress size={20} /> : null}
+                >
+                  {isDownloading ? "Downloading..." : "Download Report"}
+                </Button>
+              </Box>
               <Divider sx={{ my: 2 }} />
               <Typography variant="body1">{results.summary}</Typography>
             </CardContent>
@@ -387,6 +414,17 @@ export const Visualization = ({ results }) => {
           <Button onClick={() => setIsClusterDialogOpen(false)}>Close</Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={() => setError(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setError(null)} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
