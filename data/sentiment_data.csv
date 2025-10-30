@@ -1,46 +1,12 @@
 text,sentiment,topic
-Customer support is awesome,Positive,Customer Support
-the product is horrible,Negative,Product Quality
-The project management was flawless.,Positive,Project Management
-"Our dedicated manager, Alex, was always on top of things and communication was crystal clear.",Positive,Customer Support
-"A bit pricey, but worth every penny for the peace of mind.",Positive,Pricing and Value
-We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Staff Capability
-The code was buggy and required constant oversight from our in-house team.,Negative,Product Quality
-Their support team is incredibly responsive.,Positive,Customer Support
-We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Customer Support
-Truly impressive.,Positive,Customer Support
-The final product was delivered on time and met all our specifications.,Positive,Project Management
-Solid work from a reliable team.,Positive,Staff Capability
-Billing is a complete mess.,Negative,Pricing and Value
-"We were overcharged for hours that were not worked, and getting it corrected has been a nightmare.",Negative,Pricing and Value
-The developers are technically brilliant,Positive,Staff Capability
-", but their project manager seems completely overwhelmed",Negative,Project Management
-. Deadlines were missed repeatedly due to poor planning,Negative,Project Management
-Good value for the price.,Positive,Pricing and Value
-"The quality isn't top-tier, but for our budget, it's more than acceptable.",Neutral,Product Quality
-You get what you pay for.,Neutral,Pricing and Value
-"They promised expertise in cloud migration, but their team was clearly learning on the job.",Negative,Staff Capability
-The project was delayed by two months and went over budget.,Negative,Project Management
-The platform they provided for tracking progress is intuitive and a huge help.,Positive,Project Management
-It makes collaboration seamless.,Positive,Project Management
-I'm giving three stars because the developers are skilled,Positive,Staff Capability
-but the communication from the management team is severely lacking.,Negative,Project Management
-We often felt in the dark about progress.,Negative,Project Management
-A fantastic partner for our startup.,Positive,General Feedback
-They understood our vision and delivered a high-quality MVP well within our tight deadline.,Positive,Project Management
-The time zone difference was a much bigger issue than we anticipated.,Negative,Project Management
-Getting timely responses to urgent questions was a constant struggle.,Negative,Customer Support
-Their QA process needs a serious overhaul.,Negative,Product Quality
-We found so many obvious bugs in the final delivery that it felt like it wasn't tested at all.,Negative,Product Quality
-The initial consultation was amazing.,Positive,Customer Support
-They really took the time to understand our business needs before proposing a solution.,Positive,Staff Capability
-While the project was successful,Positive,Project Management
-the constant upselling was exhausting,Negative,Pricing and Value
-Every call felt like a new sales pitch for another service.,Negative,Customer Support
-"Technically, the work is fine.",Positive,Product Quality
-But their team shows zero proactivity.,Negative,Staff Capability
-They only do exactly what is asked and never suggest improvements.,Negative,Staff Capability
-"We've been working with them for over two years now, and they've become an indispensable part of our team.",Positive,Staff Capability
-Highly recommend.,Positive,Customer Support
-"The lead developer we worked with, Maria, was a rockstar.",Positive,Staff Capability
-Her expertise in AI was a game-changer for our project.,Positive,Staff Capability
+Customer support is awesome,Positive,Communication
+"Our dedicated manager, Alex, was always on top of things and communication was crystal clear.",Positive,Communication
+Their support team is incredibly responsive.,Positive,Communication
+It makes collaboration seamless.,Positive,Communication
+but the communication from the management team is severely lacking.,Negative,Communication
+We often felt in the dark about progress.,Negative,Communication
+They understood our vision,Positive,Communication
+Getting timely responses to urgent questions was a constant struggle.,Negative,Communication
+The initial consultation was amazing.,Positive,Communication
+Every call felt like a new sales pitch for another service.,Negative,Communication
+They only do exactly what is asked and never suggest improvements.,Negative,Communication
