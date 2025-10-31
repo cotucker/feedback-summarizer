@@ -1,18 +1,19 @@
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import nltk
+nltk.download('punkt_tab')
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 import pandas as pd
 
 
-df = pd.read_csv('test.csv')
+df = pd.read_csv('data/data.csv')
 texts_list = df['Phrase'].tolist()
 
 # --- Одноразовая настройка NLTK ---
 try:
     nltk.data.find('tokenizers/punkt')
-except nltk.downloader.DownloadError:
+except LookupError:
     nltk.download('punkt')
 try:
     stopwords.words('english')

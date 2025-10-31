@@ -13,7 +13,7 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from test import filter_text_final_version
 
-df = pd.read_csv('test.csv')
+df = pd.read_csv('data/data.csv')
 titles = df['Phrase'].tolist()
 
 texts_list = [filter_text_final_version(text) for text in titles]
@@ -21,14 +21,14 @@ texts_list = [filter_text_final_version(text) for text in titles]
 abstracts = texts_list
 
 model = SentenceTransformer('all-MiniLM-L12-v2')
-embeddings = model.encode(texts_list, device='cpu')
+embeddings = model.encode(texts_list, device='cuda')
 # embeddings = get_embedding(texts_list)
 
 print(embeddings.shape)
 
 umap_model = UMAP(
-    n_components=10, # Reduces dimensionality while preserving essential structure
-    min_dist=0.1, # Controls how tightly points cluster together
+    n_components=8, # Reduces dimensionality while preserving essential structure
+    min_dist=0.0, # Controls how tightly points cluster together
     metric='cosine', # Measures similarity between embeddings using cosine distance
     random_state=42
 )
