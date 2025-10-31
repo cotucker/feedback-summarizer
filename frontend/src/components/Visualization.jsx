@@ -375,13 +375,20 @@ export const Visualization = ({ results }) => {
             <Plot
               data={plotlyData}
               layout={{
-                title: "3D UMAP Visualization",
-                autosize: true,
-                scene: {
-                  xaxis: { title: "X" },
-                  yaxis: { title: "Y" },
-                  zaxis: { title: "Z" },
+                title: {
+                  text: "3D UMAP Visualization",
+                  font: { color: "#e0e0e0" }, // Светлый цвет для заголовка
                 },
+                autosize: true,
+                paper_bgcolor: "#1a1a1a", // Темный фон для всей области графика
+                plot_bgcolor: "#1a1a1a", // Темный фон для области построения
+                scene: {
+                  xaxis: { title: "X", backgroundcolor: "#333", gridcolor: "#444", zerolinecolor: "#555", color: "#e0e0e0" },
+                  yaxis: { title: "Y", backgroundcolor: "#333", gridcolor: "#444", zerolinecolor: "#555", color: "#e0e0e0" },
+                  zaxis: { title: "Z", backgroundcolor: "#333", gridcolor: "#444", zerolinecolor: "#555", color: "#e0e0e0" },
+                  bgcolor: "#1a1a1a", // Фон 3D-сцены
+                },
+                font: { color: "#e0e0e0" }, // Светлый цвет для всего текста
                 margin: { l: 0, r: 0, b: 0, t: 40 },
               }}
               style={{ width: "100%", height: "100%" }}
