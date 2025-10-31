@@ -1,12 +1,25 @@
 text,sentiment,topic
-Customer support is awesome,Positive,Communication
-"Our dedicated manager, Alex, was always on top of things and communication was crystal clear.",Positive,Communication
-Their support team is incredibly responsive.,Positive,Communication
-It makes collaboration seamless.,Positive,Communication
-but the communication from the management team is severely lacking.,Negative,Communication
-We often felt in the dark about progress.,Negative,Communication
-They understood our vision,Positive,Communication
-Getting timely responses to urgent questions was a constant struggle.,Negative,Communication
-The initial consultation was amazing.,Positive,Communication
-Every call felt like a new sales pitch for another service.,Negative,Communication
-They only do exactly what is asked and never suggest improvements.,Negative,Communication
+Customer support is awesome,Positive,Cummunication
+"Our dedicated manager, Alex, was always on top of things and communication was crystal clear.",Positive,Cummunication
+"A bit pricey, but worth every penny for the peace of mind.",Positive,Pricing
+We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Skill
+Their support team is incredibly responsive.,Positive,Cummunication
+We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Cummunication
+Billing is a complete mess.,Negative,Pricing
+"We were overcharged for hours that were not worked, and getting it corrected has been a nightmare.",Negative,Pricing
+The developers are technically brilliant,Positive,Skill
+Good value for the price.,Positive,Pricing
+"They promised expertise in cloud migration, but their team was clearly learning on the job.",Negative,Skill
+The project was delayed by two months and went over budget.,Negative,Pricing
+I'm giving three stars because the developers are skilled,Positive,Skill
+but the communication from the management team is severely lacking.,Negative,Cummunication
+We often felt in the dark about progress.,Negative,Cummunication
+They understood our vision,Positive,Cummunication
+Getting timely responses to urgent questions was a constant struggle.,Negative,Cummunication
+The initial consultation was amazing.,Positive,Cummunication
+They really took the time to understand our business needs before proposing a solution.,Positive,Cummunication
+"Technically, the work is fine.",Positive,Skill
+They only do exactly what is asked and never suggest improvements.,Negative,Cummunication
+Her expertise in AI was a game-changer for our project.,Positive,Skill
+The team is not very good at communicating their progress.,Negative,Cummunication
+Their ability to provide a cost-effective solution without sacrificing quality is a huge plus.,Positive,Pricing
