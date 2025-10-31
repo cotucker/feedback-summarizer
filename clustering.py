@@ -5,10 +5,8 @@ import numpy as np
 import pandas as pd
 import requests
 from sentence_transformers import SentenceTransformer
-from sklearn.decomposition import PCA
 from umap import UMAP
 from hdbscan import HDBSCAN
-from sklearn.cluster import KMeans
 import plotly.express as px
 import matplotlib.pyplot as plt
 from test import filter_text_final_version

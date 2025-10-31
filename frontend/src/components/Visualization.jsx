@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import Plot from "react-plotly.js"; // ИМПОРТ PLOTLY
 import {
   Box,
   Typography,
@@ -26,12 +27,10 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
-import { ScatterChart } from "@mui/x-charts/ScatterChart";
+// ScatterChart больше не используется
 import { DataGrid } from "@mui/x-data-grid";
-import { downloadPdfReport } from "../api/apiClient"; // Импортируем функцию
+import { downloadPdfReport } from "../api/apiClient";
 
-// === ИЗМЕНЕНИЕ: Создаем вспомогательную функцию для рендеринга ячеек с подсказками ===
-// Это поможет избежать дублирования кода.
 const renderCellWithTooltip = (params) => (
   <Tooltip title={params.value} placement="bottom-start">
     <Box
@@ -46,9 +45,7 @@ const renderCellWithTooltip = (params) => (
   </Tooltip>
 );
 
-// === ИЗМЕНЕНИЕ: Обновляем определения колонок ===
 const feedbackAnalysisColumns = [
-  // Используем flex: 1, чтобы колонка растягивалась, и добавляем renderCell для подсказки
   {
     field: "text",
     headerName: "Feedback Text",
@@ -86,18 +83,6 @@ const topicDetailColumns = [
     renderCell: renderCellWithTooltip,
   },
   { field: "sentiment", headerName: "Sentiment", width: 120 },
-];
-
-// === ИЗМЕНЕНИЕ: Добавляем палитру цветов для кластеров ===
-const CLUSTER_COLORS = [
-  "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b",
-  "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#aec7e8", "#ffbb78",
-  "#98df8a", "#ff9896", "#c5b0d5", "#c49c94", "#f7b6d2", "#c7c7c7",
-  "#dbdb8d", "#9edae5", "#393b79", "#637939", "#8c6d31", "#843c39",
-  "#7b4173", "#5254a3", "#6b6ecf", "#9c9ede", "#637939", "#8ca252",
-  "#b5cf6b", "#cedb9c", "#8c6d31", "#bd9e39", "#e7ba52", "#e7cb94",
-  "#843c39", "#ad494a", "#d6616b", "#e7969c", "#7b4173", "#a55194",
-  "#ce6dbd", "#de9ed6",
 ];
 
 export const Visualization = ({ results }) => {
@@ -140,48 +125,33 @@ export const Visualization = ({ results }) => {
     id: index,
   }));
 
-  // Обработка данных для ScatterChart
-  const clusterData = results.phrase_clusters || [];
-  const clusters = clusterData.reduce((acc, point) => {
-    const cluster = point.cluster;
-    if (!acc[cluster]) {
-      acc[cluster] = [];
-    }
-    acc[cluster].push({
-      x: point.x,
-      y: point.y,
-      id: point.phrase,
-      label: point.phrase, // Добавляем label для отображения во всплывающей подсказке
-    });
-    return acc;
-  }, {});
+  // === ИЗМЕНЕНИЕ: Обработка данных для 3D-графика Plotly ===
+  const clusterDataFor3D = (results.phrase_clusters || []).reduce(
+    (acc, point) => {
+      const clusterId = point.cluster;
+      if (!acc[clusterId]) {
+        acc[clusterId] = {
+          x: [],
+          y: [],
+          z: [],
+          text: [],
+          mode: "markers",
+          type: "scatter3d",
+          name: `Cluster ${clusterId}`,
+          marker: { size: 5 },
+        };
+      }
+      acc[clusterId].x.push(point.x);
+      acc[clusterId].y.push(point.y);
+      acc[clusterId].z.push(point.z); // Добавляем Z координату
+      acc[clusterId].text.push(point.phrase);
+      return acc;
+    },
+    {},
+  );
 
-  const scatterSeries = Object.keys(clusters).map((clusterKey) => ({
-    label: `Cluster ${clusterKey}`,
-    data: clusters[clusterKey],
-  }));
-
-  // Рассчитываем границы осей с отступами для графика кластеров
-  const axisConfig = {};
-  if (clusterData.length > 0) {
-    const xValues = clusterData.map((p) => p.x);
-    const yValues = clusterData.map((p) => p.y);
-    const minX = Math.min(...xValues);
-    const maxX = Math.max(...xValues);
-    const minY = Math.min(...yValues);
-    const maxY = Math.max(...yValues);
-
-    // Добавляем 10% отступ с каждой стороны
-    const xPadding = (maxX - minX) * 0.1 || 0.1;
-    const yPadding = (maxY - minY) * 0.1 || 0.1;
-
-    axisConfig.xAxis = [
-      { min: minX - xPadding, max: maxX + xPadding, hide: true },
-    ];
-    axisConfig.yAxis = [
-      { min: minY - yPadding, max: maxY + yPadding, hide: true },
-    ];
-  }
+  const plotlyData = Object.values(clusterDataFor3D);
+  const hasClusterData = plotlyData.length > 0;
 
   const handleBarClick = (event, d) => {
     if (!d || d.dataIndex === undefined) return;
@@ -228,13 +198,21 @@ export const Visualization = ({ results }) => {
         <Grid item xs={12}>
           <Card variant="outlined">
             <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
                 <Typography variant="h5">Overall Summary</Typography>
                 <Button
                   variant="contained"
                   onClick={handleDownload}
                   disabled={isDownloading}
-                  startIcon={isDownloading ? <CircularProgress size={20} /> : null}
+                  startIcon={
+                    isDownloading ? <CircularProgress size={20} /> : null
+                  }
                 >
                   {isDownloading ? "Downloading..." : "Download Report"}
                 </Button>
@@ -270,14 +248,14 @@ export const Visualization = ({ results }) => {
           </Paper>
         </Grid>
 
-        {scatterSeries.length > 0 && (
+        {hasClusterData && (
           <Grid item xs={12}>
             <Button
               variant="outlined"
               onClick={() => setIsClusterDialogOpen(true)}
               fullWidth
             >
-              Show Phrase Clusters
+              Show Phrase Clusters (3D)
             </Button>
           </Grid>
         )}
@@ -384,29 +362,30 @@ export const Visualization = ({ results }) => {
         </Dialog>
       )}
 
+      {/* === ИЗМЕНЕНИЕ: Диалоговое окно с 3D-графиком Plotly === */}
       <Dialog
         open={isClusterDialogOpen}
         onClose={() => setIsClusterDialogOpen(false)}
         fullWidth
         maxWidth="xl"
       >
-        <DialogTitle variant="h4">Phrase-Semantic Clusters</DialogTitle>
+        <DialogTitle variant="h4">Phrase-Semantic Clusters (3D)</DialogTitle>
         <DialogContent>
           <Box sx={{ height: "70vh", width: "100%", mt: 2 }}>
-            <ScatterChart
-              colors={CLUSTER_COLORS}
-              series={scatterSeries.map((s) => ({
-                ...s,
-                valueFormatter: (point) =>
-                  `${point.label} (${point.x.toFixed(2)}, ${point.y.toFixed(
-                    2,
-                  )})`,
-              }))}
-              {...axisConfig}
-              legend={{
-                direction: "row",
-                position: { vertical: "top", horizontal: "middle" },
+            <Plot
+              data={plotlyData}
+              layout={{
+                title: "3D UMAP Visualization",
+                autosize: true,
+                scene: {
+                  xaxis: { title: "X" },
+                  yaxis: { title: "Y" },
+                  zaxis: { title: "Z" },
+                },
+                margin: { l: 0, r: 0, b: 0, t: 40 },
               }}
+              style={{ width: "100%", height: "100%" }}
+              useResizeHandler={true}
             />
           </Box>
         </DialogContent>
@@ -419,9 +398,13 @@ export const Visualization = ({ results }) => {
         open={!!error}
         autoHideDuration={6000}
         onClose={() => setError(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert onClose={() => setError(null)} severity="error" sx={{ width: '100%' }}>
+        <Alert
+          onClose={() => setError(null)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
           {error}
         </Alert>
       </Snackbar>
@@ -443,10 +426,12 @@ Visualization.propTypes = {
     quotes: PropTypes.array,
     feedback_analysis: PropTypes.array,
     feedback_replies: PropTypes.array,
+    // === ИЗМЕНЕНИЕ: Добавляем 'z' в PropTypes ===
     phrase_clusters: PropTypes.arrayOf(
       PropTypes.shape({
         x: PropTypes.number,
         y: PropTypes.number,
+        z: PropTypes.number, // Z координата для 3D
         cluster: PropTypes.number,
         phrase: PropTypes.string,
       }),
