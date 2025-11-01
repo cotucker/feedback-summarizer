@@ -47,7 +47,7 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                 parts=[
                     types.Part(
                         text="""You are an expert Customer Feedback Analyst
-                        whose task is segmenting Customers feedback text into meaningful chunks , assessing the sentiment and topic for each chunk.
+                        whose task is segmenting Customers feedback text into atomic meaningful chunks , assessing the sentiment and topic for each chunk.
                         chunks MUST be a part of Feedback text.
                         If topic of chunk is not included in the topics list - create new topic
                         If chunk doesnt provide any information assign it to "General Feedback"

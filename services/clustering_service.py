@@ -12,15 +12,10 @@ from models.models import SentimentResponse
 
 def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
 
-        # phrase_clusters.append({
-        #     "x": point_x,
-        #     "y": point_y,
-        #     "z": 0,
-        #     "cluster": closest_topic,
-        #     "phrase": texts_list[i] + " " + topics_list[i]
-        # })
     if not sentiment_responses:
         return []
+
+    data_size = len(sentiment_responses)
 
     df = pd.read_csv('data/data.csv')
 
@@ -34,45 +29,36 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
     embeddings = model.encode(processed_texts_list, device='cuda')
 
     umap_model = UMAP(
-        n_components=10, # Reduces dimensionality while preserving essential structure
-        min_dist=0.0, # Controls how tightly points cluster together
-        metric='cosine', # Measures similarity between embeddings using cosine distance
-        random_state=42
+        n_components=13,
+        min_dist=0.0,
+        metric='cosine',
+        random_state=67
     )
 
     reduced_embeddings = umap_model.fit_transform(embeddings)
 
     print(f"Shape of reduced embeddings: {reduced_embeddings.shape}")
 
-    # We fit the model and extract the clusters
     hdbscan_model = HDBSCAN(
-        min_cluster_size=60, # Ensures statistically significant groupings
-        metric='euclidean', # Measures distance in reduced space
-        cluster_selection_method='eom' # Optimizes cluster boundary detection
+        min_cluster_size=70,
+        metric='euclidean',
+        cluster_selection_method='eom'
     ).fit(reduced_embeddings)
     clusters = hdbscan_model.labels_
 
-    # How many clusters did we generate?
     print(f"Number of clusters: {len(set(clusters))}")
 
 
-    # # Print first three documents in cluster 0
-    # cluster = 2
-    # for index in np.where(clusters==cluster)[0]:
-    #     print(abstracts[index][:300] + "... \n")
-
-
-    # Reduce 384-dimensional embeddings to 3 dimensions
     reduced_embeddings_3d = UMAP(
     n_components=3,
     min_dist=0.0,
     metric='cosine',
-    random_state=42
+    random_state=67
     ).fit_transform(embeddings)
 
     phrase_clusters = []
 
-    for i, text in enumerate(texts_list):
+    for i, text in enumerate(texts_list[:data_size]):
         phrase_clusters.append({
             "x": float(reduced_embeddings_3d[i][0]),
             "y": float(reduced_embeddings_3d[i][1]),
