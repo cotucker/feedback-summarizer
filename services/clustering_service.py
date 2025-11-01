@@ -9,6 +9,8 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from services.nlp_service import filter_text_final_version
 from models.models import SentimentResponse
+from fastopic import FASTopic
+from topmost import Preprocess
 
 def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
 
@@ -29,7 +31,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
     embeddings = model.encode(processed_texts_list, device='cuda')
 
     umap_model = UMAP(
-        n_components=13,
+        n_components=10,
         min_dist=0.0,
         metric='cosine',
         random_state=67
@@ -40,13 +42,27 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
     print(f"Shape of reduced embeddings: {reduced_embeddings.shape}")
 
     hdbscan_model = HDBSCAN(
-        min_cluster_size=70,
+        min_cluster_size=76,
         metric='euclidean',
         cluster_selection_method='eom'
     ).fit(reduced_embeddings)
     clusters = hdbscan_model.labels_
 
     print(f"Number of clusters: {len(set(clusters))}")
+
+    map = {}
+
+    for i, cluster in enumerate(clusters):
+        if i == data_size:
+            break
+        if cluster not in map:
+            map[cluster] = []
+        map[cluster].append(texts_list[i])
+
+    for cluster, texts in map.items():
+        map[cluster] = get_topics_of_cluster(texts)
+        print(f"Topics of cluster {cluster}: {map[cluster]}")
+
 
 
     reduced_embeddings_3d = UMAP(
@@ -68,3 +84,11 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
         })
 
     return phrase_clusters
+
+
+def get_topics_of_cluster(texts: list[str]) -> str:
+    preprocess = Preprocess()
+
+    model = FASTopic(1, preprocess, verbose=False)
+    top_words, doc_topic_dist = model.fit_transform(texts)
+    return ''.join(top_words)

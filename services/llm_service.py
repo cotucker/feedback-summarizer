@@ -23,7 +23,7 @@ def get_embedding(texts: list[str]) -> list:
             e.values for e in client.models.embed_content(
                 model="models/embedding-001",
                 contents=chunk,
-                config=types.EmbedContentConfig(task_type="CLUSTERING")
+                config=types.EmbedContentConfig(task_type="CLUSTERING", output_dimensionality = 128)
             ).embeddings
         ]
         all_embeddings.extend(result)
