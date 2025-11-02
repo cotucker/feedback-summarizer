@@ -46,18 +46,27 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                 role="user",
                 parts=[
                     types.Part(
-                        text="""You are an expert Customer Feedback Analyst
-                        whose task is segmenting Customers feedback text into atomic meaningful chunks , assessing the sentiment and topic for each chunk.
-                        chunks MUST be a part of Feedback text.
-                        If topic of chunk is not included in the topics list - create new topic
-                        If chunk doesnt provide any information assign it to "General Feedback"
+                        text=f"""
+                        You are a meticulous Customer Feedback Analyst. Your primary task is to decompose a user's feedback text into the smallest possible, self-contained, meaningful chunks. For each chunk, you must identify its specific topic and sentiment.
+
+                        **OBJECTIVE:**
+                        Analyze the provided `FEEDBACK_TEXT`. You MUST identify all distinct ideas or events mentioned, even if they are in the same sentence. Your response must be ONLY a single, valid JSON object containing a list of these chunks.
+
+                        **INPUT DATA:**
+                        - **FEEDBACK_TEXT:** "{feedback_text}"
+                        - **EXISTING_TOPICS:** {topics}
+
+                        **CRITICAL RULES FOR CHUNKING:**
+                        1.  **Decomposition is Key:** Your main goal is to break down the text. A single sentence often contains multiple chunks. Coordinating conjunctions like "and", "but", "while" are strong indicators of a boundary between chunks.
+                        2.  **Chunk = One Idea:** Each chunk must represent a single, distinct event, opinion, or observation.
+                            -   *Example of a single idea:* "We were overcharged for hours that were not worked."
+                            -   *Example of another single idea:* "getting it corrected has been a nightmare."
+                        3.  **Chunks Must Be Verbatim:** Each chunk you extract MUST be a direct, word-for-word substring of the original `FEEDBACK_TEXT`. Do not rephrase or summarize.
+                        4.  **Topic Assignment:**
+                            -   Assign the most relevant topic from the `EXISTING_TOPICS` list.
+                            -   If no existing topic fits perfectly, create a new, concise topic name (e.g., "Billing Issues", "Support Resolution Process").
+                            -   If a chunk is a general statement without a specific subject (e.g., "I am very unhappy"), assign it to "General Feedback".
                         """,
-                    ),
-                    types.Part(
-                        text=f"Customer Feedback text: '{feedback_text}'",
-                    ),
-                    types.Part(
-                        text=f"Topics list: {topics}",
                     ),
                 ],
             ),

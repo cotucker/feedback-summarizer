@@ -42,7 +42,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
     print(f"Shape of reduced embeddings: {reduced_embeddings.shape}")
 
     hdbscan_model = HDBSCAN(
-        min_cluster_size=76,
+        min_cluster_size=75,
         metric='euclidean',
         cluster_selection_method='eom'
     ).fit(reduced_embeddings)
