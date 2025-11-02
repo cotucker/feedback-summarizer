@@ -5,7 +5,7 @@ import enum
 from dotenv import load_dotenv
 import typing
 import numpy as np
-from models.models import FeedbackResponse, SentimentResponse, TopicSummary, TotalSummary, Separator
+from models.models import FeedbackResponse, SentimentResponse, TopicSummary, TotalSummary, Separator, ClusterName
 from pydantic import BaseModel
 from fastapi import HTTPException
 from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_feedback_analysis_by_topic
@@ -69,11 +69,11 @@ def generate_cluster_name(cluster_topics: str) -> str:
         ],
         config={
             "response_mime_type": "application/json",
-            "response_schema": str,
+            "response_schema": ClusterName,
         },
     )
-    cluster_name = str(response.parsed)
-    return cluster_name
+    cluster_name: ClusterName = typing.cast(ClusterName, response.parsed)
+    return cluster_name.name
 
 def get_embedding(texts: list[str]) -> list:
     all_embeddings = []

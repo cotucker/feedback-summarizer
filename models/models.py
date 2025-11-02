@@ -25,3 +25,6 @@ class TotalSummary(BaseModel):
 
 class Separator(BaseModel):
     separator: str
+
+class ClusterName(BaseModel):
+    name: str
