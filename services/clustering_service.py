@@ -8,6 +8,7 @@ from hdbscan import HDBSCAN
 import plotly.express as px
 import matplotlib.pyplot as plt
 from services.nlp_service import filter_text_final_version
+from services.llm_service import generate_cluster_name
 from models.models import SentimentResponse
 from fastopic import FASTopic
 from topmost import Preprocess
@@ -31,7 +32,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
     embeddings = model.encode(processed_texts_list, device='cuda')
 
     umap_model = UMAP(
-        n_components=10,
+        n_components=13,
         min_dist=0.0,
         metric='cosine',
         random_state=67
@@ -42,7 +43,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
     print(f"Shape of reduced embeddings: {reduced_embeddings.shape}")
 
     hdbscan_model = HDBSCAN(
-        min_cluster_size=75,
+        min_cluster_size=70,
         metric='euclidean',
         cluster_selection_method='eom'
     ).fit(reduced_embeddings)
@@ -60,7 +61,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
         map[cluster].append(texts_list[i])
 
     for cluster, texts in map.items():
-        map[cluster] = get_topics_of_cluster(texts)
+        map[cluster] = generate_cluster_name(get_topics_of_cluster(texts))
         print(f"Topics of cluster {cluster}: {map[cluster]}")
 
 
@@ -79,7 +80,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
             "x": float(reduced_embeddings_3d[i][0]),
             "y": float(reduced_embeddings_3d[i][1]),
             "z": float(reduced_embeddings_3d[i][2]),
-            "cluster": str(clusters[i]),
+            "cluster": map[clusters[i]],
             "phrase": text
         })
 

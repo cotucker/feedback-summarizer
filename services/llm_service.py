@@ -15,6 +15,66 @@ GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
 
+
+def generate_cluster_name(cluster_topics: str) -> str:
+    response = client.models.generate_content(
+        model=f'{MODEL}',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"""
+                        You are an expert Data Analyst and Taxonomist. Your task is to analyze a list of keywords representing a cluster of customer feedback and generate a single, concise, and descriptive name for that cluster.
+
+                        OBJECTIVE:
+                        Based on the provided list of `CLUSTER_KEYWORDS`, synthesize them into a clear, high-level topic name that accurately represents the central theme of the cluster.
+
+                        INPUT DATA:
+                        - CLUSTER_KEYWORDS: "{cluster_topics}"
+
+                        **RULES FOR NAMING:**
+                        1.  **Be Abstract and High-Level:** The name should be a general category, not just a repetition of the keywords. Think about the underlying concept that connects these words.
+                        2.  **Use Business Language:** The name must be professional, clear, and easily understandable by a business audience (e.g., "Project Management", "Technical Competence", "Pricing and Value").
+                        3.  **Be Concise:** The name should be short, ideally 2-4 words long.
+                        4.  **Format:** Use Title Case (e.g., "Customer Support Experience").
+                        5.  **Strict Output Format:** Your response MUST ONLY be the generated cluster name. Do not include any explanation, introductory text like "The cluster name is:", or any quotation marks.
+
+                        ---
+                        EXAMPLES (for reference):
+
+                        Input: `CLUSTER_KEYWORDS: slow app performance lag crashes mobile freezes`
+                        Expected Output:
+                        Mobile App Performance
+
+                        Input: `CLUSTER_KEYWORDS: price cost expensive billing cheap value money`
+                        Expected Output:
+                        Pricing and Value
+
+                        Input: `CLUSTER_KEYWORDS: communication manager updates planning deadlines responsive`
+                        Expected Output:
+                        Project Management
+
+                        Input: `CLUSTER_KEYWORDS: team helpful agent support ticket fast friendly resolved`
+                        Expected Output:
+                        Customer Support Quality
+
+                        Input: `CLUSTER_KEYWORDS: partner companies recommend need great build product team felt needs time good impressive user work`
+                        Expected Output:
+                        Partnership and Team Collaboration
+                        """,
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": str,
+        },
+    )
+    cluster_name = str(response.parsed)
+    return cluster_name
+
 def get_embedding(texts: list[str]) -> list:
     all_embeddings = []
     for i in range(0, len(texts), 100):
