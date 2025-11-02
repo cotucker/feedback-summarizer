@@ -14,20 +14,21 @@ async def analysis(file: UploadFile, topics: str = ''):
     analysis: dict = {}
 
     feedback_list_analysis_results = feedback_list_analysis(topics)
+    phrase_clusters, feedback_analysis = cluster_texts(feedback_list_analysis_results)
     analysis["feedback_analysis"] = [
         {
             "text": sentiment_response.text,
             "topic": sentiment_response.topic,
-            "sentiment": sentiment_response.sentiment.value
+            "sentiment": feedback_list_analysis_results[i].sentiment.value
         }
 
-        for sentiment_response in feedback_list_analysis_results
+        for i, sentiment_response in enumerate(feedback_analysis)
     ]
 
 
-    topics_analysis_results = topics_analysis(feedback_list_analysis_results)
+    analysis["phrase_clusters"] = phrase_clusters
+    topics_analysis_results = topics_analysis(feedback_analysis)
     analysis["topics"] = topics_analysis_results
-    analysis["phrase_clusters"] = cluster_texts(feedback_list_analysis_results)
 
     analysis["summary"] = generate_total_summary(topics_analysis_results)
 

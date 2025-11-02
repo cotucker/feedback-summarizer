@@ -7,13 +7,13 @@ from umap import UMAP
 from hdbscan import HDBSCAN
 import plotly.express as px
 import matplotlib.pyplot as plt
-from services.nlp_service import filter_text_final_version
+from services.nlp_service import filter_text_final_version, get_sentiment
 from services.llm_service import generate_cluster_name
 from models.models import SentimentResponse
 from fastopic import FASTopic
 from topmost import Preprocess
 
-def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
+def cluster_texts(sentiment_responses: list[SentimentResponse]) -> (list[dict], list[SentimentResponse]):
 
     if not sentiment_responses:
         return []
@@ -74,17 +74,21 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> list[dict]:
     ).fit_transform(embeddings)
 
     phrase_clusters = []
+    sentiments_list: list[SentimentResponse] = []
 
     for i, text in enumerate(texts_list[:data_size]):
+        sentiment = get_sentiment(text)
         phrase_clusters.append({
             "x": float(reduced_embeddings_3d[i][0]),
             "y": float(reduced_embeddings_3d[i][1]),
             "z": float(reduced_embeddings_3d[i][2]),
             "cluster": map[clusters[i]],
-            "phrase": text
+            "phrase": text,
+            "sentiment": sentiment.value
         })
+        sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = map[clusters[i]]))
 
-    return phrase_clusters
+    return phrase_clusters, sentiments_list
 
 
 def get_topics_of_cluster(texts: list[str]) -> str:

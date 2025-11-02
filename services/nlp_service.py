@@ -5,6 +5,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
+from models.models import Sentiment
 
 import pandas as pd
 
@@ -60,9 +61,9 @@ def filter_text_final_version(text: str) -> str:
 def get_sentiment(text: str) -> str:
     sentiment = nlp(text)
     map = {
-        'positive': 'Positive',
-        'negative': 'Negative',
-        'neutral': 'Neutral'
+        'positive': Sentiment.POSITIVE,
+        'negative': Sentiment.NEGATIVE,
+        'neutral': Sentiment.NEUTRAL
     }
     return map[sentiment[0]['label']]
 
