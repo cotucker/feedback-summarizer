@@ -4,6 +4,8 @@ nltk.download('punkt_tab')
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize.treebank import TreebankWordDetokenizer
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
+
 import pandas as pd
 
 try:
@@ -23,6 +25,11 @@ INTENSIFIER_WORDS = {
     "absolutely", "completely", "extremely", "highly", "incredibly",
     "really", "so", "totally", "truly", "very", "quite"
 }
+
+
+tokenizer = AutoTokenizer.from_pretrained("mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis")
+model = AutoModelForSequenceClassification.from_pretrained("mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis")
+nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
 
 def filter_text_final_version(text: str) -> str:
     sentiment_lexicon = analyzer.lexicon
@@ -48,6 +55,16 @@ def filter_text_final_version(text: str) -> str:
         filtered_words.append(word)
 
     return detokenizer.detokenize(filtered_words)
+
+
+def get_sentiment(text: str) -> str:
+    sentiment = nlp(text)
+    map = {
+        'positive': 'Positive',
+        'negative': 'Negative',
+        'neutral': 'Neutral'
+    }
+    return map[sentiment[0]['label']]
 
 
 
@@ -83,3 +100,13 @@ if __name__ == "__main__":
     neutral4 = filter_text_final_version(original4)
     print(f"Оригинал: {original4}")
     print(f"Отфильтрованный: {neutral4}\n")
+
+
+
+    text = """XYZ Corporation's stock soared by 20% after reporting
+    record-breaking annual profits and announcing a significant dividend
+    increase for shareholders.
+    """
+
+    sentiment = get_sentiment(text)
+    print(sentiment)

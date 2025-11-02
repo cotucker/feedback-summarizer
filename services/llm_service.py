@@ -5,7 +5,7 @@ import enum
 from dotenv import load_dotenv
 import typing
 import numpy as np
-from models.models import FeedbackResponse, SentimentResponse, TopicSummary, TotalSummary, Separator, ClusterName
+from models.models import FeedbackResponse, SentimentResponse, TopicSummary, TotalSummary, Separator, ClusterName, ClusterDescription
 from pydantic import BaseModel
 from fastapi import HTTPException
 from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_feedback_analysis_by_topic
@@ -14,6 +14,43 @@ load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
+
+
+def generate_topics_description(cluster_names: list[str]):
+    response = client.models.generate_content(
+        model=f'{MODEL}',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"""
+                        You are a Senior Business Analyst responsible for interpreting clustered customer feedback for an executive audience.
+
+                        **OBJECTIVE:**
+                        Analyze the provided list of `CLUSTER_NAMES`. For each name, generate a concise, business-oriented description that explains what this category represents and, most importantly, how it differs from the other categories in the list. Your goal is to clarify the unique focus of each cluster.
+
+                        **INPUT DATA:**
+                        - **CLUSTER_NAMES:** {cluster_names}
+
+                        **CRITICAL RULES FOR DESCRIPTIONS:**
+                        1.  **Define the Core Theme:** For each cluster, start by explaining the primary topic it covers. What kind of feedback falls into this category?
+                        2.  **Highlight the Distinction:** This is the most important rule. Explicitly state what makes this cluster different from others. Focus on the nuances. For example, if you have both "Performance & Speed" and "Product Quality", explain that one is about *efficiency and responsiveness*, while the other is about *reliability, bugs, and craftsmanship*.
+                        3.  **Use Business Language:** Write in a clear, strategic tone. Avoid technical jargon. The descriptions should be immediately understandable to a product manager or executive.
+                        4.  **Be Concise:** Each description should be 2-3 sentences long.
+                        5.  **Strict Output Format:** Your response MUST be a object where keys are the original cluster names and values are their corresponding descriptions. Do not include any other text or explanations.
+                        """,
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": list[ClusterDescription],
+        },
+    )
+    cluster_descriptions: list[ClusterDescription] = typing(list[ClusterDescription], response.parsed)
+    return cluster_descriptions
 
 
 def generate_cluster_name(cluster_topics: str) -> str:
