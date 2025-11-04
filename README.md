@@ -36,31 +36,29 @@ It provides product managers, marketing teams, and customer service leaders with
 
 ## ✨ Key Features
 
--   **📄 Simple CSV Upload:** Easily upload customer feedback in a CSV format.
--   **🧠 Automated Topic Clustering:** AI automatically groups feedback into logical themes and topics.
--   **🎭 Sentiment Analysis:** Determines if feedback is positive, negative, or neutral.
--   **🤖 AI-Generated Replies:** Generates context-aware replies to appease customers.
--   **📊 Interactive Dashboard:** Visualizes data with interactive charts for topics and sentiment.
--   **📝 Exportable Insights:** Download a text summary of all key insights with one click.
+- **📄 Simple CSV Upload:** Easily upload customer feedback in a CSV format.
+- **🧠 Automated Topic Clustering:** AI automatically groups feedback into logical themes and topics.
+- **🎭 Sentiment Analysis:** Determines if feedback is positive, negative, or neutral.
+- **🤖 AI-Generated Replies:** Generates context-aware replies to appease customers.
+- **📊 Interactive Dashboard:** Visualizes data with interactive charts for topics and sentiment.
+- **📝 Exportable Insights:** Download a text summary of all key insights with one click.
 
 ## 🚀 Demo
 
 Here's a quick look at the dashboard in action. The user uploads a CSV, and the system automatically generates a complete analysis.
 
-*(**In Progress**)*
-
-
+_(**In Progress**)_
 
 ## 🛠️ Tech Stack
 
 This project uses a modern, decoupled architecture with a React frontend and a FastAPI backend.
 
-| Frontend                               | Backend                                    |
-| -------------------------------------- | ------------------------------------------ |
-| **React.js** (with Vite/CRA)           | **Python 3.9+**                            |
-| **MUI X** (for UI components & Charts) | **FastAPI** (for the REST API)             |
-| **Axios** (for API requests)           | **Uvicorn** (as the ASGI server)           |
-| **JavaScript/TypeScript**              | **Pandas** (for data manipulation)         |
+| Frontend                               | Backend                             |
+| -------------------------------------- | ----------------------------------- |
+| **React.js** (with Vite/CRA)           | **Python 3.9+**                     |
+| **MUI X** (for UI components & Charts) | **FastAPI** (for the REST API)      |
+| **Axios** (for API requests)           | **Uvicorn** (as the ASGI server)    |
+| **JavaScript/TypeScript**              | **Pandas** (for data manipulation)  |
 |                                        | **Gemini APIs** (for AI processing) |
 
 ## 🏁 Getting Started
@@ -69,13 +67,14 @@ Follow these instructions to get the project up and running on your local machin
 
 ### Prerequisites
 
--   **Node.js** (v19 or newer)
--   **Python** (v3.10 or newer)
--   Gemini API key
+- **Node.js** (v19 or newer)
+- **Python** (v3.10 or newer)
+- Gemini API key
 
 ### ⚙️ Installation
 
 1.  **Clone the repository:**
+
     ```bash
     git clone https://github.com/your-username/feedback-summarizer.git
     cd feedback-summarizer
@@ -83,6 +82,7 @@ Follow these instructions to get the project up and running on your local machin
 
 2.  **Set up the Backend:**
     - Create a virtual environment and install Python dependencies.
+
     ```bash
     # Create and activate a virtual environment (recommended)
     python -m venv .venv
@@ -91,10 +91,12 @@ Follow these instructions to get the project up and running on your local machin
     # Install dependencies using uv
     pip install uv
     uv sync
+    uv pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
     ```
 
 3.  **Set up the Frontend:**
     - Navigate to the frontend directory and install Node.js dependencies.
+
     ```bash
     cd frontend
     npm install
@@ -117,14 +119,17 @@ You can run the application in two ways: locally for development or using Docker
 This method uses `concurrently` to run both the frontend and backend servers with a single command.
 
 1.  Navigate to the `frontend` directory:
+
     ```bash
     cd frontend
     ```
 
 2.  Run the `dev` script:
+
     ```bash
     npm run dev
     ```
+
     - The frontend will be available at `http://localhost:3000`.
     - The backend server will be running at `http://localhost:8000`.
 
@@ -135,9 +140,11 @@ This is the recommended way to run the application in a stable, isolated environ
 1.  Make sure you have Docker and Docker Compose installed.
 
 2.  From the root of the project, run:
+
     ```bash
     docker-compose up --build
     ```
+
     - The frontend will be available at `http://localhost:3000`.
     - The backend API will be available at `http://localhost:8000`.
 
@@ -161,27 +168,39 @@ The backend exposes a single primary REST API endpoint for feedback analysis.
 
 Analyzes a CSV file of customer feedback.
 
--   **Request Type:** `multipart/form-data`
--   **Query Parameters:**
-    -   `topics` (optional, string): A string of topics to guide the analysis.
--   **Form Data:**
-    -   `file` (required, File): The CSV file containing the feedback.
--   **Successful Response (`200 OK`):**
-    ```json
-    {
-      "summary": "A high-level summary of all feedback.",
-      "sentiment": { "positive": 10, "negative": 5, "neutral": 2 },
-      "topics": [
-        { "topic": "Pricing", "count": 5, "summary": "Summary of feedback related to pricing." }
-      ],
-      "feedback_analysis": [
-        { "text": "The app is too expensive.", "topic": "Pricing", "sentiment": "negative" }
-      ],
-      "feedback_replies": [
-        { "feedback_text": "The app is too expensive.", "feedback_reply": "Thank you for your feedback...", "score": 4 }
-      ]
-    }
-    ```
+- **Request Type:** `multipart/form-data`
+- **Query Parameters:**
+  - `topics` (optional, string): A string of topics to guide the analysis.
+- **Form Data:**
+  - `file` (required, File): The CSV file containing the feedback.
+- **Successful Response (`200 OK`):**
+  ```json
+  {
+    "summary": "A high-level summary of all feedback.",
+    "sentiment": { "positive": 10, "negative": 5, "neutral": 2 },
+    "topics": [
+      {
+        "topic": "Pricing",
+        "count": 5,
+        "summary": "Summary of feedback related to pricing."
+      }
+    ],
+    "feedback_analysis": [
+      {
+        "text": "The app is too expensive.",
+        "topic": "Pricing",
+        "sentiment": "negative"
+      }
+    ],
+    "feedback_replies": [
+      {
+        "feedback_text": "The app is too expensive.",
+        "feedback_reply": "Thank you for your feedback...",
+        "score": 4
+      }
+    ]
+  }
+  ```
 
 ## 📂 Project Structure
 
@@ -212,7 +231,8 @@ feedback-summarizer/
 ```
 
 ## ✅ Running Tests
-*(**In Progress**)*
+
+_(**In Progress**)_
 
 ## 📜 License
 
@@ -223,5 +243,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 <div align="center">
   <small>Inspired by <a href="https://github.com/matiassingers/awesome-readme">awesome-readme</a>.</small>
 </div>
-
-
