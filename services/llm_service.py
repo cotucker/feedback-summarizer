@@ -16,7 +16,7 @@ MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 
-def generate_topics_description(cluster_names: list[str]):
+def generate_topics_description(cluster_names: list[str]) -> list[ClusterDescription]:
     response = client.models.generate_content(
         model=f'{MODEL}',
         contents=[
@@ -49,7 +49,7 @@ def generate_topics_description(cluster_names: list[str]):
             "response_schema": list[ClusterDescription],
         },
     )
-    cluster_descriptions: list[ClusterDescription] = typing(list[ClusterDescription], response.parsed)
+    cluster_descriptions: list[ClusterDescription] = typing.cast(list[ClusterDescription], response.parsed)
     return cluster_descriptions
 
 
@@ -224,13 +224,15 @@ def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
     for topic in topics:
         print(f"{topic}: {topics[topic]}")
 
+    topic_descriptions = generate_topics_description([topic for topic in topics])
+
     return [
         {
             "topic": topic,
             "count": topics[topic],
-            "summary": generate_topic_summary(get_feedback_analysis_by_topic(topic), topic)
+            "summary": topic_descriptions[i].description + '\n' + generate_topic_summary(get_feedback_analysis_by_topic(topic), topic)
         }
-        for topic in topics
+        for i, topic in enumerate(topics)
     ]
 
 

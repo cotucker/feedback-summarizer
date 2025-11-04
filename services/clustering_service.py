@@ -59,10 +59,12 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> (list[dict], 
             break
         if cluster not in map:
             map[cluster] = []
-        map[cluster].append(texts_list[i])
+        map[cluster].append(processed_texts_list[i])
 
     for cluster, texts in map.items():
-        map[cluster] = generate_cluster_name(get_topics_of_cluster(texts))
+        test = get_topics_of_cluster(texts)
+        print(f"test: {test}")
+        map[cluster] = generate_cluster_name(test)
         print(f"Topics of cluster {cluster}: {map[cluster]}")
 
 
