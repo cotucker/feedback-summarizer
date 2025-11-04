@@ -1,71 +1,85 @@
 text,sentiment,topic
-Customer support is awesome,Positive,Customer Support
-the product is horrible,Negative,Product Quality
-The project management was flawless.,Positive,Project Management
-"Our dedicated manager, Alex, was always on top of things and communication was crystal clear.",Positive,Customer Support
-"A bit pricey, but worth every penny for the peace of mind.",Positive,Pricing
-We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Staff Competency
-The code was buggy and required constant oversight from our in-house team.,Negative,Product Quality
-Their support team is incredibly responsive.,Positive,Customer Support
-We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Customer Support
-Truly impressive.,Positive,Customer Support
-The final product was delivered on time,Positive,Project Management
-and met all our specifications.,Positive,Product Quality
-Solid work from a reliable team.,Positive,Staff Competency
-Billing is a complete mess.,Negative,Pricing
-"We were overcharged for hours that were not worked,",Negative,Pricing
-and getting it corrected has been a nightmare.,Negative,Customer Support
-The developers are technically brilliant,Positive,Staff Competency
-but their project manager seems completely overwhelmed,Negative,Project Management
-Deadlines were missed repeatedly due to poor planning,Negative,Project Management
-Good value for the price.,Positive,Pricing
-"The quality isn't top-tier, but for our budget, it's more than acceptable.",Neutral,Product Quality
-You get what you pay for.,Neutral,Pricing
-"They promised expertise in cloud migration, but their team was clearly learning on the job.",Negative,Staff Competency
-The project was delayed by two months and went over budget.,Negative,Project Management
-The platform they provided for tracking progress is intuitive and a huge help.,Positive,Project Management
-It makes collaboration seamless.,Positive,Product Quality
-I'm giving three stars because the developers are skilled,Positive,Staff Competency
-but the communication from the management team is severely lacking.,Negative,Project Management
-We often felt in the dark about progress.,Negative,Project Management
-A fantastic partner for our startup.,Positive,Partnership Experience
-They understood our vision,Positive,Staff Competency
-and delivered a high-quality MVP,Positive,Product Quality
-well within our tight deadline.,Positive,Project Management
-The time zone difference was a much bigger issue than we anticipated.,Negative,Partnership Experience
-Getting timely responses to urgent questions was a constant struggle.,Negative,Customer Support
-Their QA process needs a serious overhaul.,Negative,Product Quality
-We found so many obvious bugs in the final delivery that it felt like it wasn't tested at all.,Negative,Product Quality
-The initial consultation was amazing.,Positive,Customer Support
-They really took the time to understand our business needs before proposing a solution.,Positive,Partnership Experience
-"While the project was successful,",Positive,Project Management
-the constant upselling was exhausting.,Negative,Pricing
-Every call felt like a new sales pitch for another service.,Negative,Customer Support
-"Technically, the work is fine.",Positive,Product Quality
-But their team shows zero proactivity.,Negative,Staff Competency
-They only do exactly what is asked and never suggest improvements.,Negative,Staff Competency
-"We've been working with them for over two years now, and they've become an indispensable part of our team.",Positive,Partnership Experience
-Highly recommend.,Positive,Partnership Experience
-"The lead developer we worked with, Maria, was a rockstar.",Positive,Staff Competency
-Her expertise in AI was a game-changer for our project.,Positive,Staff Competency
-The team is not very good at taking feedback.,Negative,Staff Competency
-They are a great partner for companies that need to build a high-quality product from scratch.,Positive,Partnership Experience
-The project was a complete disaster.,Negative,Project Management
-I would not recommend them to my worst enemy.,Negative,Partnership Experience
-Their ability to provide a dedicated team that feels like an extension of our own is a huge advantage.,Positive,Partnership Experience
-The team is not very good at communicating their progress.,Negative,Staff Competency
-They are a great partner for companies that need to modernize their legacy systems.,Positive,Partnership Experience
-The project was a complete failure.,Negative,Project Management
-I would not recommend them to anyone.,Negative,Partnership Experience
-Their ability to provide a cost-effective solution,Positive,Pricing
-without sacrificing quality,Positive,Product Quality
-is a huge plus.,Positive,General Feedback
-The team is not very good at meeting deadlines.,Negative,Project Management
-"They are a great partner for companies that need to build a complex, enterprise-grade application.",Positive,Partnership Experience
-The project was a complete and utter nightmare.,Negative,Project Management
-I would not wish this experience on anyone.,Negative,Partnership Experience
-Their ability to provide a flexible and scalable team that can grow with our needs is a huge plus.,Positive,Partnership Experience
-The team is not very good at providing clear and concise documentation.,Negative,Staff Competency
-They are a great partner for companies that need to build a beautiful and intuitive user interface.,Positive,Partnership Experience
-The project was a complete and utter failure.,Negative,Project Management
-I would not recommend them to anyone.,Negative,Partnership Experience
+Customer support is awesome,Neutral,Technical Competence
+the product is horrible,Negative,Technical Competence
+The project management was flawless.,Positive,Project Management Challenges
+"Our dedicated manager, Alex, was always on top of things",Neutral,Project Management Challenges
+and communication was crystal clear.,Neutral,Project Management Challenges
+"A bit pricey,",Neutral,Pricing Fairness and Value
+but worth every penny for the peace of mind.,Neutral,Pricing Fairness and Value
+We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Technical Competence
+The code was buggy and required constant oversight from our in-house team.,Neutral,Proactive Team Capabilities
+Their support team is incredibly responsive.,Positive,Proactive Team Capabilities
+We had a critical issue over the weekend and they had it resolved within two hours.,Neutral,Project Management Challenges
+Truly impressive.,Positive,Technical Competence
+The final product was delivered on time,Neutral,Technical Competence
+and met all our specifications,Neutral,Project Management Challenges
+Solid work from a reliable team,Positive,Proactive Team Capabilities
+Billing is a complete mess.,Neutral,Technical Competence
+We were overcharged for hours that were not worked,Negative,Pricing Fairness and Value
+and getting it corrected has been a nightmare.,Negative,Project Management Challenges
+The developers are technically brilliant,Neutral,Technical Competence
+but their project manager seems completely overwhelmed,Negative,Project Management Challenges
+Deadlines were missed repeatedly due to poor planning,Negative,Project Management Challenges
+Good value for the price.,Positive,Pricing Fairness and Value
+"The quality isn't top-tier,",Neutral,Technical Competence
+"but for our budget, it's more than acceptable.",Positive,Pricing Fairness and Value
+You get what you pay for.,Neutral,Pricing Fairness and Value
+They promised expertise in cloud migration,Neutral,Technical Competence
+but their team was clearly learning on the job,Positive,Proactive Team Capabilities
+The project was delayed by two months,Neutral,Project Management Challenges
+and went over budget,Neutral,Pricing Fairness and Value
+The platform they provided for tracking progress is intuitive,Neutral,Project Management Challenges
+and a huge help,Neutral,Proactive Team Capabilities
+It makes collaboration seamless,Positive,Technical Modernization Partnership
+I'm giving three stars,Neutral,Project Management Challenges
+the developers are skilled,Neutral,Technical Competence
+the communication from the management team is severely lacking,Negative,Project Management Challenges
+We often felt in the dark about progress,Neutral,Technical Competence
+A fantastic partner for our startup.,Positive,Technical Modernization Partnership
+They understood our vision,Neutral,Project Management Challenges
+and delivered a high-quality MVP,Positive,Proactive Team Capabilities
+well within our tight deadline.,Neutral,Project Management Challenges
+The time zone difference was a much bigger issue than we anticipated.,Neutral,Project Management Challenges
+Getting timely responses to urgent questions was a constant struggle.,Neutral,Project Management Challenges
+Their QA process needs a serious overhaul.,Neutral,Project Management Challenges
+We found so many obvious bugs in the final delivery,Negative,Project Management Challenges
+it felt like it wasn't tested at all.,Neutral,Proactive Team Capabilities
+The initial consultation was amazing.,Positive,Project Management Challenges
+They really took the time to understand our business needs before proposing a solution.,Neutral,Project Management Challenges
+While the project was successful,Positive,Project Management Challenges
+the constant upselling was exhausting,Neutral,Project Management Challenges
+Every call felt like a new sales pitch for another service,Neutral,Technical Competence
+"Technically, the work is fine.",Neutral,Technical Competence
+But their team shows zero proactivity.,Neutral,Proactive Team Capabilities
+They only do exactly what is asked and never suggest improvements.,Neutral,Project Management Challenges
+We've been working with them for over two years now,Neutral,Technical Competence
+and they've become an indispensable part of our team,Neutral,Proactive Team Capabilities
+Highly recommend,Neutral,Project Management Challenges
+"The lead developer we worked with, Maria, was a rockstar.",Neutral,Technical Competence
+Her expertise in AI was a game-changer for our project.,Positive,Technical Competence
+The team is not very good at taking feedback.,Negative,Technical Competence
+They are a great partner for companies that need to build a high-quality product from scratch.,Positive,Technical Modernization Partnership
+The project was a complete disaster.,Neutral,Project Management Challenges
+I would not recommend them to my worst enemy.,Neutral,Project Management Challenges
+Their ability to provide a dedicated team,Neutral,Proactive Team Capabilities
+that feels like an extension of our own,Neutral,Proactive Team Capabilities
+is a huge advantage.,Positive,Proactive Team Capabilities
+The team is not very good at communicating their progress.,Negative,Project Management Challenges
+They are a great partner for companies that need to modernize their legacy systems.,Positive,Technical Modernization Partnership
+The project was a complete failure.,Negative,Project Management Challenges
+I would not recommend them to anyone.,Neutral,Project Management Challenges
+Their ability to provide a cost-effective solution,Positive,Proactive Team Capabilities
+without sacrificing quality,Neutral,Technical Competence
+is a huge plus,Positive,Proactive Team Capabilities
+The team is not very good at meeting deadlines.,Negative,Project Management Challenges
+"They are a great partner for companies that need to build a complex, enterprise-grade application.",Positive,Technical Modernization Partnership
+The project was a complete and utter nightmare.,Neutral,Project Management Challenges
+I would not wish this experience on anyone.,Neutral,Technical Competence
+Their ability to provide a flexible and scalable team,Positive,Proactive Team Capabilities
+that can grow with our needs,Positive,Project Management Challenges
+is a huge plus.,Positive,Proactive Team Capabilities
+The team is not very good at providing clear and concise documentation.,Negative,Technical Competence
+They are a great partner,Neutral,Technical Modernization Partnership
+for companies that need to build a beautiful and intuitive user interface.,Neutral,Technical Competence
+The project was a complete and utter failure.,Negative,Project Management Challenges
+I would not recommend them to anyone.,Neutral,Project Management Challenges
