@@ -30,14 +30,14 @@
 
 In today's data-driven world, customer feedback is a very valuable and informative resource for any business. However, manually sifting through thousands of reviews, survey responses is inefficient and often impractical. Key insights can be easily missed, and emerging trends can go unnoticed.
 
-This project introduces an **AI-powered dashboard** designed to solve this exact problem. Using Language Models (LLMs), this application transforms raw, unstructured feedback from a simple CSV file into a rich, interactive dashboard.
+This project introduces an **AI-powered dashboard** designed to solve this exact problem. Using Text Clustering with Language Models (LLMs), this application transforms raw, unstructured feedback from a simple CSV file into a rich, interactive dashboard.
 
 It provides product managers, marketing teams, and customer service leaders with insights into customer sentiment, identifies emerging themes, and even helps shape responses, enabling teams to make faster and more informed decisions.
 
 ## ✨ Key Features
 
 - **📄 Simple CSV Upload:** Easily upload customer feedback in a CSV format.
-- **🧠 Automated Topic Clustering:** AI automatically groups feedback into logical themes and topics.
+- **🧠 Automated Topic Clustering:** Texts are clustered, and each cluster is assigned a name.
 - **🎭 Sentiment Analysis:** Determines if feedback is positive, negative, or neutral.
 - **🤖 AI-Generated Replies:** Generates context-aware replies to appease customers.
 - **📊 Interactive Dashboard:** Visualizes data with interactive charts for topics and sentiment.
@@ -55,10 +55,10 @@ This project uses a modern, decoupled architecture with a React frontend and a F
 
 | Frontend                               | Backend                             |
 | -------------------------------------- | ----------------------------------- |
-| **React.js** (with Vite/CRA)           | **Python 3.9+**                     |
+| **React.js**                           | **Python 3.9+**                     |
 | **MUI X** (for UI components & Charts) | **FastAPI** (for the REST API)      |
 | **Axios** (for API requests)           | **Uvicorn** (as the ASGI server)    |
-| **JavaScript/TypeScript**              | **Pandas** (for data manipulation)  |
+| **JavaScript**                         | **Pandas** (for data manipulation)  |
 |                                        | **Gemini APIs** (for AI processing) |
 
 ## 🏁 Getting Started
@@ -157,6 +157,7 @@ This is the recommended way to run the application in a stable, isolated environ
 5.  **View Dashboard:** Once the analysis is complete, the dashboard will populate with:
     - A high-level summary.
     - Sentiment distribution charts.
+    - Topic clusters
     - Key topics and their summaries.
     - AI-generated replies to specific feedback points.
 
