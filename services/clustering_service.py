@@ -9,6 +9,7 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from services.nlp_service import filter_text_final_version, get_sentiment
 from services.llm_service import generate_cluster_name
+from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse
 from fastopic import FASTopic
 from topmost import Preprocess
@@ -88,6 +89,8 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> (list[dict], 
         })
         sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = map[clusters[i]]))
 
+
+    create_dataset_from_sentiment_response_list(sentiments_list)
     return phrase_clusters, sentiments_list
 
 
