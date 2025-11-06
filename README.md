@@ -245,7 +245,20 @@ feedback-summarizer/
 
 ## ✅ Running Tests
 
-_(**In Progress**)_
+To run the backend unit tests, navigate to the project root directory and execute the following commands:
+
+```bash
+python -m unittest tests/test_pdf_service.py
+python -m unittest tests/test_topic_clustering.py
+```
+
+Expected output for `test_pdf_service.py`:
+
+```
+.Ran 1 test in 0.003s
+
+OK
+```
 
 ## 📜 License
 
