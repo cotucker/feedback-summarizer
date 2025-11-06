@@ -97,14 +97,14 @@ def test_topic_moddeling(cluster_name: str, text: str):
 
 def generate_cluster_name(cluster_topics: str) -> str:
     response = client.models.generate_content(
-        model='gemini-flash-latest',
+        model='gemini-2.5-flash',
         contents=[
             types.Content(
                 role="user",
                 parts=[
                     types.Part(
                         text=f"""
-                        You are an expert Data Analyst and Taxonomist. Your task is to analyze a list of keywords representing a cluster of customer feedback and generate a single, concise, and descriptive name for that cluster.
+                        You are an expert Data Analyst and Taxonomist. Your task is to analyze a list of keywords SORTED BY IMPORTANCE representing a cluster of customer feedback and generate a single, concise, and descriptive name for that cluster.
 
                         OBJECTIVE:
                         Based on the provided list of `CLUSTER_KEYWORDS`, synthesize them into a clear, high-level topic name that accurately represents the central theme of the cluster.
