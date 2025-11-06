@@ -249,7 +249,6 @@ To run the backend unit tests, navigate to the project root directory and execut
 
 ```bash
 python -m unittest tests/test_pdf_service.py
-python -m unittest tests/test_topic_clustering.py
 ```
 
 Expected output for `test_pdf_service.py`:
