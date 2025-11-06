@@ -217,6 +217,8 @@ feedback-summarizer/
 ├── main.py               # FastAPI application entry point
 ├── pyproject.toml        # Python project metadata and dependencies
 ├── README.md             # This file
+├── models/               # Classes for structured output
+│   ├── models.py
 ├── services/             # Backend business logic
 │   ├── analysis_service.py
 │   └── ...
