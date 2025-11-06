@@ -30,10 +30,8 @@ class TestPdfService(unittest.TestCase):
 
         pdf_bytes = generate_pdf_from_data(mock_data)
 
-        # Check if the output is bytearray
         self.assertIsInstance(pdf_bytes, bytearray)
 
-        # Check if it's a non-empty PDF file (basic check for PDF header)
         self.assertTrue(pdf_bytes.startswith(b'%PDF-'))
 
 if __name__ == '__main__':

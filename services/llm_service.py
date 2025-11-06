@@ -118,29 +118,7 @@ def generate_cluster_name(cluster_topics: str) -> str:
                         3.  **Be Concise:** The name should be short, ideally 2-4 words long.
                         4.  **Format:** Use Title Case (e.g., "Customer Support Experience").
                         5.  **Strict Output Format:** Your response MUST ONLY be the generated cluster name. Do not include any explanation, introductory text like "The cluster name is:", or any quotation marks.
-
-                        ---
-                        EXAMPLES (for reference):
-
-                        Input: `CLUSTER_KEYWORDS: slow app performance lag crashes mobile freezes`
-                        Expected Output:
-                        Mobile App Performance
-
-                        Input: `CLUSTER_KEYWORDS: price cost expensive billing cheap value money`
-                        Expected Output:
-                        Pricing and Value
-
-                        Input: `CLUSTER_KEYWORDS: communication manager updates planning deadlines responsive`
-                        Expected Output:
-                        Project Management
-
-                        Input: `CLUSTER_KEYWORDS: team helpful agent support ticket fast friendly resolved`
-                        Expected Output:
-                        Customer Support Quality
-
-                        Input: `CLUSTER_KEYWORDS: partner companies recommend need great build product team felt needs time good impressive user work`
-                        Expected Output:
-                        Partnership and Team Collaboration
+                        6.  **Do not return empty string.** You must return something.
                         """,
                     ),
                 ],
