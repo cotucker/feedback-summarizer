@@ -32,3 +32,8 @@ class ClusterName(BaseModel):
 class ClusterDescription(BaseModel):
     cluster_name: str
     description: str
+
+class TopicQuality(BaseModel):
+    score: int
+    is_match: bool
+    justification: str
