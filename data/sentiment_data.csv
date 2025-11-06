@@ -1,87 +1,86 @@
 text,sentiment,topic
-Customer support is awesome,Positive,Technical Team Performance
-the product is horrible,Negative,Technical Team Performance
+Customer support is awesome,Positive,Technical Sales Expertise
+the product is horrible,Negative,Delivery Completion
 The project management was flawless.,Positive,Project Management Challenges
 "Our dedicated manager, Alex, was always on top of things",Positive,Project Management Challenges
 and communication was crystal clear.,Positive,Project Management Challenges
 "A bit pricey,",Negative,Pricing and Value
 but worth every penny for the peace of mind.,Positive,Pricing and Value
-We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Technical Team Performance
+We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Project Management Challenges
 The code was buggy,Negative,Project Management Challenges
 and required constant oversight from our in-house team.,Negative,Project Management Challenges
-Their support team is incredibly responsive.,Positive,Technical Team Performance
+Their support team is incredibly responsive.,Positive,Exceptional Team Performance
 We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Project Management Challenges
-Truly impressive.,Positive,Technical Team Performance
-The final product was delivered on time,Positive,Technical Team Performance
+Truly impressive.,Positive,Technical Sales Expertise
+The final product was delivered on time,Positive,Delivery Completion
 and met all our specifications.,Positive,Project Management Challenges
-Solid work,Positive,Technical Team Performance
-from a reliable team.,Positive,Reliable Team Performance
-Billing is a complete mess.,Negative,Technical Team Performance
+Solid work from a reliable team.,Positive,Exceptional Team Performance
+Billing is a complete mess.,Negative,Technical Sales Expertise
 We were overcharged for hours that were not worked,Negative,Pricing and Value
 and getting it corrected has been a nightmare.,Negative,Project Management Challenges
-The developers are technically brilliant,Positive,Technical Team Performance
+The developers are technically brilliant,Positive,Project Management Challenges
 but their project manager seems completely overwhelmed,Negative,Project Management Challenges
 Deadlines were missed repeatedly due to poor planning,Negative,Project Management Challenges
 Good value for the price.,Positive,Pricing and Value
-"The quality isn't top-tier,",Negative,Technical Team Performance
+"The quality isn't top-tier,",Negative,Project Management Challenges
 "but for our budget, it's more than acceptable.",Positive,Pricing and Value
 You get what you pay for.,Neutral,Pricing and Value
-They promised expertise in cloud migration,Negative,Technical Team Performance
-but their team was clearly learning on the job,Negative,Reliable Team Performance
+They promised expertise in cloud migration,Negative,Technical Sales Expertise
+but their team was clearly learning on the job,Negative,Exceptional Team Performance
 The project was delayed by two months,Negative,Project Management Challenges
 and went over budget,Negative,Pricing and Value
 The platform they provided for tracking progress is intuitive,Positive,Project Management Challenges
-and a huge help.,Positive,Pricing and Value
-It makes collaboration seamless.,Positive,Digital Product Evolution
+and a huge help,Positive,Exceptional Team Performance
+It makes collaboration seamless,Positive,Collaborative Product Innovation
 I'm giving three stars,Neutral,Pricing and Value
-the developers are skilled,Positive,Technical Team Performance
+the developers are skilled,Positive,Project Management Challenges
 the communication from the management team is severely lacking,Negative,Project Management Challenges
-We often felt in the dark about progress,Negative,Technical Team Performance
-A fantastic partner for our startup.,Positive,Digital Product Evolution
+We often felt in the dark about progress,Negative,Technical Sales Expertise
+A fantastic partner for our startup.,Positive,Collaborative Product Innovation
 They understood our vision,Positive,Project Management Challenges
-and delivered a high-quality MVP,Positive,Technical Team Performance
+and delivered a high-quality MVP,Positive,Exceptional Team Performance
 well within our tight deadline.,Positive,Project Management Challenges
 The time zone difference was a much bigger issue than we anticipated.,Negative,Project Management Challenges
 Getting timely responses to urgent questions was a constant struggle.,Negative,Project Management Challenges
 Their QA process needs a serious overhaul.,Negative,Project Management Challenges
 We found so many obvious bugs in the final delivery,Negative,Project Management Challenges
-that it felt like it wasn't tested at all.,Negative,Reliable Team Performance
+that it felt like it wasn't tested at all.,Negative,Exceptional Team Performance
 The initial consultation was amazing.,Positive,Project Management Challenges
 They really took the time to understand our business needs before proposing a solution.,Positive,Project Management Challenges
 the project was successful,Positive,Project Management Challenges
 the constant upselling was exhausting,Negative,Project Management Challenges
-Every call felt like a new sales pitch for another service,Negative,Technical Team Performance
-"Technically, the work is fine.",Positive,Technical Team Performance
-But their team shows zero proactivity.,Negative,Reliable Team Performance
+Every call felt like a new sales pitch for another service,Negative,Technical Sales Expertise
+"Technically, the work is fine.",Positive,Technical Sales Expertise
+But their team shows zero proactivity.,Negative,Exceptional Team Performance
 They only do exactly what is asked and never suggest improvements.,Negative,Project Management Challenges
-We've been working with them for over two years now,Neutral,Technical Team Performance
-and they've become an indispensable part of our team,Positive,Reliable Team Performance
-Highly recommend,Positive,Technical Team Performance
-"The lead developer we worked with, Maria, was a rockstar.",Positive,Technical Team Performance
-Her expertise in AI was a game-changer for our project.,Positive,Technical Team Performance
-The team is not very good at taking feedback.,Negative,Technical Team Performance
-They are a great partner for companies that need to build a high-quality product from scratch.,Positive,Digital Product Evolution
+We've been working with them for over two years now,Neutral,Technical Sales Expertise
+and they've become an indispensable part of our team,Positive,Exceptional Team Performance
+Highly recommend.,Positive,Technical Sales Expertise
+"The lead developer we worked with, Maria, was a rockstar.",Positive,Project Management Challenges
+Her expertise in AI was a game-changer for our project.,Positive,Project Management Challenges
+The team is not very good at taking feedback.,Negative,Technical Sales Expertise
+They are a great partner for companies that need to build a high-quality product from scratch.,Positive,Collaborative Product Innovation
 The project was a complete disaster.,Negative,Project Management Challenges
-I would not recommend them to my worst enemy.,Negative,Technical Team Performance
-Their ability to provide a dedicated team,Positive,Reliable Team Performance
-that feels like an extension of our own,Positive,Reliable Team Performance
-is a huge advantage.,Positive,Pricing and Value
+I would not recommend them to my worst enemy.,Negative,Technical Sales Expertise
+Their ability to provide a dedicated team,Positive,Exceptional Team Performance
+that feels like an extension of our own,Positive,Exceptional Team Performance
+is a huge advantage.,Positive,Exceptional Team Performance
 The team is not very good at communicating their progress.,Negative,Project Management Challenges
-They are a great partner for companies that need to modernize their legacy systems.,Positive,Digital Product Evolution
+They are a great partner for companies that need to modernize their legacy systems.,Positive,Collaborative Product Innovation
 The project was a complete failure.,Negative,Project Management Challenges
-I would not recommend them to anyone.,Negative,Technical Team Performance
-Their ability to provide a cost-effective solution,Positive,Reliable Team Performance
-without sacrificing quality,Positive,Technical Team Performance
-is a huge plus,Positive,Pricing and Value
+I would not recommend them to anyone.,Negative,Technical Sales Expertise
+Their ability to provide a cost-effective solution,Positive,Exceptional Team Performance
+without sacrificing quality,Positive,Project Management Challenges
+is a huge plus,Positive,Exceptional Team Performance
 The team is not very good at meeting deadlines.,Negative,Project Management Challenges
-They are a great partner,Positive,Digital Product Evolution
-"for companies that need to build a complex, enterprise-grade application.",Positive,Project Management Challenges
+They are a great partner,Positive,Collaborative Product Innovation
+"for companies that need to build a complex, enterprise-grade application",Neutral,Project Management Challenges
 The project was a complete and utter nightmare.,Negative,Project Management Challenges
-I would not wish this experience on anyone.,Negative,Technical Team Performance
-Their ability to provide a flexible and scalable team,Positive,Reliable Team Performance
-that can grow with our needs,Positive,Project Management Challenges
-is a huge plus.,Positive,Pricing and Value
-The team is not very good at providing clear and concise documentation.,Negative,Technical Team Performance
-They are a great partner for companies that need to build a beautiful and intuitive user interface.,Positive,Digital Product Evolution
+I would not wish this experience on anyone.,Negative,Technical Sales Expertise
+Their ability to provide a flexible and scalable team,Positive,Exceptional Team Performance
+that can grow with our needs is a huge plus,Positive,Exceptional Team Performance
+The team is not very good at providing clear and concise documentation.,Negative,Technical Sales Expertise
+They are a great partner,Positive,Collaborative Product Innovation
+for companies that need to build a beautiful and intuitive user interface.,Positive,Technical Sales Expertise
 The project was a complete and utter failure.,Negative,Project Management Challenges
-I would not recommend them to anyone.,Negative,Technical Team Performance
+I would not recommend them to anyone.,Negative,Technical Sales Expertise

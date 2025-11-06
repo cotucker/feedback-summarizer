@@ -5,6 +5,7 @@ import requests
 from sentence_transformers import SentenceTransformer
 from umap import UMAP
 from hdbscan import HDBSCAN
+from sklearn.metrics import silhouette_score
 import plotly.express as px
 import matplotlib.pyplot as plt
 from services.nlp_service import filter_text_final_version
@@ -52,6 +53,23 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> (list[dict], 
     clusters = hdbscan_model.labels_
 
     print(f"Number of clusters: {len(set(clusters))}")
+
+    non_noise_mask = clusters != -1
+    if np.sum(non_noise_mask) > 0:
+        reduced_embeddings_filtered = reduced_embeddings[non_noise_mask]
+        clusters_filtered = clusters[non_noise_mask]
+
+        num_clusters = len(set(clusters_filtered))
+        if num_clusters > 1:
+            try:
+                score = silhouette_score(reduced_embeddings_filtered, clusters_filtered, metric='euclidean')
+                print(f"Cluster Quality (Silhouette Score): {score:.4f}")
+            except ValueError as e:
+                print(f"Could not calculate Silhouette Score: {e}")
+        else:
+            print("Silhouette Score not calculated: Fewer than 2 clusters found.")
+    else:
+        print("Silhouette Score not calculated: No clusters were found.")
 
     map = {}
 
