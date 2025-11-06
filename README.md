@@ -49,7 +49,6 @@ Here's a quick look at the dashboard in action. The user uploads a CSV, and the 
 
 https://github.com/user-attachments/assets/c2446584-f543-4b3b-ba11-6aeb0f245acb
 
-
 ## 🛠️ Tech Stack
 
 This project uses a modern, decoupled architecture with a React frontend and a FastAPI backend.
@@ -203,6 +202,16 @@ Analyzes a CSV file of customer feedback.
     ]
   }
   ```
+
+#### `POST /api/feedback/report`
+
+Generates a PDF report from the analyzed feedback data.
+
+- **Request Type:** `application/json`
+- **Body:**
+  - `data` (required, JSON object): The JSON object containing the analysis results to be included in the PDF.
+- **Successful Response (`200 OK`):**
+  - Returns a PDF file.
 
 ## 📂 Project Structure
 
