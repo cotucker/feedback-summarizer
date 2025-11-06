@@ -33,7 +33,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> (list[dict], 
     embeddings = model.encode(processed_texts_list, device='cuda')
 
     umap_model = UMAP(
-        n_components=13,
+        n_components=12,
         min_dist=0.0,
         metric='cosine',
         random_state=67
