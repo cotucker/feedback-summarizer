@@ -7,7 +7,7 @@ from umap import UMAP
 from hdbscan import HDBSCAN
 import plotly.express as px
 import matplotlib.pyplot as plt
-from services.nlp_service import filter_text_final_version, get_sentiment
+from services.nlp_service import filter_text_final_version
 from services.llm_service import generate_cluster_name
 from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse
@@ -24,6 +24,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> (list[dict], 
     df = pd.read_csv('data/data.csv')
 
     texts_list = [response.text for response in sentiment_responses]
+    sentiments = [response.sentiment for response in sentiment_responses]
     texts_list.extend(df['Phrase'].tolist())
 
     abstracts = texts_list
@@ -80,7 +81,7 @@ def cluster_texts(sentiment_responses: list[SentimentResponse]) -> (list[dict], 
     sentiments_list: list[SentimentResponse] = []
 
     for i, text in enumerate(texts_list[:data_size]):
-        sentiment = get_sentiment(text)
+        sentiment = sentiments[i]
         phrase_clusters.append({
             "x": float(reduced_embeddings_3d[i][0]),
             "y": float(reduced_embeddings_3d[i][1]),

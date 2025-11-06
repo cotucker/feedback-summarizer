@@ -27,11 +27,6 @@ INTENSIFIER_WORDS = {
     "really", "so", "totally", "truly", "very", "quite"
 }
 
-
-tokenizer = AutoTokenizer.from_pretrained("mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis")
-model = AutoModelForSequenceClassification.from_pretrained("mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis")
-nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
-
 def filter_text_final_version(text: str) -> str:
     sentiment_lexicon = analyzer.lexicon
     tokens = word_tokenize(text)
@@ -56,18 +51,6 @@ def filter_text_final_version(text: str) -> str:
         filtered_words.append(word)
 
     return detokenizer.detokenize(filtered_words)
-
-
-def get_sentiment(text: str) -> str:
-    sentiment = nlp(text)
-    map = {
-        'positive': Sentiment.POSITIVE,
-        'negative': Sentiment.NEGATIVE,
-        'neutral': Sentiment.NEUTRAL
-    }
-    return map[sentiment[0]['label']]
-
-
 
 if __name__ == "__main__":
 

@@ -55,7 +55,7 @@ def generate_topics_description(cluster_names: list[str]) -> list[ClusterDescrip
 
 def generate_cluster_name(cluster_topics: str) -> str:
     response = client.models.generate_content(
-        model='gemini-flash-latest',
+        model='gemini-2.5-flash',
         contents=[
             types.Content(
                 role="user",

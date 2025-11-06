@@ -1,450 +1,88 @@
 text,sentiment,topic
-The project management was flawless.,Positive,Project Management and Quality
-"Our dedicated manager, Alex, was always on top of things",Neutral,Project Management and Quality
-and communication was crystal clear.,Neutral,Project Management and Quality
-"A bit pricey,",Neutral,Pricing and Value
-but worth every penny for the peace of mind.,Neutral,Pricing and Value
-We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Developer Expertise and Scope
-The code was buggy,Neutral,Project Management and Quality
-and required constant oversight from our in-house team.,Neutral,Developer Expertise and Scope
-Their support team is incredibly responsive.,Positive,Support Process and Attitude
-We had a critical issue over the weekend and they had it resolved within two hours.,Neutral,Project Management and Quality
-Truly impressive.,Positive,Developer Expertise and Scope
-The final product was delivered on time,Neutral,Project Management and Quality
-and met all our specifications,Neutral,Developer Expertise and Scope
-Solid work,Neutral,Project Management and Quality
-from a reliable team,Neutral,Developer Expertise and Scope
-Billing is a complete mess.,Neutral,Developer Expertise and Scope
+Customer support is awesome,Positive,Cloud Migration Experience
+the product is horrible,Negative,Cloud Migration Experience
+The project management was flawless.,Positive,Project Management
+"Our dedicated manager, Alex, was always on top of things",Positive,Project Management
+and communication was crystal clear.,Positive,Project Management
+"A bit pricey,",Negative,Pricing and Value
+but worth every penny for the peace of mind.,Positive,Pricing and Value
+We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Project Management
+The code was buggy,Negative,Project Management
+and required constant oversight from our in-house team.,Negative,Project Management
+Their support team is incredibly responsive.,Positive,Robust Team Performance
+We had a critical issue over the weekend and they had it resolved within two hours.,Positive,Project Management
+Truly impressive.,Positive,Cloud Migration Experience
+The final product was delivered on time,Positive,Cloud Migration Experience
+and met all our specifications,Positive,Project Management
+Solid work from a reliable team.,Positive,Robust Team Performance
+Billing is a complete mess.,Negative,Cloud Migration Experience
 We were overcharged for hours that were not worked,Negative,Pricing and Value
-and getting it corrected has been a nightmare.,Negative,Project Management and Quality
-The developers are technically brilliant,Neutral,Developer Expertise and Scope
-but their project manager seems completely overwhelmed,Negative,Project Management and Quality
-Deadlines were missed repeatedly,Neutral,Project Management and Quality
-due to poor planning,Negative,Project Management and Quality
+and getting it corrected has been a nightmare.,Negative,Project Management
+The developers are technically brilliant,Positive,Project Management
+but their project manager seems completely overwhelmed,Negative,Project Management
+Deadlines were missed repeatedly,Negative,Project Management
+due to poor planning,Negative,Project Management
 Good value for the price.,Positive,Pricing and Value
-"The quality isn't top-tier,",Neutral,Project Management and Quality
-"but for our budget, it's more than acceptable.",Positive,Developer Expertise and Scope
+The quality isn't top-tier,Negative,Cloud Migration Experience
+"but for our budget, it's more than acceptable.",Positive,Pricing and Value
 You get what you pay for.,Neutral,Pricing and Value
-They promised expertise in cloud migration,Neutral,Developer Expertise and Scope
-but their team was clearly learning on the job,Positive,Team Capability and Organization
-The project was delayed by two months,Neutral,Project Management and Quality
-and went over budget,Neutral,Developer Expertise and Scope
-The platform they provided for tracking progress is intuitive,Neutral,Project Management and Quality
-and a huge help,Neutral,Developer Expertise and Scope
-It makes collaboration seamless,Positive,External Collaboration Reliability
-I'm giving three stars,Neutral,Project Management and Quality
-the developers are skilled,Neutral,Developer Expertise and Scope
-the communication from the management team is severely lacking,Negative,Project Management and Quality
-We often felt in the dark about progress,Neutral,User Feedback Responsiveness
-A fantastic partner for our startup.,Positive,External Collaboration Reliability
-They understood our vision,Neutral,Project Management and Quality
-and delivered a high-quality MVP,Positive,Project Management and Quality
-well within our tight deadline.,Neutral,Project Management and Quality
-The time zone difference was a much bigger issue than we anticipated.,Neutral,Project Management and Quality
-Getting timely responses to urgent questions was a constant struggle.,Neutral,Project Management and Quality
-Their QA process needs a serious overhaul.,Neutral,Developer Expertise and Scope
-We found so many obvious bugs in the final delivery,Negative,Project Management and Quality
-that it felt like it wasn't tested at all.,Neutral,Developer Expertise and Scope
-The initial consultation was amazing.,Positive,Project Management and Quality
-They really took the time to understand our business needs before proposing a solution.,Neutral,Project Management and Quality
-While the project was successful,Positive,Project Management and Quality
-the constant upselling was exhausting,Neutral,Project Management and Quality
-Every call felt like a new sales pitch for another service,Neutral,Developer Expertise and Scope
-"Technically, the work is fine.",Neutral,Project Management and Quality
-But their team shows zero proactivity.,Neutral,Team Capability and Organization
-They only do exactly what is asked,Neutral,User Feedback Responsiveness
-and never suggest improvements.,Neutral,Developer Expertise and Scope
-We've been working with them for over two years now,Neutral,Project Management and Quality
-and they've become an indispensable part of our team,Neutral,Team Capability and Organization
-Highly recommend,Neutral,Developer Expertise and Scope
-"The lead developer we worked with, Maria, was a rockstar.",Neutral,Developer Expertise and Scope
-Her expertise in AI was a game-changer for our project.,Positive,Developer Expertise and Scope
-The cost savings are significant,Positive,Pricing and Value
-but be prepared to invest a lot of your own time in managing the project,Neutral,Project Management and Quality
-and clarifying requirements,Neutral,Developer Expertise and Scope
-They completely missed the deadline for our critical launch,Negative,Project Management and Quality
-and the communication leading up to the failure was poor.,Negative,Project Management and Quality
-We can't trust them again.,Neutral,Developer Expertise and Scope
-Their ability to scale the team up or down based on our needs has been incredibly valuable,Positive,Team Capability and Organization
-for our fluctuating workload.,Neutral,Project Management and Quality
-The code quality is excellent.,Positive,Project Management and Quality
-"It's clean,",Neutral,Project Management and Quality
-"well-documented,",Neutral,Developer Expertise and Scope
-and follows best practices.,Neutral,Developer Expertise and Scope
-Our internal team was very impressed.,Positive,Team Capability and Organization
-Customer support is friendly,Neutral,Developer Expertise and Scope
-but they don't seem empowered to solve problems,Neutral,Project Management and Quality
-Every issue has to be escalated,Neutral,Project Management and Quality
-causing delays,Negative,Project Management and Quality
-The project was a disaster from start to finish.,Negative,Project Management and Quality
-Poor communication,Negative,Project Management and Quality
-missed deadlines,Neutral,Project Management and Quality
-and a buggy final product.,Neutral,Product Quality and Stability
-Their pricing is transparent and fair.,Neutral,Pricing and Value
-"No hidden fees or surprises,",Neutral,Pricing and Value
-which we really appreciate.,Neutral,Pricing and Value
-The team is eager and hardworking,Positive,Team Capability and Organization
-but lacks the senior-level experience we needed for a complex architectural project.,Neutral,Project Management and Quality
-They did a great job on the UI/UX design.,Positive,User Experience Design
-The app they delivered is beautiful,Neutral,Project Management and Quality
-and a pleasure to use.,Neutral,Project Management and Quality
-It feels like we're working with a black box.,Neutral,Developer Expertise and Scope
-"We send requirements, and code comes back, but there's no collaboration or discussion.",Neutral,Project Management and Quality
-"For basic website maintenance, they are a cost-effective and reliable choice.",Positive,Project Management and Quality
-No complaints.,Neutral,Project Management and Quality
-They assigned a new project manager halfway through,Neutral,Project Management and Quality
-and the transition was chaotic,Neutral,Project Management and Quality
-It completely derailed our progress,Negative,Project Management and Quality
-The security audit they performed on our application was incredibly thorough,Neutral,Operational Security and Compliance
-and identified several critical vulnerabilities,Neutral,Operational Security and Compliance
-Great work.,Neutral,Project Management and Quality
-Their English proficiency was a barrier.,Negative,Project Management and Quality
-Technical details were often lost in translation,Neutral,Developer Expertise and Scope
-leading to rework.,Neutral,Project Management and Quality
-A truly agile team.,Neutral,Team Capability and Organization
-They adapted to our changing requirements without any fuss,Neutral,Developer Expertise and Scope
-and delivered great results.,Positive,Project Management and Quality
-The project started strong,Positive,Project Management and Quality
-but lost momentum,Negative,Project Management and Quality
-It feels like our project was de-prioritized in favor of other clients.,Neutral,External Collaboration Reliability
-We were promised a team of senior developers,Neutral,Developer Expertise and Scope
-but the code we received suggests otherwise,Neutral,Project Management and Quality
-Very disappointed in the bait-and-switch,Negative,Developer Expertise and Scope
-The onboarding process was seamless.,Neutral,Developer Expertise and Scope
-We were up and running with our new team in less than a week.,Neutral,Team Capability and Organization
-Their expertise in legacy system modernization saved us from a complete rewrite.,Positive,Project Management and Quality
-They know their stuff.,Neutral,Project Management and Quality
-The contract negotiation was painful,Negative,Developer Expertise and Scope
-and rigid,Neutral,Product Quality and Stability
-They were not willing to accommodate any of our standard clauses,Neutral,Developer Expertise and Scope
-I'm impressed by their commitment to quality.,Positive,Operational Security and Compliance
-They have a rigorous code review and testing process,Neutral,Developer Expertise and Scope
-that caught issues early.,Neutral,Project Management and Quality
-They are great at execution,Neutral,Project Management and Quality
-but lack strategic input,Neutral,Developer Expertise and Scope
-We were hoping for a partner,Neutral,External Collaboration Reliability
-not just a team of coders,Neutral,Project Management and Quality
-The project was a huge success,Positive,Project Management and Quality
-and delivered under budget,Neutral,Developer Expertise and Scope
-Management is very happy,Positive,Project Management and Quality
-We will be using them for future projects,Neutral,Project Management and Quality
-Turnover on their team is high.,Positive,Team Capability and Organization
-"We've had three different lead developers in six months,",Neutral,Developer Expertise and Scope
-which has been disruptive.,Negative,Project Management and Quality
-Their documentation is top-notch.,Neutral,Developer Expertise and Scope
-It makes handing over the project to our internal team so much easier.,Positive,Team Capability and Organization
-The initial estimates were way off.,Neutral,Project Management and Quality
-The project ended up costing nearly double what was quoted.,Negative,Developer Expertise and Scope
-They are very process-oriented,Neutral,Developer Expertise and Scope
-which brings a level of predictability and stability,Positive,Project Management and Quality
-that we appreciate,Neutral,Pricing and Value
-The team seems burnt out.,Negative,Team Capability and Organization
-The quality of work and communication has noticeably declined over the past few months.,Negative,Project Management and Quality
-An excellent choice for staff augmentation.,Positive,Developer Expertise and Scope
-The developers they provided integrated perfectly with our existing team.,Neutral,Team Capability and Organization
-Their legal and compliance team was a nightmare to work with.,Negative,Developer Expertise and Scope
-It slowed down the project start by over a month.,Negative,Project Management and Quality
-They went above and beyond to help us meet a critical investor deadline.,Neutral,Project Management and Quality
-We couldn't have done it without them.,Neutral,Project Management and Quality
-The user acceptance testing phase was a mess.,Negative,Developer Expertise and Scope
-The product was nowhere near ready for us to review.,Neutral,Developer Expertise and Scope
-Their understanding of our industry's specific regulations was a huge asset.,Positive,Developer Expertise and Scope
-It saved us a lot of time,Positive,Project Management and Quality
-and potential legal issues.,Neutral,Project Management and Quality
-The project manager is a great communicator,Neutral,Project Management and Quality
-but lacks the technical depth to understand the challenges our project faced.,Neutral,Project Management and Quality
-They delivered the project,Neutral,Project Management and Quality
-but the architecture is not scalable,Negative,Project Management and Quality
-We're already facing issues as our user base grows,Negative,Support Process and Attitude
-The daily stand-up meetings are efficient,Neutral,Project Management and Quality
-and keep everyone aligned,Neutral,Team Capability and Organization
-Great project management practice.,Positive,Project Management and Quality
-We had to pull the plug halfway through.,Neutral,Project Management and Quality
-The team was just not capable of delivering on their promises.,Negative,Team Capability and Organization
-Their design team is fantastic.,Positive,User Experience Design
-They took our vague ideas and turned them into a stunning and functional interface.,Neutral,User Experience Design
-The reporting they provide is vague,Neutral,Developer Expertise and Scope
-and not very useful,Neutral,Developer Expertise and Scope
-We have little visibility into the actual work being done.,Neutral,Project Management and Quality
-"They are a reliable, no-frills outsourcing partner.",Neutral,External Collaboration Reliability
-"They do the job as specified,",Neutral,Developer Expertise and Scope
-"on time,",Neutral,Project Management and Quality
-and on budget.,Neutral,Developer Expertise and Scope
-We experienced significant data loss during the migration they handled.,Negative,Operational Security and Compliance
-A catastrophic failure.,Negative,Developer Expertise and Scope
-Their proactive suggestions for improving our app's performance,Positive,Project Management and Quality
-have been incredibly valuable.,Positive,Developer Expertise and Scope
-The support ticketing system they use is clunky and outdated.,Negative,Support Process and Attitude
-It's frustrating to submit and track issues.,Negative,Project Management and Quality
-We've seen a massive improvement in our development velocity,Positive,Developer Expertise and Scope
-since partnering with them.,Neutral,External Collaboration Reliability
-The final invoice included charges for software licenses we were told were included.,Neutral,Developer Expertise and Scope
-Felt dishonest.,Neutral,Developer Expertise and Scope
-Their expertise in DevOps has streamlined our entire release process.,Positive,Developer Expertise and Scope
-We're deploying code faster,Positive,Project Management and Quality
-and more reliably than ever.,Positive,Project Management and Quality
-They are very rigid in their interpretation of the scope.,Neutral,Developer Expertise and Scope
-Any minor change requires a new contract and lengthy negotiation.,Neutral,Developer Expertise and Scope
-The team is friendly,Neutral,Developer Expertise and Scope
-and has a great attitude,Positive,Developer Expertise and Scope
-which makes working with them a pleasure,Positive,Project Management and Quality
-The project failed to meet basic accessibility standards,Negative,Operational Security and Compliance
-which is a major compliance issue for us,Neutral,Developer Expertise and Scope
-They have a deep pool of talent to draw from.,Neutral,Product Quality and Stability
-"When we needed a specialist in a niche technology, they had someone ready.",Neutral,Project Management and Quality
-Communication is sporadic.,Neutral,Project Management and Quality
-We sometimes go days without hearing anything,Neutral,Project Management and Quality
-even when deadlines are approaching.,Neutral,Project Management and Quality
-The quality of their work is consistently high.,Positive,Project Management and Quality
-We can always trust that what they deliver will be solid.,Positive,Project Management and Quality
-They were acquired by another company mid-project,Neutral,Developer Expertise and Scope
-and the resulting chaos completely derailed our timeline.,Neutral,Project Management and Quality
-Their commitment to our success feels genuine.,Positive,Operational Security and Compliance
-"They act like true partners, not just vendors.",Neutral,External Collaboration Reliability
-The time tracking is not transparent.,Neutral,Project Management and Quality
-We have no way of verifying the hours they are billing us for.,Neutral,Developer Expertise and Scope
-They were able to salvage a failing project,Positive,Project Management and Quality
-that another vendor had botched,Neutral,External Collaboration Reliability
-They are lifesavers.,Neutral,Operational Security and Compliance
-The code is a tangled mess of spaghetti.,Neutral,Project Management and Quality
-It works,Neutral,Project Management and Quality
-but it will be impossible to maintain.,Negative,Project Management and Quality
-Their CEO was personally involved in ensuring our project was a success.,Positive,Project Management and Quality
-That level of commitment is rare.,Neutral,Operational Security and Compliance
-They are slow to adopt new technologies.,Negative,Project Management and Quality
-It feels like we are paying for solutions that are already becoming outdated.,Negative,Pricing and Value
-The handoff at the end of the project was seamless.,Neutral,Developer Expertise and Scope
-They provided excellent documentation,Neutral,Developer Expertise and Scope
-and training for our team.,Neutral,Support Process and Attitude
-We had a major security breach,Negative,Operational Security and Compliance
-that was traced back to a vulnerability in the code they wrote.,Neutral,Operational Security and Compliance
-Unacceptable.,Neutral,Developer Expertise and Scope
-They are great at what they do,Neutral,Developer Expertise and Scope
-but they are not cheap,Neutral,Pricing and Value
-You are paying a premium for their quality,Neutral,Developer Expertise and Scope
-The project manager is too passive.,Neutral,Project Management and Quality
-They don't push back on bad ideas,Neutral,Project Management and Quality
-or manage expectations effectively.,Neutral,Team Capability and Organization
-They consistently deliver high-quality work,Neutral,Project Management and Quality
-ahead of schedule,Neutral,Project Management and Quality
-We couldn't be happier,Positive,Project Management and Quality
-The language barrier was a significant issue,Neutral,Project Management and Quality
-leading to frequent misunderstandings,Neutral,Project Management and Quality
-and rework,Neutral,Project Management and Quality
-Their flexibility in adapting to our internal tools and processes was a huge help.,Positive,Project Management and Quality
-We were sold a dream during the sales process,Neutral,Project Management and Quality
-that the delivery team simply could not execute on.,Neutral,Project Management and Quality
-Their deep expertise in the fintech domain was evident.,Neutral,Developer Expertise and Scope
-They understood our challenges without needing much explanation.,Neutral,Project Management and Quality
-The team is spread too thin across too many projects.,Neutral,Team Capability and Organization
-We never felt like we had their full attention.,Neutral,Project Management and Quality
-The solution they built is robust,Neutral,Product Quality and Stability
-scalable,Neutral,Project Management and Quality
-and has had zero downtime since launch,Neutral,Project Management and Quality
-Excellent engineering,Neutral,Developer Expertise and Scope
-The contract is very one-sided,Neutral,Developer Expertise and Scope
-and offers us little protection if things go wrong.,Neutral,Operational Security and Compliance
-We had to walk away.,Neutral,Project Management and Quality
-They provide detailed weekly reports,Neutral,Developer Expertise and Scope
-that give us full visibility into progress,Neutral,Project Management and Quality
-and potential blockers,Neutral,Project Management and Quality
-They are just a body shop.,Neutral,Product Quality and Stability
-There's no innovation or thought leadership.,Neutral,External Collaboration Reliability
-You have to provide all the direction.,Neutral,Project Management and Quality
-The team's positive attitude,Positive,Team Capability and Organization
-and can-do spirit are infectious,Neutral,Developer Expertise and Scope
-It's a pleasure to work with them,Neutral,Project Management and Quality
-They missed a critical security requirement in the specifications,Negative,Operational Security and Compliance
-which could have had severe consequences,Negative,Project Management and Quality
-Their ability to quickly build and deploy a proof-of-concept was instrumental,Positive,Developer Expertise and Scope
-in getting stakeholder buy-in.,Neutral,External Collaboration Reliability
-The project manager is a bottleneck.,Neutral,Project Management and Quality
-"All communication has to go through them,",Neutral,Project Management and Quality
-which slows everything down.,Negative,Project Management and Quality
-We've been with them for years,Neutral,Project Management and Quality
-and consider them a long-term strategic partner.,Positive,External Collaboration Reliability
-The code they delivered was not optimized at all.,Neutral,Project Management and Quality
-It was slow,Neutral,Project Management and Quality
-and resource-intensive.,Neutral,Developer Expertise and Scope
-Their QA testers are incredibly thorough.,Neutral,Developer Expertise and Scope
-They find bugs that our own team misses.,Neutral,Project Management and Quality
-They seem to have a high rate of employee attrition,Negative,Developer Expertise and Scope
-leading to a lack of continuity on our project,Negative,Project Management and Quality
-The project was a textbook example of how outsourcing should work.,Neutral,Project Management and Quality
-Great communication,Positive,Project Management and Quality
-on-time delivery,Neutral,Project Management and Quality
-and high-quality results.,Neutral,Project Management and Quality
-Their initial discovery phase was a bit slow,Neutral,Project Management and Quality
-but it paid off in the long run by ensuring there were no surprises later,Positive,Project Management and Quality
-They are very resistant to feedback,Neutral,User Feedback Responsiveness
-and get defensive when we point out issues in their work.,Neutral,Support Process and Attitude
-The mobile app they developed has received rave reviews from our users.,Positive,Project Management and Quality
-It's a huge success.,Positive,Developer Expertise and Scope
-The project felt disorganized,Negative,Project Management and Quality
-and chaotic from day one.,Neutral,Project Management and Quality
-There was no clear plan,Neutral,Project Management and Quality
-or direction.,Neutral,Project Management and Quality
-Their expertise in UI/UX,Neutral,Developer Expertise and Scope
-has dramatically improved the usability of our product.,Positive,Developer Expertise and Scope
-The time zone overlap is only a few hours,Neutral,Project Management and Quality
-which makes real-time collaboration very difficult,Negative,External Collaboration Reliability
-They are a very professional,Neutral,Developer Expertise and Scope
-and well-run organization.,Neutral,Team Capability and Organization
-We have been impressed at every stage.,Positive,Project Management and Quality
-The final product was functional,Neutral,Product Quality and Stability
-but lacked the polish and attention to detail we were expecting.,Negative,Project Management and Quality
-Their ability to integrate with our complex legacy systems was impressive.,Positive,Project Management and Quality
-We had to micromanage every aspect of the project.,Neutral,Project Management and Quality
-It ended up taking more of our time than if we had done it ourselves.,Neutral,Project Management and Quality
-The project was delivered on time,Neutral,Project Management and Quality
-on budget,Neutral,Developer Expertise and Scope
-and exceeded our expectations,Positive,Team Capability and Organization
-An absolute home run.,Neutral,User Feedback Responsiveness
-The developers are good,Positive,Developer Expertise and Scope
-but the project management tools they use are terrible,Negative,Project Management and Quality
-making it hard to track progress,Negative,Project Management and Quality
-They have a very strong company culture,Positive,Developer Expertise and Scope
-that emphasizes quality,Neutral,Project Management and Quality
-and client satisfaction,Positive,Developer Expertise and Scope
-and it shows,Neutral,Developer Expertise and Scope
-They are very secretive about their development process.,Neutral,Project Management and Quality
-We have no visibility into the code until it's delivered.,Neutral,Project Management and Quality
-Their post-launch support has been excellent.,Positive,Support Process and Attitude
-They are quick to address any bugs or issues that come up.,Neutral,Project Management and Quality
-The sales team overpromised on the team's capabilities.,Positive,Team Capability and Organization
-The developers we got were not as experienced as we were led to believe.,Neutral,Developer Expertise and Scope
-They are a great partner for augmenting our internal team with specific skill sets we lack.,Positive,Team Capability and Organization
-The project was constantly blocked waiting for decisions or approvals from their side.,Neutral,Project Management and Quality
-They are incredibly organized,Neutral,Team Capability and Organization
-and efficient,Neutral,Developer Expertise and Scope
-The project ran like a well-oiled machine.,Neutral,Project Management and Quality
-The code is not self-explanatory,Neutral,Project Management and Quality
-and lacks comments,Neutral,Project Management and Quality
-", which will make future maintenance difficult.",Negative,Project Management and Quality
-Their ability to understand our complex business logic,Neutral,Developer Expertise and Scope
-and translate it into a functional application,Neutral,Project Management and Quality
-was outstanding,Neutral,Developer Expertise and Scope
-They are very inflexible with their work hours,Negative,Project Management and Quality
-which makes it hard to schedule meetings,Negative,Project Management and Quality
-The team is passionate about their work,Neutral,Team Capability and Organization
-and genuinely invested in our project's success.,Positive,Developer Expertise and Scope
-They delivered a product that technically works,Neutral,Project Management and Quality
-but completely missed the mark on user experience.,Negative,User Feedback Responsiveness
-Their knowledge of cybersecurity best practices is impressive.,Positive,Operational Security and Compliance
-We feel our application is in safe hands.,Neutral,Project Management and Quality
-The project manager is great at shielding the team from distractions,Neutral,Project Management and Quality
-but it also means we have limited direct access to the developers,Negative,Developer Expertise and Scope
-They have a very structured and transparent development process.,Neutral,Project Management and Quality
-We always know what's going on.,Neutral,Project Management and Quality
-The team seems to lack a sense of ownership.,Negative,Team Capability and Organization
-They are just completing tasks without thinking about the bigger picture.,Neutral,Project Management and Quality
-They were able to turn our vague requirements into a detailed technical specification,Neutral,Developer Expertise and Scope
-that was spot on.,Neutral,Developer Expertise and Scope
-The project was a constant struggle,Neutral,Project Management and Quality
-due to cultural differences,Neutral,Project Management and Quality
-and communication styles,Neutral,Project Management and Quality
-They provide a dedicated QA engineer for the project,Neutral,Project Management and Quality
-which has significantly improved the quality of the deliverables,Positive,Developer Expertise and Scope
-The team is not very good at estimating effort.,Negative,Team Capability and Organization
-Their timelines are consistently underestimated.,Negative,Project Management and Quality
-"They are a true partner, not just a vendor.",Neutral,External Collaboration Reliability
-They are always looking for ways to add value beyond the contract.,Neutral,Pricing and Value
-The code is poorly structured,Negative,Project Management and Quality
-and will be difficult to refactor in the future.,Neutral,Project Management and Quality
-Their design mockups were beautiful,Neutral,User Experience Design
-but the final product didn't quite capture the same level of polish,Neutral,Product Quality and Stability
-They have a very strong grasp of agile methodologies,Positive,Project Management and Quality
-and run sprints very effectively.,Neutral,Project Management and Quality
-The team is very junior,Neutral,Developer Expertise and Scope
-and requires a lot of hand-holding from our senior engineers.,Neutral,Developer Expertise and Scope
-Their ability to deliver a complex feature under a tight deadline was nothing short of heroic.,Positive,Project Management and Quality
-The project manager is not very organized,Neutral,Project Management and Quality
-leading to missed details,Neutral,Project Management and Quality
-and confusion,Neutral,Developer Expertise and Scope
-They have a very collaborative and open communication style.,Neutral,Project Management and Quality
-We feel like we are part of the same team.,Neutral,Team Capability and Organization
-The final product is not very intuitive.,Neutral,Product Quality and Stability
-We are getting a lot of support tickets from confused users.,Positive,Support Process and Attitude
-Their expertise in data analytics,Neutral,Developer Expertise and Scope
-has helped us unlock valuable insights from our data.,Positive,Developer Expertise and Scope
-They are very slow to respond to emails,Neutral,Project Management and Quality
-and messages,Neutral,Project Management and Quality
-", which can be frustrating.",Negative,Developer Expertise and Scope
-They are a very reliable and trustworthy partner.,Neutral,External Collaboration Reliability
-We have been working with them for over  years.,Neutral,Project Management and Quality
-The project was a technical success,Positive,Project Management and Quality
-but a commercial failure,Negative,Developer Expertise and Scope
-because they didn't understand our users.,Neutral,User Feedback Responsiveness
-Their ability to provide end-to-end services,Neutral,Project Management and Quality
-from design to deployment and maintenance,Neutral,Project Management and Quality
-is a huge advantage,Positive,Developer Expertise and Scope
-They are very resistant to using our internal project management tools,Negative,Project Management and Quality
-which creates friction.,Neutral,Project Management and Quality
-The team is incredibly smart,Positive,Developer Expertise and Scope
-and talented.,Neutral,Developer Expertise and Scope
-They are always coming up with innovative solutions to our problems.,Neutral,Project Management and Quality
-The project manager is a bit of a micromanager,Neutral,Project Management and Quality
-which can be frustrating for our team,Negative,Developer Expertise and Scope
-They have a very strong focus on user experience,Positive,User Feedback Responsiveness
-and it shows in the quality of their work,Neutral,Project Management and Quality
-The team seems to be juggling too many projects at once,Neutral,Team Capability and Organization
-and the quality of their work on our project has suffered.,Negative,Project Management and Quality
-They are a great partner for rapid prototyping,Positive,External Collaboration Reliability
-and building MVPs.,Neutral,Team Capability and Organization
-The project was a constant source of stress and frustration.,Negative,Project Management and Quality
-I would not recommend them.,Neutral,Developer Expertise and Scope
-Their ability to adapt to our changing priorities,Neutral,Project Management and Quality
-has been a huge asset.,Positive,Developer Expertise and Scope
-The team is not very proactive,Negative,Developer Expertise and Scope
-about identifying potential risks or issues,Neutral,Project Management and Quality
-They have a very strong engineering culture,Positive,Developer Expertise and Scope
-that values clean code,Neutral,Project Management and Quality
-and good design,Neutral,User Experience Design
-The project manager is not very good at communicating bad news,Negative,Project Management and Quality
-which leads to surprises,Neutral,Project Management and Quality
-They are a true pleasure to work with.,Neutral,Project Management and Quality
-Professional,Neutral,Developer Expertise and Scope
-friendly,Neutral,Developer Expertise and Scope
-and talented.,Neutral,Developer Expertise and Scope
-The final product is not very well-documented,Neutral,Product Quality and Stability
-which will make it hard for us to maintain.,Negative,Project Management and Quality
-Their expertise in our niche industry is a huge advantage.,Positive,Developer Expertise and Scope
-They get it.,Neutral,Pricing and Value
-The team is not very good at following our coding standards.,Negative,Project Management and Quality
-They are a great partner,Neutral,External Collaboration Reliability
-"for long-term, complex projects.",Neutral,Project Management and Quality
-The project was a complete mess.,Neutral,Project Management and Quality
-I would give them zero stars if I could.,Neutral,Project Management and Quality
-Their ability to work independently,Neutral,Project Management and Quality
-and with minimal supervision is a huge plus.,Positive,Project Management and Quality
-The team is not very good at providing regular status updates.,Negative,Developer Expertise and Scope
-They are a great partner for companies that need to scale their development team quickly.,Positive,Team Capability and Organization
-The project was a huge waste of time and money.,Negative,Project Management and Quality
-I would never work with them again.,Neutral,Project Management and Quality
-"Their ability to provide a full-service team, including developers, QA, and a project manager, is very convenient.",Positive,Team Capability and Organization
-The team is not very good at taking feedback.,Negative,User Feedback Responsiveness
-They are a great partner for companies that need to build a high-quality product from scratch.,Positive,External Collaboration Reliability
-The project was a complete disaster.,Neutral,Project Management and Quality
-I would not recommend them to my worst enemy.,Neutral,Developer Expertise and Scope
-Their ability to provide a dedicated team,Neutral,Team Capability and Organization
-that feels like an extension of our own,Neutral,Team Capability and Organization
-is a huge advantage.,Positive,Developer Expertise and Scope
-The team is not very good at communicating their progress.,Negative,Project Management and Quality
-They are a great partner for companies that need to modernize their legacy systems.,Positive,Project Management and Quality
-The project was a complete failure.,Negative,Project Management and Quality
-I would not recommend them to anyone.,Neutral,Developer Expertise and Scope
-Their ability to provide a cost-effective solution,Positive,Project Management and Quality
-without sacrificing quality,Neutral,Project Management and Quality
-is a huge plus.,Positive,Developer Expertise and Scope
-The team is not very good at meeting deadlines.,Negative,Project Management and Quality
-They are a great partner,Neutral,External Collaboration Reliability
-"for companies that need to build a complex, enterprise-grade application.",Neutral,Project Management and Quality
-The project was a complete and utter nightmare.,Neutral,Project Management and Quality
-I would not wish this experience on anyone.,Neutral,User Feedback Responsiveness
-Their ability to provide a flexible and scalable team,Positive,Team Capability and Organization
-that can grow with our needs is a huge plus,Positive,Support Process and Attitude
-The team is not very good at providing clear and concise documentation.,Negative,Developer Expertise and Scope
-They are a great partner,Neutral,External Collaboration Reliability
-for companies that need to build a beautiful and intuitive user interface.,Neutral,User Experience Design
-The project was a complete and utter failure.,Negative,Project Management and Quality
-I would not recommend them to anyone.,Neutral,Developer Expertise and Scope
+They promised expertise in cloud migration,Negative,Cloud Migration Experience
+but their team was clearly learning on the job,Negative,Robust Team Performance
+The project was delayed by two months,Negative,Project Management
+and went over budget,Negative,Pricing and Value
+The platform they provided for tracking progress is intuitive,Positive,Project Management
+and a huge help,Positive,Robust Team Performance
+It makes collaboration seamless,Positive,Collaborative System Modernization
+I'm giving three stars,Neutral,Pricing and Value
+the developers are skilled,Positive,Project Management
+but the communication from the management team is severely lacking,Negative,Project Management
+We often felt in the dark about progress,Negative,Cloud Migration Experience
+A fantastic partner for our startup.,Positive,Collaborative System Modernization
+They understood our vision,Positive,Project Management
+and delivered a high-quality MVP,Positive,Robust Team Performance
+well within our tight deadline.,Positive,Project Management
+The time zone difference was a much bigger issue than we anticipated.,Negative,Project Management
+Getting timely responses to urgent questions was a constant struggle.,Negative,Project Management
+Their QA process needs a serious overhaul.,Negative,Project Management
+We found so many obvious bugs in the final delivery,Negative,Project Management
+that it felt like it wasn't tested at all.,Negative,Robust Team Performance
+The initial consultation was amazing.,Positive,Project Management
+They really took the time to understand our business needs before proposing a solution.,Positive,Project Management
+While the project was successful,Positive,Project Management
+the constant upselling was exhausting,Negative,Pricing and Value
+Every call felt like a new sales pitch for another service.,Negative,Cloud Migration Experience
+"Technically, the work is fine.",Positive,Cloud Migration Experience
+But their team shows zero proactivity.,Negative,Robust Team Performance
+They only do exactly what is asked and never suggest improvements.,Negative,Project Management
+We've been working with them for over two years now,Neutral,Cloud Migration Experience
+and they've become an indispensable part of our team,Positive,Robust Team Performance
+Highly recommend,Positive,Cloud Migration Experience
+"The lead developer we worked with, Maria, was a rockstar.",Positive,Project Management
+Her expertise in AI was a game-changer for our project.,Positive,Project Management
+The team is not very good at taking feedback.,Negative,Cloud Migration Experience
+They are a great partner,Positive,Collaborative System Modernization
+for companies that need to build a high-quality product from scratch.,Positive,Project Management
+The project was a complete disaster.,Negative,Project Management
+I would not recommend them to my worst enemy.,Negative,Cloud Migration Experience
+Their ability to provide a dedicated team,Positive,Robust Team Performance
+that feels like an extension of our own,Positive,Robust Team Performance
+is a huge advantage,Positive,Robust Team Performance
+The team is not very good at communicating their progress.,Negative,Project Management
+They are a great partner for companies that need to modernize their legacy systems.,Positive,Collaborative System Modernization
+The project was a complete failure.,Negative,Project Management
+I would not recommend them to anyone.,Negative,Cloud Migration Experience
+Their ability to provide a cost-effective solution,Positive,Robust Team Performance
+without sacrificing quality,Positive,Cloud Migration Experience
+is a huge plus.,Positive,Robust Team Performance
+The team is not very good at meeting deadlines.,Negative,Project Management
+They are a great partner,Positive,Collaborative System Modernization
+"for companies that need to build a complex, enterprise-grade application.",Positive,Project Management
+The project was a complete and utter nightmare.,Negative,Project Management
+I would not wish this experience on anyone.,Negative,Cloud Migration Experience
+Their ability to provide a flexible and scalable team,Positive,Robust Team Performance
+that can grow with our needs is a huge plus.,Positive,Robust Team Performance
+The team is not very good at providing clear and concise documentation.,Negative,Cloud Migration Experience
+They are a great partner,Positive,Collaborative System Modernization
+for companies that need to build a beautiful and intuitive user interface.,Positive,User Interface Usability
+The project was a complete and utter failure.,Negative,Project Management
+I would not recommend them to anyone.,Negative,Cloud Migration Experience
