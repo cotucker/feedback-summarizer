@@ -47,7 +47,8 @@ It provides product managers, marketing teams, and customer service leaders with
 
 Here's a quick look at the dashboard in action. The user uploads a CSV, and the system automatically generates a complete analysis.
 
-_(**In Progress**)_
+https://github.com/user-attachments/assets/c2446584-f543-4b3b-ba11-6aeb0f245acb
+
 
 ## 🛠️ Tech Stack
 
