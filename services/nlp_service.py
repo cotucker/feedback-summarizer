@@ -91,6 +91,3 @@ if __name__ == "__main__":
     record-breaking annual profits and announcing a significant dividend
     increase for shareholders.
     """
-
-    sentiment = get_sentiment(text)
-    print(sentiment)
