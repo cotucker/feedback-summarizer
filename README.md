@@ -49,7 +49,7 @@ Here's a quick look at the dashboard in action. The user uploads a CSV, and the 
 
 https://github.com/user-attachments/assets/c2446584-f543-4b3b-ba11-6aeb0f245acb
 
-## 🏗️ 
+## 🏗️ System structure
 
 Here's a system structure scheme
 
