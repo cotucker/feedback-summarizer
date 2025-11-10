@@ -49,6 +49,12 @@ Here's a quick look at the dashboard in action. The user uploads a CSV, and the 
 
 https://github.com/user-attachments/assets/c2446584-f543-4b3b-ba11-6aeb0f245acb
 
+## 🏗️ 
+
+Here's a system structure scheme
+
+<img width="2285" height="2030" alt="System structure" src="https://github.com/user-attachments/assets/f068f06a-ff25-4bdd-9a2b-c0972e995b0e" />
+
 ## 🛠️ Tech Stack
 
 This project uses a modern, decoupled architecture with a React frontend and a FastAPI backend.
