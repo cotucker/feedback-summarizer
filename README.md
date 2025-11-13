@@ -109,7 +109,7 @@ Follow these instructions to get the project up and running on your local machin
 
 4.  **Configure Environment Variables:**
     - Create a `.env` file in the root directory of the project.
-    - Add your Gemini API key to the file:
+    - Add your Cerebras API key to the file:
     ```env
     CEREBRAS_API_KEY="your_cerebras_api_key_here"
     MODEL="cerebras_model_name (e.g. gpt-oss-120b)"
