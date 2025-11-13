@@ -47,13 +47,12 @@ It provides product managers, marketing teams, and customer service leaders with
 
 Here's a quick look at the dashboard in action. The user uploads a CSV, and the system automatically generates a complete analysis.
 
-https://github.com/user-attachments/assets/c2446584-f543-4b3b-ba11-6aeb0f245acb
+https://github.com/user-attachments/assets/14f6edff-6dcd-44ce-abb8-146b0dcc7555
 
 ## 🏗️ System structure
 
 Here's a system structure scheme
-
-<img width="2285" height="2030" alt="System structure" src="https://github.com/user-attachments/assets/f068f06a-ff25-4bdd-9a2b-c0972e995b0e" />
+<img width="2215" height="1967" alt="image" src="https://github.com/user-attachments/assets/a066acb3-9580-4147-8eb6-fd85329657c5" />
 
 ## 🛠️ Tech Stack
 
@@ -65,7 +64,7 @@ This project uses a modern, decoupled architecture with a React frontend and a F
 | **MUI X** (for UI components & Charts) | **FastAPI** (for the REST API)      |
 | **Axios** (for API requests)           | **Uvicorn** (as the ASGI server)    |
 | **JavaScript**                         | **Pandas** (for data manipulation)  |
-|                                        | **Gemini APIs** (for AI processing) |
+|                                        | **Cerebras APIs** (for AI processing) |
 
 ## 🏁 Getting Started
 
@@ -75,7 +74,7 @@ Follow these instructions to get the project up and running on your local machin
 
 - **Node.js** (v19 or newer)
 - **Python** (v3.10 or newer)
-- Gemini API key
+- Cerebras API key
 
 ### ⚙️ Installation
 
@@ -112,8 +111,8 @@ Follow these instructions to get the project up and running on your local machin
     - Create a `.env` file in the root directory of the project.
     - Add your Gemini API key to the file:
     ```env
-    GEMINI_API_KEY="your_gemini_api_key_here"
-    MODEL="gemini_model_name (e.g. gemini-flash-lite-latest)"
+    CEREBRAS_API_KEY="your_gemini_api_key_here"
+    MODEL="cerebras_model_name (e.g. gpt-oss-120b)"
     ```
 
 ### 🏃‍♀️ Running the Application
