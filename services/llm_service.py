@@ -132,26 +132,7 @@ def generate_cluster_name(cluster_topics: str) -> str:
     cluster_name: ClusterName = typing.cast(ClusterName, response.parsed)
     return cluster_name.name
 
-def get_embedding(texts: list[str]) -> list:
-    all_embeddings = []
-    for i in range(0, len(texts), 100):
-        chunk = texts[i:i + 100]
-        result = [
-            e.values for e in client.models.embed_content(
-                model="models/embedding-001",
-                contents=chunk,
-                config=types.EmbedContentConfig(task_type="CLUSTERING", output_dimensionality = 128)
-            ).embeddings
-        ]
-        all_embeddings.extend(result)
 
-    if not all_embeddings:
-        return []
-
-    embeddings_matrix = np.array(all_embeddings)
-    if embeddings_matrix.ndim == 3:
-        embeddings_matrix = embeddings_matrix.squeeze(axis=1)
-    return embeddings_matrix.tolist()
 
 
 def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str) -> list[SentimentResponse]:
@@ -482,4 +463,4 @@ def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
     return [generate_feedback_responce(feedback_info) for feedback_info in feedbacks_info ]
 
 if __name__ == "__main__":
-    get_embedding(["Hello", "hi"])
+    pass
