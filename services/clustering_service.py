@@ -8,7 +8,7 @@ from hdbscan import HDBSCAN
 from sklearn.metrics import silhouette_score
 import plotly.express as px
 import matplotlib.pyplot as plt
-from services.nlp_service import filter_text_final_version
+from services.nlp_service import filter_text_final_version, predict_sentiment
 from services.llm_service import generate_cluster_name
 from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
@@ -22,21 +22,18 @@ def cluster_texts(sentiment_responses: list[Subtext]) -> (list[dict], list[Senti
 
     data_size = len(sentiment_responses)
 
-    df = pd.read_csv('data/data.csv')
-
     texts_list = [response.text for response in sentiment_responses]
-    sentiments = [response.sentiment for response in sentiment_responses]
-    texts_list.extend(df['Phrase'].tolist())
+    sentiments = predict_sentiment(texts_list)
 
     abstracts = texts_list
     processed_texts_list = [filter_text_final_version(text) for text in texts_list]
 
     model = SentenceTransformer('all-MiniLM-L12-v2')
-    embeddings = model.encode(processed_texts_list, device='cuda')
+    embeddings = model.encode(texts_list, device='cuda')
 
     umap_model = UMAP(
         n_components=12,
-        min_dist=0.0,
+        min_dist=0.1,
         metric='cosine',
         random_state=67
     )
