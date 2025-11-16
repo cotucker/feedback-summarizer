@@ -12,7 +12,7 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_har
 from sklearn.metrics.pairwise import cosine_distances
 import plotly.express as px
 import matplotlib.pyplot as plt
-from services.nlp_service import filter_text_final_version, predict_sentiment
+from services.nlp_service import filter_text_final_version, predict_sentiment, extract_cluster_keywords
 from services.llm_service import generate_cluster_name
 from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
@@ -143,21 +143,23 @@ def cluster_texts(sentiment_responses: list[Subtext]) -> tuple[list[dict], list[
 
     clusters = spectral_clustering(best_trial.params['num_clusters'])[1]
 
+    cluster_keywords, cluster_names_list, texts = extract_cluster_keywords(texts = texts_list, labels = clusters, top_n = 10)
+
     tsne = TSNE(n_components=2, perplexity=30, random_state=42)
     reduced_tsne = tsne.fit_transform(REDUCED_EMBEDDINGS)
 
     phrase_clusters = []
     sentiments_list: list[SentimentResponse] = []
 
-    for i, text in enumerate(texts_list[:data_size]):
+    for i, text in enumerate(texts_list):
         sentiment = sentiments[i]
         phrase_clusters.append({
             "x": float(reduced_tsne[i][0]),
             "y": float(reduced_tsne[i][1]),
-            "cluster": str(clusters[i]),
+            "cluster": cluster_names_list[i],
             "phrase": text,
         })
-        sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = str(clusters[i])))
+        sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = cluster_names_list[i]))
 
 
     create_dataset_from_sentiment_response_list(sentiments_list)

@@ -32,7 +32,7 @@ import { BarChart } from "@mui/x-charts/BarChart";
 
 import { PieChart } from "@mui/x-charts/PieChart";
 
-import { ScatterChart } from "@mui/x-charts/ScatterChart";
+// import { ScatterChart } from "@mui/x-charts/ScatterChart";
 import Plot from "react-plotly.js";
 import convexHull from "convex-hull";
 
@@ -361,7 +361,7 @@ export const Visualization = ({ results }) => {
                   alignItems: "center",
                 }}
               >
-                <Typography variant="h5">Overall Summary</Typography>
+                {/* <Typography variant="h5">Overall Summary</Typography>*/}
 
                 <Button
                   variant="contained"

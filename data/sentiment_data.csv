@@ -1,35 +1,195 @@
 text,sentiment,topic
-Customer support is awesome,Positive,0
-the product is horrible,Very Negative,2
-The project management was flawless.,Very Positive,0
-"Our dedicated manager, Alex, was always on top of things",Positive,0
-communication was crystal clear,Positive,0
-A bit pricey,Negative,2
-worth every penny for the peace of mind,Positive,2
-We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,0
-The code was buggy,Negative,1
-required constant oversight from our in-house team.,Negative,0
-Their support team is incredibly responsive,Positive,0
-We had a critical issue over the weekend,Neutral,1
-they had it resolved within two hours,Neutral,1
-Truly impressive,Positive,0
-The final product was delivered on time,Neutral,1
-met all our specifications,Neutral,2
-Solid work from a reliable team.,Neutral,0
-Billing is a complete mess.,Very Negative,2
-We were overcharged for hours that were not worked,Negative,2
-getting it corrected has been a nightmare.,Neutral,1
-The developers are technically brilliant,Positive,0
-their project manager seems completely overwhelmed,Negative,0
-Deadlines were missed repeatedly due to poor planning.,Negative,1
-Good value for the price.,Positive,2
-The quality isn't top-tier,Negative,2
-"for our budget, it's more than acceptable",Negative,2
-You get what you pay for.,Neutral,2
-They promised expertise in cloud migration,Neutral,0
-their team was clearly learning on the job,Positive,0
-The project was delayed by two months,Negative,1
-went over budget,Negative,2
-The platform they provided for tracking progress is intuitive,Positive,0
-a huge help,Positive,0
-It makes collaboration seamless.,Positive,0
+The project management was flawless.,Very Positive,Project Management Team
+"Our dedicated manager, Alex, was always on top of things",Positive,Project Management Team
+communication was crystal clear,Positive,Critical Communication Issues
+A bit pricey,Negative,Budget Management
+worth every penny for the peace of mind,Positive,Budget Management
+We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,Project Management Team
+The code was buggy,Negative,Code Quality
+required constant oversight from our in-house team.,Negative,Critical Communication Issues
+Their support team is incredibly responsive.,Positive,Code Quality
+We had a critical issue over the weekend,Neutral,Critical Communication Issues
+they had it resolved within two hours,Neutral,Critical Communication Issues
+Truly impressive.,Positive,Code Quality
+The final product was delivered on time,Neutral,Critical Communication Issues
+met all our specifications,Neutral,Budget Management
+Solid work from a reliable team,Neutral,Team Collaboration
+Billing is a complete mess.,Very Negative,Budget Management
+We were overcharged for hours that were not worked,Negative,Budget Management
+getting it corrected has been a nightmare.,Neutral,Critical Communication Issues
+The developers are technically brilliant,Positive,Code Quality
+their project manager seems completely overwhelmed,Negative,Project Management Team
+Deadlines were missed repeatedly due to poor planning.,Negative,Critical Communication Issues
+Good value for the price.,Positive,Budget Management
+The quality isn't top-tier,Negative,Code Quality
+"for our budget, it's more than acceptable.",Negative,Budget Management
+You get what you pay for.,Neutral,Budget Management
+They promised expertise in cloud migration,Neutral,Project Management Team
+their team was clearly learning on the job,Positive,Team Collaboration
+The project was delayed by two months,Negative,Project Management Team
+went over budget,Negative,Budget Management
+The platform they provided for tracking progress is intuitive,Positive,Code Quality
+a huge help.,Positive,Code Quality
+It makes collaboration seamless.,Positive,Team Collaboration
+I'm giving three stars because the developers are skilled,Negative,Project Management Team
+the communication from the management team is severely lacking,Negative,Critical Communication Issues
+We often felt in the dark about progress,Negative,Project Management Team
+A fantastic partner for our startup,Positive,Code Quality
+They understood our vision,Positive,Critical Communication Issues
+delivered a high-quality MVP,Positive,Code Quality
+well within our tight deadline,Positive,Critical Communication Issues
+The time zone difference was a much bigger issue than we anticipated.,Negative,Critical Communication Issues
+Getting timely responses to urgent questions was a constant struggle.,Negative,Critical Communication Issues
+Their QA process needs a serious overhaul.,Negative,Critical Communication Issues
+We found so many obvious bugs in the final delivery,Negative,Critical Communication Issues
+it felt like it wasn't tested at all.,Negative,Critical Communication Issues
+The initial consultation was amazing.,Positive,Code Quality
+They really took the time to understand our business needs before proposing a solution.,Positive,Critical Communication Issues
+the project was successful,Positive,Project Management Team
+the constant upselling was exhausting,Negative,Team Collaboration
+Every call felt like a new sales pitch for another service.,Negative,Code Quality
+"Technically, the work is fine.",Neutral,Team Collaboration
+But their team shows zero proactivity.,Very Negative,Team Collaboration
+They only do exactly what is asked,Negative,Critical Communication Issues
+never suggest improvements.,Negative,Critical Communication Issues
+We've been working with them for over two years now,Positive,Code Quality
+they've become an indispensable part of our team,Positive,Team Collaboration
+Highly recommend.,Positive,Code Quality
+"The lead developer we worked with, Maria, was a rockstar.",Positive,Project Management Team
+Her expertise in AI was a game-changer for our project.,Positive,Project Management Team
+The cost savings are significant,Positive,Budget Management
+be prepared to invest a lot of your own time in managing the project,Positive,Project Management Team
+clarifying requirements,Neutral,Critical Communication Issues
+They completely missed the deadline for our critical launch,Very Negative,Critical Communication Issues
+the communication leading up to the failure was poor,Negative,Critical Communication Issues
+We can't trust them again.,Very Negative,Team Collaboration
+Their ability to scale the team up or down based on our needs has been incredibly valuable for our fluctuating workload.,Neutral,Team Collaboration
+The code quality is excellent.,Positive,Code Quality
+It's clean,Positive,Code Quality
+well-documented,Positive,Code Quality
+follows best practices,Neutral,Code Quality
+Our internal team was very impressed.,Positive,Team Collaboration
+Customer support is friendly,Positive,Code Quality
+they don't seem empowered to solve problems,Negative,Critical Communication Issues
+Every issue has to be escalated,Negative,Critical Communication Issues
+causing delays,Negative,Critical Communication Issues
+The project was a disaster from start to finish.,Very Negative,Project Management Team
+Poor communication,Negative,Critical Communication Issues
+missed deadlines,Negative,Critical Communication Issues
+a buggy final product,Negative,Critical Communication Issues
+Their pricing is transparent and fair.,Neutral,Budget Management
+No hidden fees,Negative,Budget Management
+"surprises, which we really appreciate.",Positive,Critical Communication Issues
+The team is eager and hardworking,Positive,Team Collaboration
+lacks the senior-level experience we needed for a complex architectural project,Negative,Project Management Team
+They did a great job on the UI/UX design.,Positive,Code Quality
+The app they delivered is beautiful,Positive,Code Quality
+and a pleasure to use.,Positive,Code Quality
+It feels like we're working with a black box.,Negative,Project Management Team
+"We send requirements,",Neutral,Budget Management
+"code comes back,",Neutral,Code Quality
+but there's no collaboration or discussion.,Negative,Team Collaboration
+cost-effective,Positive,Budget Management
+reliable choice,Positive,Code Quality
+No complaints.,Negative,Code Quality
+They assigned a new project manager halfway through,Neutral,Project Management Team
+the transition was chaotic,Negative,Project Management Team
+It completely derailed our progress,Very Negative,Critical Communication Issues
+The security audit they performed on our application was incredibly thorough,Positive,Code Quality
+identified several critical vulnerabilities,Neutral,Critical Communication Issues
+Great work.,Negative,Code Quality
+Their English proficiency was a barrier.,Negative,Critical Communication Issues
+Technical details were often lost in translation,Negative,Critical Communication Issues
+leading to rework.,Negative,Team Collaboration
+A truly agile team.,Positive,Team Collaboration
+They adapted to our changing requirements without any fuss,Neutral,Critical Communication Issues
+delivered great results.,Positive,Code Quality
+The project started strong,Positive,Project Management Team
+lost momentum,Negative,Team Collaboration
+our project was de-prioritized,Negative,Project Management Team
+in favor of other clients,Neutral,Code Quality
+We were promised a team of senior developers,Neutral,Project Management Team
+the code we received suggests otherwise,Neutral,Code Quality
+Very disappointed in the bait-and-switch.,Negative,Critical Communication Issues
+The onboarding process was seamless.,Positive,Critical Communication Issues
+We were up and running with our new team in less than a week.,Positive,Team Collaboration
+Their expertise in legacy system modernization saved us from a complete rewrite.,Very Positive,Project Management Team
+They know their stuff.,Positive,Critical Communication Issues
+The contract negotiation was painful,Negative,Critical Communication Issues
+The contract negotiation was rigid,Negative,Critical Communication Issues
+They were not willing to accommodate any of our standard clauses,Negative,Critical Communication Issues
+I'm impressed by their commitment to quality.,Positive,Code Quality
+They have a rigorous code review and testing process that caught issues early.,Positive,Code Quality
+They are great at execution,Positive,Code Quality
+but lack strategic input,Negative,Team Collaboration
+We were hoping for a partner,Negative,Team Collaboration
+not just a team of coders,Negative,Project Management Team
+The project was a huge success,Positive,Project Management Team
+delivered under budget,Neutral,Budget Management
+Management is very happy,Positive,Project Management Team
+We will be using them for future projects,Neutral,Project Management Team
+Turnover on their team is high.,Neutral,Team Collaboration
+"We've had three different lead developers in six months, which has been disruptive.",Negative,Project Management Team
+Their documentation is top-notch.,Positive,Code Quality
+It makes handing over the project to our internal team so much easier.,Negative,Project Management Team
+The initial estimates were way off.,Negative,Critical Communication Issues
+The project ended up costing nearly double what was quoted.,Neutral,Budget Management
+They are very process-oriented,Positive,Code Quality
+which brings a level of predictability and stability that we appreciate.,Neutral,Code Quality
+The team seems burnt out.,Negative,Team Collaboration
+The quality of work and communication has noticeably declined over the past few months.,Negative,Critical Communication Issues
+An excellent choice for staff augmentation.,Positive,Code Quality
+The developers they provided integrated perfectly with our existing team.,Positive,Code Quality
+Their legal and compliance team was a nightmare to work with.,Very Negative,Critical Communication Issues
+It slowed down the project start by over a month.,Negative,Project Management Team
+They went above and beyond to help us meet a critical investor deadline.,Positive,Critical Communication Issues
+We couldn't have done it without them.,Negative,Team Collaboration
+The user acceptance testing phase was a mess.,Negative,Critical Communication Issues
+The product was nowhere near ready for us to review.,Negative,Critical Communication Issues
+Their understanding of our industry's specific regulations was a huge asset,Positive,Critical Communication Issues
+It saved us a lot of time,Positive,Team Collaboration
+potential legal issues,Negative,Critical Communication Issues
+The project manager is a great communicator,Positive,Project Management Team
+lacks the technical depth to understand the challenges our project faced,Negative,Project Management Team
+They delivered the project,Neutral,Project Management Team
+the architecture is not scalable,Negative,Project Management Team
+We're already facing issues as our user base grows.,Negative,Critical Communication Issues
+The daily stand-up meetings are efficient,Neutral,Team Collaboration
+keep everyone aligned,Negative,Team Collaboration
+Great project management practice.,Negative,Project Management Team
+We had to pull the plug halfway through.,Negative,Critical Communication Issues
+The team was just not capable of delivering on their promises.,Negative,Team Collaboration
+Their design team is fantastic.,Positive,Code Quality
+They took our vague ideas,Negative,Critical Communication Issues
+turned them into a stunning and functional interface.,Positive,Code Quality
+The reporting they provide is vague and not very useful.,Negative,Project Management Team
+We have little visibility into the actual work being done.,Negative,Project Management Team
+"They are a reliable, no-frills outsourcing partner.",Positive,Code Quality
+They do the job as specified,Neutral,Code Quality
+on time,Neutral,Critical Communication Issues
+on budget,Neutral,Budget Management
+We experienced significant data loss during the migration they handled.,Neutral,Critical Communication Issues
+A catastrophic failure.,Very Negative,Critical Communication Issues
+Their proactive suggestions for improving our app's performance have been incredibly valuable.,Positive,Code Quality
+The support ticketing system they use is clunky and outdated.,Negative,Code Quality
+It's frustrating to submit and track issues.,Negative,Critical Communication Issues
+We've seen a massive improvement in our development velocity,Positive,Code Quality
+since partnering with them,Positive,Code Quality
+The final invoice included charges for software licenses we were told were included.,Neutral,Budget Management
+Felt dishonest.,Negative,Critical Communication Issues
+Their expertise in DevOps has streamlined our entire release process.,Neutral,Code Quality
+We're deploying code faster and more reliably than ever.,Positive,Code Quality
+They are very rigid in their interpretation of the scope.,Negative,Critical Communication Issues
+Any minor change requires a new contract,Neutral,Critical Communication Issues
+lengthy negotiation.,Negative,Critical Communication Issues
+The team is friendly,Positive,Team Collaboration
+has a great attitude,Positive,Code Quality
+which makes working with them a pleasure,Positive,Code Quality
+The project failed to meet basic accessibility standards,Negative,Project Management Team
+which is a major compliance issue for us.,Neutral,Critical Communication Issues
+They have a deep pool of talent to draw from.,Positive,Team Collaboration
+"When we needed a specialist in a niche technology,",Neutral,Project Management Team
+they had someone ready.,Positive,Team Collaboration
+Communication is sporadic.,Neutral,Critical Communication Issues
+We sometimes go days without hearing anything,Negative,Critical Communication Issues
+even when deadlines are approaching,Negative,Critical Communication Issues

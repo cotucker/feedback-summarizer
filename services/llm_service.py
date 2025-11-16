@@ -166,42 +166,51 @@ def test_topic_moddeling(cluster_name: str, text: str):
     return quality
 
 
-def generate_cluster_name(cluster_topics: str) -> str:
-    response = client.models.generate_content(
-        model='gemini-2.5-flash',
-        contents=[
-            types.Content(
-                role="user",
-                parts=[
-                    types.Part(
-                        text=f"""
-                        You are an expert Data Analyst and Taxonomist. Your task is to analyze a list of keywords SORTED BY IMPORTANCE representing a cluster of customer feedback and generate a single, concise, and descriptive name for that cluster.
-
-                        OBJECTIVE:
-                        Based on the provided list of `CLUSTER_KEYWORDS`, synthesize them into a clear, high-level topic name that accurately represents the central theme of the cluster.
-
-                        INPUT DATA:
-                        - CLUSTER_KEYWORDS: "{cluster_topics}"
-
-                        **RULES FOR NAMING:**
-                        1.  **Be Abstract and High-Level:** The name should be a general category, not just a repetition of the keywords. Think about the underlying concept that connects these words.
-                        2.  **Use Business Language:** The name must be professional, clear, and easily understandable by a business audience (e.g., "Project Management", "Technical Competence", "Pricing and Value").
-                        3.  **Be Concise:** The name should be short, ideally 2-4 words long.
-                        4.  **Format:** Use Title Case (e.g., "Customer Support Experience").
-                        5.  **Strict Output Format:** Your response MUST ONLY be the generated cluster name. Do not include any explanation, introductory text like "The cluster name is:", or any quotation marks.
-                        6.  **Do not return empty string.** You must return something.
-                        """,
-                    ),
-                ],
-            ),
-        ],
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": ClusterName,
+def generate_cluster_name(cluster_terms: str) -> str:
+    movie_schema = {
+        "type": "object",
+        "properties": {
+            "cluster_name": {"type": "string"}
         },
+        "required": ["cluster_name"],
+        "additionalProperties": False
+    }
+
+    chat_completion = client_cerebras.chat.completions.create(
+      messages=[
+      {"role": "system", "content": f"""
+                              You are an expert Data Analyst and Taxonomist. Your task is to analyze a list of keywords with clustery specificity score representing a cluster of customer feedback and generate a single, concise, and descriptive name for that cluster.
+
+                              OBJECTIVE:
+                              Based on the provided list of `CLUSTER_KEYWORDS`, synthesize them into a clear, high-level topic name that accurately represents the central theme of the cluster.
+
+                              **RULES FOR NAMING:**
+                              1.  **Be Abstract and High-Level:** The name should be a general category, not just a repetition of the keywords. Think about the underlying concept that connects these words.
+                              2.  **Use Business Language:** The name must be professional, clear, and easily understandable by a business audience (e.g., "Project Management", "Technical Competence", "Pricing and Value").
+                              3.  **Be Concise:** The name should be short, ideally 2-4 words long.
+                              4.  **Format:** Use Title Case (e.g., "Customer Support Experience").
+                              5.  **Strict Output Format:** Your response MUST ONLY be the generated cluster name. Do not include any explanation, introductory text like "The cluster name is:", or any quotation marks.
+                              6.  **Do not return empty string.** You must return something.
+                              """,},
+      {"role": "user", "content": f"""
+                                INPUT DATA:
+                                - CLUSTER_KEYWORDS: "{cluster_terms}"
+"""}
+      ],
+      model="gpt-oss-120b",
+      response_format={
+          "type": "json_schema",
+          "json_schema": {
+              "name": "movie_schema",
+              "strict": True,
+              "schema": movie_schema
+          }
+      }
     )
-    cluster_name: ClusterName = typing.cast(ClusterName, response.parsed)
-    return cluster_name.name
+    movie_data = json.loads(chat_completion.choices[0].message.content)
+    # print(json.dumps(movie_data, indent=2))
+
+    return movie_data['cluster_name']
 
 
 
