@@ -14,7 +14,7 @@ class FeedbackResponse(BaseModel):
 class SentimentResponse(BaseModel):
     text: str
     topic: str
-    sentiment: Sentiment
+    # sentiment: Sentiment
 
 class TopicSummary(BaseModel):
     topic: str
@@ -37,3 +37,7 @@ class TopicQuality(BaseModel):
     score: int
     is_match: bool
     justification: str
+
+class Subtext(BaseModel):
+    text: str
+    topic: str

@@ -27,4 +27,5 @@ dependencies = [
     "umap-learn>=0.5.9.post2",
     "hdbscan>=0.8.40",
     "fastopic>=1.0.1",
+    "cerebras>=0.0.1",
 ]

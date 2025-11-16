@@ -1,19 +1,90 @@
 from google import genai
 from google.genai import types
+from cerebras.cloud.sdk import Cerebras
 import os
 import enum
 from dotenv import load_dotenv
 import typing
+import json
 import numpy as np
-from models.models import FeedbackResponse, SentimentResponse, TopicSummary, TotalSummary, Separator, ClusterName, ClusterDescription, TopicQuality
+from models.models import *
 from pydantic import BaseModel
 from fastapi import HTTPException
 from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_feedback_analysis_by_topic
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+CEREBRAS_API_KEY = os.getenv('CEREBRAS_API_KEY')
 MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
+client_cerebras = Cerebras(api_key=CEREBRAS_API_KEY)
+
+def split_feedback(feedback_text: str, topics: str) -> list[Subtext]:
+
+    movie_schema = {
+        "type": "object",
+        "properties": {
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "text": {"type": "string"},
+                        "sentiment": {"type": "string"},
+                        "topic": {"type": "string"}
+                    },
+                    "required": ["text", "sentiment"],
+                }
+            }
+        },
+        "required": ["items"],
+        "additionalProperties": False
+    }
+
+    chat_completion = client_cerebras.chat.completions.create(
+      messages=[
+      {"role": "system", "content": """
+                              You are a meticulous Customer Feedback Analyst. Your primary task is to decompose a user's feedback text into the smallest possible, self-contained, meaningful chunks. For each chunk, you must identify its specific topic and sentiment.
+
+                              **OBJECTIVE:**
+                              Analyze the provided `FEEDBACK_TEXT`. You MUST identify all distinct ideas or events mentioned, even if they are in the same sentence. Your response must be ONLY a single, valid JSON object containing a list of these chunks.
+
+                              **CRITICAL RULES FOR CHUNKING:**
+                              1.  **Decomposition is Key:** Your main goal is to break down the text. A single sentence often contains multiple chunks. Coordinating conjunctions like "and", "but", "while" are strong indicators of a boundary between chunks.
+                              2.  **Chunk = One Idea:** Each chunk must represent a single, distinct event, opinion, or observation.
+                                  -   *Example of a single idea:* "We were overcharged for hours that were not worked."
+                                  -   *Example of another single idea:* "getting it corrected has been a nightmare."
+                              3.  **Chunks Must Be Verbatim:** Each chunk you extract MUST be a direct, word-for-word substring of the original `FEEDBACK_TEXT`. Do not rephrase or summarize.
+                              4.  **Topic Assignment:**
+                                  -   Assign the most relevant topic from the `EXISTING_TOPICS` list.
+                                  -   If no existing topic fits perfectly, create a new, concise topic name (e.g., "Billing Issues", "Support Resolution Process").
+                                  -   If a chunk is a general statement without a specific subject (e.g., "I am very unhappy"), assign it to "General Feedback".
+                              """,},
+      {"role": "user", "content": f"""
+                        **INPUT DATA:**
+                        - **FEEDBACK_TEXT:** "{feedback_text}"
+                        - **EXISTING_TOPICS:** {topics}
+                        """}
+      ],
+      model="gpt-oss-120b",
+      response_format={
+          "type": "json_schema",
+          "json_schema": {
+              "name": "movie_schema",
+              "strict": True,
+              "schema": movie_schema
+          }
+      }
+    )
+    movie_data = json.loads(chat_completion.choices[0].message.content)
+    # print(json.dumps(movie_data, indent=2))
+    # tets: list[SentimentResponse] = typing.cast(list[SentimentResponse], movie_data['items'])
+
+    # return [f"{item['text']} - {item['sentiment']}" for item in movie_data['items']]
+    return [Subtext(text=item['text'], topic=item['topic']) for item in movie_data['items']]
+
+# print(split_feedback("We went over a budget.", ''))
+
 
 
 def generate_topics_description(cluster_names: list[str]) -> list[ClusterDescription]:
@@ -301,7 +372,7 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
     summary: TopicSummary = typing.cast(TopicSummary, response.parsed)
     return summary.summary
 
-def feedback_list_analysis(topics_text: str = '') -> list[SentimentResponse]:
+def feedback_list_analysis(topics_text: str = '') -> list[Subtext]:
     if topics_text.replace(' ', '') == '':
         topics = []
     else:
@@ -311,10 +382,10 @@ def feedback_list_analysis(topics_text: str = '') -> list[SentimentResponse]:
 
     print(f"Generaled topics: {topics}")
     filter = not topics
-    sentiments_list: list[SentimentResponse] = []
+    sentiments_list: list[Subtext] = []
     feedback_list: list[str] = get_feedback_list()
     for feedback in feedback_list:
-        sentiments = generate_single_sentiments_feedback_analysis(feedback, ', '.join(topics))
+        sentiments = split_feedback(feedback, ', '.join(topics))
         for sentiment in sentiments:
             if filter:
                 if sentiment.topic not in topics:
@@ -463,4 +534,5 @@ def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
     return [generate_feedback_responce(feedback_info) for feedback_info in feedbacks_info ]
 
 if __name__ == "__main__":
-    pass
+    print(split_feedback("We went over a budget", ""))
+    print([item.text for item in feedback_list_analysis("product quality")])

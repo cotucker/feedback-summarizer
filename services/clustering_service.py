@@ -11,11 +11,11 @@ import matplotlib.pyplot as plt
 from services.nlp_service import filter_text_final_version
 from services.llm_service import generate_cluster_name
 from services.file_handler_service import create_dataset_from_sentiment_response_list
-from models.models import SentimentResponse
+from models.models import SentimentResponse, Subtext
 from fastopic import FASTopic
 from topmost import Preprocess
 
-def cluster_texts(sentiment_responses: list[SentimentResponse]) -> (list[dict], list[SentimentResponse]):
+def cluster_texts(sentiment_responses: list[Subtext]) -> (list[dict], list[SentimentResponse]):
 
     if not sentiment_responses:
         return []

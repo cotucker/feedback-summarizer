@@ -4,7 +4,8 @@ nltk.download('punkt_tab')
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize.treebank import TreebankWordDetokenizer
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
 from models.models import Sentiment
 
 import pandas as pd
@@ -21,6 +22,10 @@ except LookupError:
 analyzer = SentimentIntensityAnalyzer()
 stop_words = set(stopwords.words('english'))
 detokenizer = TreebankWordDetokenizer()
+
+model_name = "tabularisai/multilingual-sentiment-analysis"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
 INTENSIFIER_WORDS = {
     "absolutely", "completely", "extremely", "highly", "incredibly",
@@ -52,42 +57,20 @@ def filter_text_final_version(text: str) -> str:
 
     return detokenizer.detokenize(filtered_words)
 
+def predict_sentiment(texts):
+    inputs = tokenizer(texts, return_tensors="pt", truncation=True, padding=True, max_length=512)
+    with torch.no_grad():
+        outputs = model(**inputs)
+    probabilities = torch.nn.functional.softmax(outputs.logits, dim=-1)
+    sentiment_map = {0: "Very Negative", 1: "Negative", 2: "Neutral", 3: "Positive", 4: "Very Positive"}
+    return [sentiment_map[p] for p in torch.argmax(probabilities, dim=-1).tolist()]
+
 if __name__ == "__main__":
+    texts = [
+        # English
+        "We went over a budget.", "The customer service was disappointing.", "The weather is fine, nothing special.",
+        "I like final product."
+    ]
 
-    df = pd.read_csv('data/data.csv')
-    texts_list = df['Phrase'].tolist()
-
-    for text in texts_list:
-        neutral = filter_text_final_version(text)
-    print(f"{text} -> {neutral}")
-
-    print("--- Пример 1: Позитивный отзыв ---")
-    original1 = "the customer care is a huge problem"
-    neutral1 = filter_text_final_version(original1)
-    print(f"Оригинал: {original1}")
-    print(f"Отфильтрованный: {neutral1}\n")
-
-    print("--- Пример 2: Негативный отзыв ---")
-    original2 = "The performance is terrible, it's so slow and frustrating."
-    neutral2 = filter_text_final_version(original2)
-    print(f"Оригинал: {original2}")
-    print(f"Отфильтрованный: {neutral2}\n")
-
-    print("--- Пример 3: Смешанный отзыв ---")
-    original3 = "The design is great but the battery is awful."
-    neutral3 = filter_text_final_version(original3)
-    print(f"Оригинал: {original3}")
-    print(f"Отфильтрованный: {neutral3}\n")
-
-    print("--- Пример 4: Более сложный случай ---")
-    original4 = "I am extremely disappointed with the customer support, they were rude and completely useless."
-    neutral4 = filter_text_final_version(original4)
-    print(f"Оригинал: {original4}")
-    print(f"Отфильтрованный: {neutral4}\n")
-
-
-
-    text = """XYZ Corporation's stock soared by 20% after reporting
-    record-breaking annual profits and announcing a significant dividend
-    increase for shareholders.
-    """
+    for text, sentiment in zip(texts, predict_sentiment(texts)):
+        print(f"Text: {text}\nSentiment: {sentiment}\n")
