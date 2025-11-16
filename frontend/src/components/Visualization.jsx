@@ -125,32 +125,28 @@ export const Visualization = ({ results }) => {
     id: index,
   }));
 
-  // === ИЗМЕНЕНИЕ: Обработка данных для 3D-графика Plotly ===
-  const clusterDataFor3D = (results.phrase_clusters || []).reduce(
+  const clusterDataFor2D = (results.phrase_clusters || []).reduce(
     (acc, point) => {
       const clusterId = point.cluster;
       if (!acc[clusterId]) {
         acc[clusterId] = {
           x: [],
           y: [],
-          z: [],
           text: [],
           mode: "markers",
-          type: "scatter3d",
+          type: "scatter", // Изменено на scatter для 2D
           name: `Cluster ${clusterId}`,
           marker: { size: 5 },
         };
       }
       acc[clusterId].x.push(point.x);
       acc[clusterId].y.push(point.y);
-      acc[clusterId].z.push(point.z); // Добавляем Z координату
       acc[clusterId].text.push(point.phrase);
       return acc;
     },
-    {},
   );
 
-  const plotlyData = Object.values(clusterDataFor3D);
+  const plotlyData = Object.values(clusterDataFor2D);
   const hasClusterData = plotlyData.length > 0;
 
   const handleBarClick = (event, d) => {
@@ -255,7 +251,7 @@ export const Visualization = ({ results }) => {
               onClick={() => setIsClusterDialogOpen(true)}
               fullWidth
             >
-              Show Phrase Clusters (3D)
+              Show Phrase Clusters (2D)
             </Button>
           </Grid>
         )}
@@ -369,26 +365,22 @@ export const Visualization = ({ results }) => {
         fullWidth
         maxWidth="xl"
       >
-        <DialogTitle variant="h4">Phrase-Semantic Clusters (3D)</DialogTitle>
+        <DialogTitle variant="h4">Phrase-Semantic Clusters (2D)</DialogTitle>
         <DialogContent>
           <Box sx={{ height: "70vh", width: "100%", mt: 2 }}>
             <Plot
               data={plotlyData}
               layout={{
                 title: {
-                  text: "3D UMAP Visualization",
-                  font: { color: "#e0e0e0" }, // Светлый цвет для заголовка
+                  text: "2D UMAP Visualization", // Изменено на 2D
+                  font: { color: "#e0e0e0" },
                 },
                 autosize: true,
-                paper_bgcolor: "#1a1a1a", // Темный фон для всей области графика
-                plot_bgcolor: "#1a1a1a", // Темный фон для области построения
-                scene: {
-                  xaxis: { title: "X", backgroundcolor: "#333", gridcolor: "#444", zerolinecolor: "#555", color: "#e0e0e0" },
-                  yaxis: { title: "Y", backgroundcolor: "#333", gridcolor: "#444", zerolinecolor: "#555", color: "#e0e0e0" },
-                  zaxis: { title: "Z", backgroundcolor: "#333", gridcolor: "#444", zerolinecolor: "#555", color: "#e0e0e0" },
-                  bgcolor: "#1a1a1a", // Фон 3D-сцены
-                },
-                font: { color: "#e0e0e0" }, // Светлый цвет для всего текста
+                paper_bgcolor: "#1a1a1a",
+                plot_bgcolor: "#1a1a1a",
+                xaxis: { title: "X", backgroundcolor: "#333", gridcolor: "#444", zerolinecolor: "#555", color: "#e0e0e0" },
+                yaxis: { title: "Y", backgroundcolor: "#333", gridcolor: "#444", zerolinecolor: "#555", color: "#e0e0e0" },
+                font: { color: "#e0e0e0" },
                 margin: { l: 0, r: 0, b: 0, t: 40 },
               }}
               style={{ width: "100%", height: "100%" }}

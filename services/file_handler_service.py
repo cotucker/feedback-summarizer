@@ -68,7 +68,7 @@ async def get_dataset_from_file(file: UploadFile, process_columns, get_separator
 def create_dataset_from_sentiment_response_list(sentiments_list) -> pd.DataFrame:
     df = pd.DataFrame({
         'text': [sentiment.text for sentiment in sentiments_list],
-        'sentiment': [sentiment.sentiment.value for sentiment in sentiments_list],
+        'sentiment': [sentiment.sentiment for sentiment in sentiments_list],
         'topic': [sentiment.topic for sentiment in sentiments_list]
     })
     df.to_csv('data/sentiment_data.csv', index=False)

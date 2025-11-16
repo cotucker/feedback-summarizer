@@ -28,4 +28,5 @@ dependencies = [
     "hdbscan>=0.8.40",
     "fastopic>=1.0.1",
     "cerebras>=0.0.1",
+    "optuna>=4.6.0",
 ]

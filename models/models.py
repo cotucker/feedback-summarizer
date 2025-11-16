@@ -14,7 +14,7 @@ class FeedbackResponse(BaseModel):
 class SentimentResponse(BaseModel):
     text: str
     topic: str
-    # sentiment: Sentiment
+    sentiment: str
 
 class TopicSummary(BaseModel):
     topic: str

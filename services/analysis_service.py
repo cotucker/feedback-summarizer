@@ -19,7 +19,7 @@ async def analysis(file: UploadFile, topics: str = ''):
         {
             "text": sentiment_response.text,
             "topic": sentiment_response.topic,
-            "sentiment": feedback_list_analysis_results[i].sentiment.value
+            "sentiment": feedback_analysis[i].sentiment
         }
 
         for i, sentiment_response in enumerate(feedback_analysis)
@@ -33,8 +33,8 @@ async def analysis(file: UploadFile, topics: str = ''):
     analysis["summary"] = generate_total_summary(topics_analysis_results)
 
     counts = {"positive": 0, "negative": 0, "neutral": 0}
-    for s in feedback_list_analysis_results:
-        key = str(s.sentiment.value).lower()
+    for s in feedback_analysis:
+        key = str(s.sentiment).lower()
         if key in counts:
             counts[key] += 1
 

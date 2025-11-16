@@ -27,11 +27,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+with open("mock.json", "r") as f:
+    mock = json.load(f)
+
 @app.post("/api/feedback/analyze")
 async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
     try:
-        analysis_results = await analysis(file, topics if topics else '')
-        return analysis_results
+        # analysis_results = await analysis(file, topics if topics else '')
+        return mock
     except ServerError as e:
         raise HTTPException(status_code=500, detail=str(e))
 
