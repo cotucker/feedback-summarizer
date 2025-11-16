@@ -1,35 +1,35 @@
 text,sentiment,topic
-Customer support is awesome,Positive,1
-the product is horrible,Very Negative,1
+Customer support is awesome,Positive,0
+the product is horrible,Very Negative,2
 The project management was flawless.,Very Positive,0
 "Our dedicated manager, Alex, was always on top of things",Positive,0
 communication was crystal clear,Positive,0
-A bit pricey,Negative,1
-worth every penny for the peace of mind,Positive,1
+A bit pricey,Negative,2
+worth every penny for the peace of mind,Positive,2
 We are extremely disappointed with the technical skills of the junior developers assigned to us.,Negative,0
 The code was buggy,Negative,1
-required constant oversight from our in-house team,Negative,0
+required constant oversight from our in-house team.,Negative,0
 Their support team is incredibly responsive,Positive,0
-We had a critical issue over the weekend,Neutral,0
-they had it resolved within two hours,Neutral,0
+We had a critical issue over the weekend,Neutral,1
+they had it resolved within two hours,Neutral,1
 Truly impressive,Positive,0
-The final product was delivered on time,Neutral,0
-met all our specifications,Neutral,1
+The final product was delivered on time,Neutral,1
+met all our specifications,Neutral,2
 Solid work from a reliable team.,Neutral,0
-Billing is a complete mess.,Very Negative,1
-We were overcharged for hours that were not worked,Negative,1
-getting it corrected has been a nightmare.,Neutral,0
+Billing is a complete mess.,Very Negative,2
+We were overcharged for hours that were not worked,Negative,2
+getting it corrected has been a nightmare.,Neutral,1
 The developers are technically brilliant,Positive,0
 their project manager seems completely overwhelmed,Negative,0
-Deadlines were missed repeatedly due to poor planning.,Negative,0
-Good value for the price.,Positive,1
-The quality isn't top-tier,Negative,1
-"for our budget, it's more than acceptable",Negative,1
-You get what you pay for.,Neutral,1
+Deadlines were missed repeatedly due to poor planning.,Negative,1
+Good value for the price.,Positive,2
+The quality isn't top-tier,Negative,2
+"for our budget, it's more than acceptable",Negative,2
+You get what you pay for.,Neutral,2
 They promised expertise in cloud migration,Neutral,0
 their team was clearly learning on the job,Positive,0
-The project was delayed by two months,Negative,0
-went over budget,Negative,1
+The project was delayed by two months,Negative,1
+went over budget,Negative,2
 The platform they provided for tracking progress is intuitive,Positive,0
-a huge help,Positive,1
+a huge help,Positive,0
 It makes collaboration seamless.,Positive,0

@@ -33,8 +33,8 @@ with open("mock.json", "r") as f:
 @app.post("/api/feedback/analyze")
 async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
     try:
-        # analysis_results = await analysis(file, topics if topics else '')
-        return mock
+        analysis_results = await analysis(file, topics if topics else '')
+        return analysis_results
     except ServerError as e:
         raise HTTPException(status_code=500, detail=str(e))
 

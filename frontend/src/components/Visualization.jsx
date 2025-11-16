@@ -33,6 +33,8 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
 
 import { ScatterChart } from "@mui/x-charts/ScatterChart";
+import Plot from "react-plotly.js";
+import convexHull from "convex-hull";
 
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -239,65 +241,60 @@ export const Visualization = ({ results }) => {
 
   // Обработка данных для ScatterChart
 
+  const plotData = [];
   const clusterData = results.phrase_clusters || [];
-
   const clusters = clusterData.reduce((acc, point) => {
     const cluster = point.cluster;
-
     if (!acc[cluster]) {
       acc[cluster] = [];
     }
-
     acc[cluster].push({
       x: point.x,
-
       y: point.y,
-
-      id: point.phrase,
-
-      label: point.phrase, // Добавляем label для отображения во всплывающей подсказке
+      text: point.phrase,
     });
-
     return acc;
   }, {});
 
-  const scatterSeries = Object.keys(clusters).map((clusterKey) => ({
-    label: `Cluster ${clusterKey}`,
+  Object.keys(clusters).forEach((clusterKey, i) => {
+    const clusterPoints = clusters[clusterKey];
+    const color = CLUSTER_COLORS[i % CLUSTER_COLORS.length];
 
-    data: clusters[clusterKey],
-  }));
+    // Add points trace
+    plotData.push({
+      x: clusterPoints.map((p) => p.x),
+      y: clusterPoints.map((p) => p.y),
+      text: clusterPoints.map((p) => p.text),
+      mode: "markers",
+      type: "scatter",
+      name: `Cluster ${clusterKey}`,
+      marker: { color: color, size: 7, opacity: 0.7 },
+      hoverinfo: "text",
+    });
 
-  // Рассчитываем границы осей с отступами для графика кластеров
+    // Add convex hull trace
+    if (clusterPoints.length >= 3) {
+      const pointsForHull = clusterPoints.map((p) => [p.x, p.y]);
+      const hullIndices = convexHull(pointsForHull);
 
-  const axisConfig = {};
+      if (hullIndices && hullIndices.length > 0) {
+        const hullPoints = hullIndices.map((index) => pointsForHull[index[0]]);
+        hullPoints.push(hullPoints[0]); // Close the loop
 
-  if (clusterData.length > 0) {
-    const xValues = clusterData.map((p) => p.x);
-
-    const yValues = clusterData.map((p) => p.y);
-
-    const minX = Math.min(...xValues);
-
-    const maxX = Math.max(...xValues);
-
-    const minY = Math.min(...yValues);
-
-    const maxY = Math.max(...yValues);
-
-    // Добавляем 10% отступ с каждой стороны
-
-    const xPadding = (maxX - minX) * 0.1 || 0.1;
-
-    const yPadding = (maxY - minY) * 0.1 || 0.1;
-
-    axisConfig.xAxis = [
-      { min: minX - xPadding, max: maxX + xPadding, hide: true },
-    ];
-
-    axisConfig.yAxis = [
-      { min: minY - yPadding, max: maxY + yPadding, hide: true },
-    ];
-  }
+        plotData.push({
+          x: hullPoints.map((p) => p[0]),
+          y: hullPoints.map((p) => p[1]),
+          mode: "lines",
+          line: { color: color, width: 2 },
+          fill: "toself",
+          fillcolor: color,
+          opacity: 0.15,
+          hoverinfo: "none",
+          showlegend: false,
+        });
+      }
+    }
+  });
 
   const handleBarClick = (event, d) => {
     if (!d || d.dataIndex === undefined) return;
@@ -413,7 +410,7 @@ export const Visualization = ({ results }) => {
           </Paper>
         </Grid>
 
-        {scatterSeries.length > 0 && (
+        {clusterData.length > 0 && (
           <Grid item xs={12}>
             <Button
               variant="outlined"
@@ -553,22 +550,16 @@ export const Visualization = ({ results }) => {
 
         <DialogContent>
           <Box sx={{ height: "70vh", width: "100%", mt: 2 }}>
-            <ScatterChart
-              colors={CLUSTER_COLORS}
-              series={scatterSeries.map((s) => ({
-                ...s,
-
-                valueFormatter: (point) =>
-                  `${point.label} (${point.x.toFixed(2)}, ${point.y.toFixed(
-                    2,
-                  )})`,
-              }))}
-              {...axisConfig}
-              legend={{
-                direction: "row",
-
-                position: { vertical: "top", horizontal: "middle" },
+            <Plot
+              data={plotData}
+              layout={{
+                title: "Phrase-Semantic Clusters",
+                xaxis: { title: "Component 1" },
+                yaxis: { title: "Component 2" },
+                showlegend: true,
               }}
+              style={{ width: "100%", height: "100%" }}
+              useResizeHandler
             />
           </Box>
         </DialogContent>
