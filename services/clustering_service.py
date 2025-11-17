@@ -21,6 +21,7 @@ REDUCED_EMBEDDINGS: list = []
 EMBEDDINGS: list = []
 START: int = 2
 END: int = 10
+BEST_N: int = 0
 
 def objective(trial):
     num_clusters = trial.suggest_int('num_clusters', START, END)
@@ -129,6 +130,10 @@ def cluster_texts(sentiment_responses: list[Subtext]) -> tuple[list[dict], list[
 
     tuple = sorted((best_n_clusters, worst_n_clusters))
 
+    global BEST_N
+    BEST_N = best_n_clusters
+
+
     global START, END
 
     START = tuple[0]
@@ -141,7 +146,7 @@ def cluster_texts(sentiment_responses: list[Subtext]) -> tuple[list[dict], list[
     print(f"Best trial value: {best_trial.value}")
     print(f"Best trial parameters: {best_trial.params}")
 
-    clusters = spectral_clustering(best_trial.params['num_clusters'])[1]
+    clusters = spectral_clustering(BEST_N)[1]
 
     cluster_keywords, cluster_names_list, texts = extract_cluster_keywords(texts = texts_list, labels = clusters, top_n = 10)
 
