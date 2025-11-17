@@ -12,7 +12,7 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_har
 from sklearn.metrics.pairwise import cosine_distances
 import plotly.express as px
 import matplotlib.pyplot as plt
-from services.nlp_service import filter_text_final_version, predict_sentiment, extract_cluster_keywords
+from services.nlp_service import predict_sentiment, extract_cluster_keywords
 from services.llm_service import generate_cluster_name
 from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
@@ -85,7 +85,6 @@ def cluster_texts(sentiment_responses: list[Subtext]) -> tuple[list[dict], list[
     sentiments = predict_sentiment(texts_list)
 
     abstracts = texts_list
-    processed_texts_list = [filter_text_final_version(text) for text in texts_list]
 
     model = SentenceTransformer('all-MiniLM-L12-v2')
     EMBEDDINGS = model.encode(texts_list, device='cuda')
