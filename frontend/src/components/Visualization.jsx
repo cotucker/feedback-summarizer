@@ -1,9 +1,7 @@
 // src/components/Visualization.jsx
 
 import React, { useState } from "react";
-
 import PropTypes from "prop-types";
-
 import {
   Box,
   Typography,
@@ -20,38 +18,33 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Tooltip, // === ИЗМЕНЕНИЕ: Импортируем Tooltip ===
+  Tooltip,
   CircularProgress,
   Snackbar,
   Alert,
 } from "@mui/material";
-
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
 import { BarChart } from "@mui/x-charts/BarChart";
-
 import { PieChart } from "@mui/x-charts/PieChart";
-
-// import { ScatterChart } from "@mui/x-charts/ScatterChart";
+// Импортируем Plot
 import Plot from "react-plotly.js";
-import convexHull from "convex-hull";
-
 import { DataGrid } from "@mui/x-data-grid";
 
 import { downloadPdfReport } from "../api/apiClient"; // Импортируем функцию
 
-// === ИЗМЕНЕНИЕ: Создаем вспомогательную функцию для рендеринга ячеек с подсказками ===
+// === ИЗМЕНЕНИЕ: Импортируем plotly.js-dist-min в глобальную область видимости ===
+// Это может быть сделано в index.js вашего приложения для лучшей организации
+// import 'plotly.js-dist-min';
+// В этом файле мы предполагаем, что Plotly уже доступен через react-plotly.js,
+// но если возникнут проблемы, возможно, потребуется явный импорт в index.js
 
-// Это поможет избежать дублирования кода.
-
+// === ИЗМЕНЕНИЕ: Вспомогательная функция для рендеринга ячеек с подсказками ===
 const renderCellWithTooltip = (params) => (
   <Tooltip title={params.value} placement="bottom-start">
     <Box
       sx={{
         whiteSpace: "nowrap",
-
         overflow: "hidden",
-
         textOverflow: "ellipsis",
       }}
     >
@@ -60,72 +53,48 @@ const renderCellWithTooltip = (params) => (
   </Tooltip>
 );
 
-// === ИЗМЕНЕНИЕ: Обновляем определения колонок ===
-
+// === ИЗМЕНЕНИЕ: Определения колонок ===
 const feedbackAnalysisColumns = [
-  // Используем flex: 1, чтобы колонка растягивалась, и добавляем renderCell для подсказки
-
   {
     field: "text",
-
     headerName: "Feedback Text",
-
     flex: 1,
-
     minWidth: 300,
-
     renderCell: renderCellWithTooltip,
   },
-
   { field: "topic", headerName: "Topic", width: 180 },
-
   { field: "sentiment", headerName: "Sentiment", width: 120 },
 ];
 
 const feedbackRepliesColumns = [
   {
     field: "feedback_text",
-
     headerName: "Original Feedback",
-
     flex: 1,
-
     minWidth: 250,
-
     renderCell: renderCellWithTooltip,
   },
-
   {
     field: "feedback_reply",
-
     headerName: "AI Generated Reply",
-
     flex: 1,
-
     minWidth: 250,
-
     renderCell: renderCellWithTooltip,
   },
-
   { field: "score", headerName: "Score", width: 100 },
 ];
 
 const topicDetailColumns = [
   {
     field: "text",
-
     headerName: "Feedback Text",
-
     flex: 1,
-
     renderCell: renderCellWithTooltip,
   },
-
   { field: "sentiment", headerName: "Sentiment", width: 120 },
 ];
 
-// === ИЗМЕНЕНИЕ: Добавляем палитру цветов для кластеров ===
-
+// === ИЗМЕНЕНИЕ: Палитра цветов для кластеров ===
 const CLUSTER_COLORS = [
   "#1f77b4",
   "#ff7f0e",
@@ -133,115 +102,128 @@ const CLUSTER_COLORS = [
   "#d62728",
   "#9467bd",
   "#8c564b",
-
   "#e377c2",
   "#7f7f7f",
   "#bcbd22",
   "#17becf",
   "#aec7e8",
   "#ffbb78",
-
   "#98df8a",
   "#ff9896",
   "#c5b0d5",
   "#c49c94",
   "#f7b6d2",
   "#c7c7c7",
-
   "#dbdb8d",
   "#9edae5",
   "#393b79",
   "#637939",
   "#8c6d31",
   "#843c39",
-
   "#7b4173",
   "#5254a3",
   "#6b6ecf",
   "#9c9ede",
   "#637939",
   "#8ca252",
-
   "#b5cf6b",
   "#cedb9c",
   "#8c6d31",
   "#bd9e39",
   "#e7ba52",
   "#e7cb94",
-
   "#843c39",
   "#ad494a",
   "#d6616b",
   "#e7969c",
   "#7b4173",
   "#a55194",
-
   "#ce6dbd",
   "#de9ed6",
 ];
 
+// === НОВОЕ: Вспомогательная функция для вычисления выпуклой оболочки (Graham Scan) ===
+const calculateConvexHull = (points) => {
+  if (points.length < 3) return points;
+
+  // Вспомогательная функция для определения поворота
+  const crossProduct = (o, a, b) => {
+    return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+  };
+
+  // Сортируем точки по x, затем по y
+  points.sort((a, b) => (a.x !== b.x ? a.x - b.x : a.y - b.y));
+
+  const hull = [];
+  // Нижняя оболочка
+  for (let i = 0; i < points.length; ++i) {
+    while (
+      hull.length >= 2 &&
+      crossProduct(hull[hull.length - 2], hull[hull.length - 1], points[i]) <= 0
+    ) {
+      hull.pop();
+    }
+    hull.push(points[i]);
+  }
+
+  // Верхняя оболочка
+  const lowerSize = hull.length;
+  for (let i = points.length - 2; i >= 0; --i) {
+    while (
+      hull.length > lowerSize &&
+      crossProduct(hull[hull.length - 2], hull[hull.length - 1], points[i]) <= 0
+    ) {
+      hull.pop();
+    }
+    hull.push(points[i]);
+  }
+
+  // Удаляем дубликат последней точки
+  hull.pop();
+  return hull;
+};
+
 export const Visualization = ({ results }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   const [selectedTopicData, setSelectedTopicData] = useState(null);
-
   const [isClusterDialogOpen, setIsClusterDialogOpen] = useState(false);
-
   const [isDownloading, setIsDownloading] = useState(false);
-
   const [error, setError] = useState(null);
 
   const topicLabels = results.topics.map((t) => t.topic);
-
   const topicCounts = results.topics.map((t) => t.count);
 
   const sentimentChartData = [
     {
       id: 0,
-
       value: results.sentiment.positive,
-
       label: "Positive",
-
       color: "#4caf50",
     },
-
     {
       id: 1,
-
       value: results.sentiment.negative,
-
       label: "Negative",
-
       color: "#f44336",
     },
-
     {
       id: 2,
-
       value: results.sentiment.neutral,
-
       label: "Neutral",
-
       color: "#ff9800",
     },
   ];
 
   const feedbackAnalysisRows = results.feedback_analysis.map((row, index) => ({
     ...row,
-
     id: index,
   }));
-
   const feedbackRepliesRows = results.feedback_replies.map((row, index) => ({
     ...row,
-
     id: index,
   }));
 
-  // Обработка данных для ScatterChart
-
-  const plotData = [];
+  // Обработка данных для кластеров
   const clusterData = results.phrase_clusters || [];
   const clusters = clusterData.reduce((acc, point) => {
     const cluster = point.cluster;
@@ -251,56 +233,82 @@ export const Visualization = ({ results }) => {
     acc[cluster].push({
       x: point.x,
       y: point.y,
-      text: point.phrase,
+      id: point.phrase,
+      label: point.phrase,
     });
     return acc;
   }, {});
 
-  Object.keys(clusters).forEach((clusterKey, i) => {
-    const clusterPoints = clusters[clusterKey];
-    const color = CLUSTER_COLORS[i % CLUSTER_COLORS.length];
+  // Функция для подготовки данных Plotly
+  const preparePlotlyData = () => {
+    const plotlyTraces = [];
 
-    // Add points trace
-    plotData.push({
-      x: clusterPoints.map((p) => p.x),
-      y: clusterPoints.map((p) => p.y),
-      text: clusterPoints.map((p) => p.text),
-      mode: "markers",
-      type: "scatter",
-      name: `Cluster ${clusterKey}`,
-      marker: { color: color, size: 7, opacity: 0.7 },
-      hoverinfo: "text",
-    });
+    Object.keys(clusters).forEach((clusterKey, index) => {
+      const points = clusters[clusterKey];
+      const color = CLUSTER_COLORS[index % CLUSTER_COLORS.length];
 
-    // Add convex hull trace
-    if (clusterPoints.length >= 3) {
-      const pointsForHull = clusterPoints.map((p) => [p.x, p.y]);
-      const hullIndices = convexHull(pointsForHull);
+      // 1. Точки кластера
+      plotlyTraces.push({
+        x: points.map((p) => p.x),
+        y: points.map((p) => p.y),
+        mode: "markers",
+        type: "scatter",
+        name: `Cluster ${clusterKey}`,
+        text: points.map((p) => p.label),
+        hovertemplate:
+          "<b>%{text}</b><br>x: %{x:.2f}<br>y: %{y:.2f}<extra></extra>",
+        marker: {
+          color: color,
+          size: 8,
+          opacity: 0.8,
+        },
+      });
 
-      if (hullIndices && hullIndices.length > 0) {
-        const hullPoints = hullIndices.map((index) => pointsForHull[index[0]]);
-        hullPoints.push(hullPoints[0]); // Close the loop
+      // 2. Граница кластера (convex hull)
+      if (points.length >= 3) {
+        const hull = calculateConvexHull([...points]);
+        // Замыкаем контур
+        const hullX = [...hull.map((p) => p.x), hull[0].x];
+        const hullY = [...hull.map((p) => p.y), hull[0].y];
 
-        plotData.push({
-          x: hullPoints.map((p) => p[0]),
-          y: hullPoints.map((p) => p[1]),
+        plotlyTraces.push({
+          x: hullX,
+          y: hullY,
           mode: "lines",
-          line: { color: color, width: 2 },
+          type: "scatter",
           fill: "toself",
-          fillcolor: color,
-          opacity: 0.15,
-          hoverinfo: "none",
+          fillcolor: color + "20", // Добавляем прозрачность
+          line: {
+            color: color,
+            width: 2,
+          },
           showlegend: false,
+          hoverinfo: "skip",
+        });
+      } else if (points.length === 2) {
+        // Для 2 точек рисуем линию
+        plotlyTraces.push({
+          x: points.map((p) => p.x),
+          y: points.map((p) => p.y),
+          mode: "lines",
+          type: "scatter",
+          line: {
+            color: color,
+            width: 2,
+            dash: "dash",
+          },
+          showlegend: false,
+          hoverinfo: "skip",
         });
       }
-    }
-  });
+    });
+
+    return plotlyTraces;
+  };
 
   const handleBarClick = (event, d) => {
     if (!d || d.dataIndex === undefined) return;
-
     const clickedTopic = results.topics[d.dataIndex];
-
     if (!clickedTopic) return;
 
     const relevantFeedback = results.feedback_analysis.filter(
@@ -312,29 +320,22 @@ export const Visualization = ({ results }) => {
         if (curr.sentiment === "Positive") acc.positive += 1;
         else if (curr.sentiment === "Negative") acc.negative += 1;
         else if (curr.sentiment === "Neutral") acc.neutral += 1;
-
         return acc;
       },
-
       { positive: 0, negative: 0, neutral: 0 },
     );
 
     setSelectedTopicData({
       ...clickedTopic,
-
       sentiments: topicSentiments,
-
       feedback: relevantFeedback.map((fb, index) => ({ ...fb, id: index })),
     });
-
     setIsDialogOpen(true);
   };
 
   const handleDownload = async () => {
     setIsDownloading(true);
-
     setError(null);
-
     try {
       await downloadPdfReport(results);
     } catch (err) {
@@ -344,16 +345,39 @@ export const Visualization = ({ results }) => {
     }
   };
 
+  // Подготовим данные для Plotly один раз при рендере
+  const plotlyData = preparePlotlyData();
+
+  // Рассчитаем границы осей для Plotly
+  let plotLayout = {};
+  if (clusterData.length > 0) {
+    const xValues = clusterData.map((p) => p.x);
+    const yValues = clusterData.map((p) => p.y);
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    const minY = Math.min(...yValues);
+    const maxY = Math.max(...yValues);
+
+    // Добавляем 10% отступ с каждой стороны
+    const xPadding = (maxX - minX) * 0.1 || 0.1;
+    const yPadding = (maxY - minY) * 0.1 || 0.1;
+
+    plotLayout = {
+      xaxis: { range: [minX - xPadding, maxX + xPadding] },
+      yaxis: { range: [minY - yPadding, maxY + yPadding] },
+      showlegend: true,
+      legend: { orientation: "h", xanchor: "center", x: 0.5 },
+      margin: { l: 50, r: 50, b: 50, t: 50 },
+      dragmode: "pan", // Позволяет перемещать график
+    };
+  }
+
   return (
     <Box sx={{ mt: 4 }}>
-      {/* Весь остальной JSX остается без изменений */}
-
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Card variant="outlined">
             <CardContent>
-              <Typography variant="h5">Overall Summary</Typography>
-
               <Box
                 sx={{
                   display: "flex",
@@ -361,8 +385,7 @@ export const Visualization = ({ results }) => {
                   alignItems: "center",
                 }}
               >
-                {/* <Typography variant="h5">Overall Summary</Typography>*/}
-
+                <Typography variant="h5">Overall Summary</Typography>
                 <Button
                   variant="contained"
                   onClick={handleDownload}
@@ -374,9 +397,7 @@ export const Visualization = ({ results }) => {
                   {isDownloading ? "Downloading..." : "Download Report"}
                 </Button>
               </Box>
-
               <Divider sx={{ my: 2 }} />
-
               <Typography variant="body1">{results.summary}</Typography>
             </CardContent>
           </Card>
@@ -387,7 +408,6 @@ export const Visualization = ({ results }) => {
             <Typography variant="h6" gutterBottom>
               Topic Distribution
             </Typography>
-
             <BarChart
               xAxis={[{ scaleType: "band", data: topicLabels }]}
               series={[{ data: topicCounts }]}
@@ -397,27 +417,26 @@ export const Visualization = ({ results }) => {
             />
           </Paper>
         </Grid>
-
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 2, height: "400px" }}>
             <Typography variant="h6" gutterBottom>
               Overall Sentiment
             </Typography>
-
             <PieChart
               series={[{ data: sentimentChartData, innerRadius: 60 }]}
             />
           </Paper>
         </Grid>
 
-        {clusterData.length > 0 && (
+        {/* КНОПКА ДЛЯ ОТКРЫТИЯ PLOTLY ГРАФИКА */}
+        {Object.keys(clusters).length > 0 && (
           <Grid item xs={12}>
             <Button
               variant="outlined"
               onClick={() => setIsClusterDialogOpen(true)}
               fullWidth
             >
-              Show Phrase Clusters
+              Show Phrase Clusters with Boundaries
             </Button>
           </Grid>
         )}
@@ -426,19 +445,16 @@ export const Visualization = ({ results }) => {
           <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
             Topic Summaries
           </Typography>
-
           {results.topics.map((topic, index) => (
             <Accordion key={index}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography sx={{ width: "50%", flexShrink: 0 }}>
                   {topic.topic}
                 </Typography>
-
                 <Typography sx={{ color: "text.secondary" }}>
                   Feedback Count: {topic.count}
                 </Typography>
               </AccordionSummary>
-
               <AccordionDetails>
                 <Typography>{topic.summary}</Typography>
               </AccordionDetails>
@@ -450,7 +466,6 @@ export const Visualization = ({ results }) => {
           <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
             Detailed Feedback Analysis
           </Typography>
-
           <Paper sx={{ height: 400, width: "100%" }}>
             <DataGrid
               rows={feedbackAnalysisRows}
@@ -464,7 +479,6 @@ export const Visualization = ({ results }) => {
           <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
             Generated AI Replies
           </Typography>
-
           <Paper sx={{ height: 400, width: "100%" }}>
             <DataGrid
               rows={feedbackRepliesRows}
@@ -485,47 +499,37 @@ export const Visualization = ({ results }) => {
           <DialogTitle variant="h4">
             Details for Topic: "{selectedTopicData.topic}"
           </DialogTitle>
-
           <DialogContent>
             <Box sx={{ my: 2 }}>
               <Typography variant="h6" gutterBottom>
                 Summary for this Topic
               </Typography>
-
               <Typography variant="body1" color="text.secondary">
                 {selectedTopicData.summary}
               </Typography>
             </Box>
-
             <Divider sx={{ my: 2 }} />
-
             <Box sx={{ my: 2 }}>
               <Typography variant="h6" gutterBottom>
                 Sentiment Distribution for this Topic
               </Typography>
-
               <Grid container spacing={2}>
                 <Grid item>
                   Positive: {selectedTopicData.sentiments.positive}
                 </Grid>
-
                 <Grid item>
                   Negative: {selectedTopicData.sentiments.negative}
                 </Grid>
-
                 <Grid item>
                   Neutral: {selectedTopicData.sentiments.neutral}
                 </Grid>
               </Grid>
             </Box>
-
             <Divider sx={{ my: 2 }} />
-
             <Box sx={{ height: 400, width: "100%", mt: 2 }}>
               <Typography variant="h6" gutterBottom>
                 Relevant Feedback
               </Typography>
-
               <DataGrid
                 rows={selectedTopicData.feedback}
                 columns={topicDetailColumns}
@@ -533,37 +537,32 @@ export const Visualization = ({ results }) => {
               />
             </Box>
           </DialogContent>
-
           <DialogActions>
             <Button onClick={() => setIsDialogOpen(false)}>Close</Button>
           </DialogActions>
         </Dialog>
       )}
 
+      {/* Диалог для отображения кластеров Plotly */}
       <Dialog
         open={isClusterDialogOpen}
         onClose={() => setIsClusterDialogOpen(false)}
         fullWidth
         maxWidth="xl"
       >
-        <DialogTitle variant="h4">Phrase-Semantic Clusters</DialogTitle>
-
+        <DialogTitle variant="h4">
+          Phrase-Semantic Clusters with Boundaries
+        </DialogTitle>
         <DialogContent>
           <Box sx={{ height: "70vh", width: "100%", mt: 2 }}>
             <Plot
-              data={plotData}
-              layout={{
-                title: "Phrase-Semantic Clusters",
-                xaxis: { title: "Component 1" },
-                yaxis: { title: "Component 2" },
-                showlegend: true,
-              }}
+              data={plotlyData}
+              layout={plotLayout}
+              config={{ displayModeBar: true, responsive: true }}
               style={{ width: "100%", height: "100%" }}
-              useResizeHandler
             />
           </Box>
         </DialogContent>
-
         <DialogActions>
           <Button onClick={() => setIsClusterDialogOpen(false)}>Close</Button>
         </DialogActions>
@@ -590,33 +589,22 @@ export const Visualization = ({ results }) => {
 Visualization.propTypes = {
   results: PropTypes.shape({
     summary: PropTypes.string,
-
     sentiment: PropTypes.object,
-
     topics: PropTypes.arrayOf(
       PropTypes.shape({
         topic: PropTypes.string,
-
         count: PropTypes.number,
-
         summary: PropTypes.string,
       }),
     ),
-
     quotes: PropTypes.array,
-
     feedback_analysis: PropTypes.array,
-
     feedback_replies: PropTypes.array,
-
     phrase_clusters: PropTypes.arrayOf(
       PropTypes.shape({
         x: PropTypes.number,
-
         y: PropTypes.number,
-
         cluster: PropTypes.number,
-
         phrase: PropTypes.string,
       }),
     ),
