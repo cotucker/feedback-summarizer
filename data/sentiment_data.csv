@@ -1,145 +1,136 @@
 text,sentiment,topic
-The software quality is excellent,Positive,Product Quality
-the project was managed perfectly,Positive,Product Quality
+The software quality is excellent and the project was managed perfectly.,Positive,Product Quality
 The application is extremely slow,Negative,Product Quality
-and the design is very dated,Negative,Product Quality
-While the support team was very helpful,Negative,Support Team Interaction
-the application crashes constantly,Negative,Product Quality
-The new UI is beautiful and modern,Positive,Product Quality
-the pricing is very fair and transparent,Positive,Pricing and Value
-We experience frequent bugs,Negative,Product Quality
-"and to make matters worse, the support was rude and unhelpful",Negative,Support Team Interaction
-The project manager was very organized,Positive,Product Quality
-but the final product feels unfinished,Negative,Product Quality
+the design is very dated.,Negative,Product Quality
+the support team was very helpful,Positive,Support Team
+the application crashes constantly.,Negative,Product Quality
+"The new UI is beautiful and modern,",Positive,Product Quality
+the pricing is very fair and transparent.,Positive,Pricing and Cost
+We experience frequent bugs and to make,Negative,Product Quality
+matters worse,Negative,Support Team
+the support was rude and unhelpful.,Negative,Support Team
+"The project manager was very organized,",Positive,Project Management
+the final product feels unfinished.,Negative,Product Quality
 The build quality is top-notch,Positive,Product Quality
-and the code is clean and well-written,Positive,Product Quality
-Project management was a disaster,Negative,Product Quality
-the billing is a complete rip-off,Negative,Pricing and Value
+the code is clean and well-written.,Positive,Product Quality
+Project management was a disaster,Negative,Project Management
+the billing is a complete rip-off.,Negative,Pricing and Cost
 The design is very intuitive,Positive,Product Quality
-however the mobile experience is sluggish,Negative,Product Quality
+the mobile experience is sluggish.,Negative,Product Quality
 The dashboard is well-designed,Positive,Product Quality
-the support team is fantastic,Positive,Support Team Interaction
+the support team is fantastic.,Positive,Support Team
 The software is full of errors,Negative,Product Quality
-it took days to get a response from support,Negative,Support Team Interaction
-The product is very reliable,Positive,Product Quality
-but I feel the cost is way too high,Negative,Pricing and Value
-Performance is lagging on mobile,Neutral,Product Quality
-the user interface is cluttered and confusing,Negative,Product Quality
-The support agent was knowledgeable,Positive,Support Team Interaction
-the project was delivered on time,Neutral,Product Quality
-The system often freezes,Negative,Product Quality
-even though the build quality is top-notch,Negative,Product Quality
-Customer service resolved my issue,Neutral,Support Team Interaction
-the pricing model is very flexible,Positive,Pricing and Value
-The product is very robust and stable,Positive,Product Quality
-but the subscription cost is unreasonable,Negative,Pricing and Value
+it took days to get a response from support.,Negative,Support Team
+"The product is very reliable,",Positive,Product Quality
+I feel,Positive,Support Team
+the cost is way too high,Negative,Pricing and Cost
+"Performance is lagging on mobile,",Negative,Product Quality
+the user interface is cluttered and confusing.,Negative,Product Quality
+The support agent was knowledgeable and the project was delivered on time.,Positive,Support Team
+"The system often freezes, even though",Negative,Product Quality
+the build quality is top-notch,Positive,Product Quality
+Customer service resolved my issue,Neutral,Support Team
+the pricing model is very flexible.,Positive,Pricing and Cost
+"The product is very robust and stable,",Positive,Product Quality
+the subscription cost is unreasonable.,Negative,Pricing and Cost
 The UX is a complete nightmare,Negative,Product Quality
-the project manager was unresponsive,Negative,Product Quality
-The team is friendly,Positive,Support Team Interaction
-and professional,Positive,Support Team Interaction
-and the product is very well-engineered,Positive,Product Quality
-It is a very polished product,Positive,Product Quality
-but we had to micromanage everything,Negative,Product Quality
+the project manager was unresponsive.,Negative,Project Management
+"The team is friendly and professional,",Positive,Support Team
+the product is very well-engineered.,Positive,Product Quality
+"It is a very polished product,",Positive,Product Quality
+we had to micromanage everything.,Negative,Project Management
 The navigation is not intuitive,Negative,Product Quality
-the software has memory leaks,Neutral,Product Quality
-The cost is justified by the quality,Neutral,Pricing and Value
-the support team is a huge asset to the company,Positive,Support Team Interaction
-Although the code is clean and well-written,Negative,Product Quality
-the project lacked leadership,Negative,Product Quality
-The application is poorly made,Negative,Product Quality
-the project was a constant source of stress,Negative,Product Quality
-The project was a huge success,Positive,Product Quality
-the product has zero downtime,Neutral,Product Quality
-The design is a major flaw,Negative,Product Quality
-but at least the project manager was very organized,Negative,Product Quality
+the software has memory leaks.,Neutral,Product Quality
+The cost is justified by the quality and the support team is a huge asset to the company.,Neutral,Support Team
+the code is clean and well-written,Positive,Product Quality
+the project lacked leadership.,Negative,Project Management
+the project was a constant source of stress.,Negative,Project Management
+The project was a huge success,Positive,Project Management
+the product has zero downtime.,Neutral,Product Quality
+"The design is a major flaw, but at least",Negative,Product Quality
+the project manager was very organized,Positive,Project Management
 The software is not well-architected,Negative,Product Quality
-the support staff seems incompetent,Negative,Support Team Interaction
-Excellent help from the support staff,Positive,Support Team Interaction
-and the final product is flawless,Positive,Product Quality
-The manager was proactive and on top of things,Positive,Product Quality
-however the billing is very confusing,Negative,Pricing and Value
-The user experience is terrible,Negative,Product Quality
-the deadlines were constantly missed,Negative,Product Quality
+the support staff seems incompetent.,Negative,Support Team
+"Excellent help from the support staff,",Positive,Support Team
+the final product is flawless.,Positive,Product Quality
+"The manager was proactive and on top of things, however",Negative,Project Management
+the billing is very confusing.,Negative,Pricing and Cost
+The user experience is terrible and the deadlines were constantly missed.,Negative,Product Quality
 The software is of high quality,Neutral,Product Quality
-the team is very professional,Positive,Support Team Interaction
-The product works,Positive,Product Quality
-but the pricing is not straightforward and clear,Negative,Pricing and Value
+the team is very professional.,Positive,Support Team
+"The product works,",Positive,Product Quality
+the pricing is not straightforward and clear.,Negative,Pricing and Cost
 The application is not reliable,Negative,Product Quality
-the support is a constant headache,Negative,Support Team Interaction
-They responded to my ticket quickly,Positive,Support Team Interaction
-the project was a pleasure to work on,Positive,Product Quality
-The build quality is excellent,Positive,Product Quality
-but the design feels very dated,Negative,Product Quality
-The final invoice included charges for things we did not use,Negative,Pricing and Value
-the project was poorly planned,Negative,Product Quality
+the support is a constant headache.,Negative,Support Team
+They responded to my ticket quickly,Positive,Support Team
+the project was a pleasure to work on.,Positive,Project Management
+"The build quality is excellent,",Positive,Product Quality
+the design feels very dated.,Negative,Product Quality
+The final invoice included charges for things,Neutral,Pricing and Cost
+we did not use,Negative,Project Management
 The product is very well-tested,Positive,Product Quality
-the manager is an excellent communicator,Positive,Product Quality
-While the quality is impressive,Negative,Product Quality
-the cost is much higher than competitors,Negative,Pricing and Value
+the manager is an excellent communicator.,Positive,Project Management
+the quality is impressive,Positive,Product Quality
+the cost is much higher than competitors.,Negative,Pricing and Cost
 The software is unstable,Negative,Product Quality
-the communication from the manager was non-existent,Negative,Product Quality
-The price is affordable,Positive,Pricing and Value
-the support team is fantastic,Positive,Support Team Interaction
-The project was delivered on time,Neutral,Product Quality
-but the final product is full of bugs,Negative,Product Quality
+the communication from the manager was non-existent.,Negative,Project Management
+The price is affordable,Positive,Pricing and Cost
+the support team is fantastic.,Positive,Support Team
+the final product is full of bugs.,Negative,Product Quality
 The mobile experience is sluggish,Negative,Product Quality
-the helpdesk is a complete joke,Negative,Support Team Interaction
+the helpdesk is a complete joke.,Negative,Support Team
 The product is very durable,Positive,Product Quality
-and the project manager is a great leader.,Positive,Product Quality
-Support went above and beyond,Positive,Support Team Interaction
-but the product itself feels unfinished,Negative,Product Quality
+the project manager is a great leader.,Positive,Project Management
+"Support went above and beyond,",Positive,Support Team
+the product itself feels unfinished.,Negative,Product Quality
 The design is not appealing,Negative,Product Quality
-the software is not well-architected,Negative,Product Quality
-The value proposition is excellent,Positive,Pricing and Value
-the product quality is superb,Positive,Product Quality
-The project was a success,Positive,Product Quality
-but the negotiation for the next phase was a nightmare,Negative,Product Quality
+the software is not well-architected.,Negative,Product Quality
+The value proposition is excellent,Positive,Pricing and Cost
+the product quality is superb.,Positive,Product Quality
+"The project was a success,",Positive,Project Management
+the negotiation for the next phase was a nightmare.,Negative,Project Management
 The software is of low quality,Neutral,Product Quality
-and the support team is unresponsive,Negative,Support Team Interaction
-The code is clean and efficient,Positive,Product Quality
-the pricing is very fair,Positive,Pricing and Value
-The manager handled risks very well,Positive,Product Quality
-but the user experience is very frustrating,Negative,Product Quality
+the support team is unresponsive.,Negative,Support Team
+"The code is clean and efficient,",Positive,Product Quality
+the pricing is very fair.,Positive,Pricing and Cost
+"The manager handled risks very well,",Positive,Project Management
+the user experience is very frustrating.,Negative,Product Quality
 The product is flimsy,Negative,Product Quality
-the billing is a complete rip-off,Negative,Pricing and Value
-The support team is fantastic,Positive,Support Team Interaction
-the new UI is beautiful and modern,Positive,Product Quality
-The product is reliable,Positive,Product Quality
-but the project manager is a bottleneck,Negative,Product Quality
+the billing is a complete rip-off.,Negative,Pricing and Cost
+"The support team is fantastic,",Positive,Support Team
+the new UI is beautiful and modern.,Positive,Product Quality
+"The product is reliable,",Positive,Product Quality
+the project manager is a bottleneck.,Negative,Project Management
 The application crashes constantly,Negative,Product Quality
-the cost is way too high,Negative,Pricing and Value
-The project was managed perfectly,Positive,Product Quality
-and the build quality is top-notch,Positive,Product Quality
-The design is intuitive,Positive,Product Quality
-but the system often freezes,Negative,Product Quality
+the cost is way too high.,Negative,Pricing and Cost
+the build quality is top-notch.,Positive,Product Quality
+"The design is intuitive,",Positive,Product Quality
+the system often freezes.,Negative,Product Quality
 The software is full of errors,Negative,Product Quality
-the project management was a disaster,Negative,Product Quality
-Customer service resolved my issue,Neutral,Support Team Interaction
-and the product is very robust and stable,Positive,Product Quality
-The product is well-engineered,Positive,Product Quality
-but the price is not justified,Negative,Pricing and Value
+the project management was a disaster.,Negative,Project Management
+"Customer service resolved my issue,",Neutral,Support Team
+the product is very robust and stable.,Positive,Product Quality
+"The product is well-engineered,",Positive,Product Quality
+the price is,Neutral,Pricing and Cost
 The user interface is cluttered,Negative,Product Quality
-and the support was rude and unhelpful,Negative,Support Team Interaction
-The project was a huge success,Positive,Product Quality
-the support team was very helpful,Positive,Support Team Interaction
-The software quality is excellent,Positive,Product Quality
-but the design is very dated,Negative,Product Quality
+the support was rude and unhelpful.,Negative,Support Team
+"The project was a huge success,",Positive,Project Management
+the support team was very helpful.,Positive,Support Team
+"The software quality is excellent,",Positive,Product Quality
+the design is very dated.,Negative,Product Quality
+"The application is extremely slow,",Negative,Product Quality
+the billing is very confusing.,Negative,Pricing and Cost
+"The new UI is beautiful, and the project was delivered on time.",Positive,Product Quality
+"The support team is fantastic,",Positive,Support Team
+the performance is lagging on mobile.,Negative,Product Quality
+"The product feels unfinished,",Negative,Product Quality
+the project manager was unresponsive.,Negative,Project Management
+"The build quality is top-notch,",Positive,Product Quality
+the pricing is very fair.,Positive,Pricing and Cost
+"The design is intuitive,",Positive,Product Quality
+the software has memory leaks.,Neutral,Product Quality
 The application is extremely slow,Negative,Product Quality
-and the billing is very confusing,Negative,Pricing and Value
-The new UI is beautiful,Positive,Product Quality
-and the project was delivered on time,Neutral,Product Quality
-The support team is fantastic,Positive,Support Team Interaction
-but the performance is lagging on mobile,Negative,Product Quality
-The product feels unfinished,Negative,Product Quality
-and the project manager was unresponsive,Negative,Product Quality
-The build quality is top-notch,Positive,Product Quality
-and the pricing is very fair,Positive,Pricing and Value
-The design is intuitive,Positive,Product Quality
-but the software has memory leaks,Negative,Product Quality
-The application is extremely slow,Negative,Product Quality
-support was rude,Negative,Support Team Interaction
-and unhelpful,Negative,Support Team Interaction
-The project was managed perfectly,Positive,Product Quality
-the software quality is excellent,Positive,Product Quality
-While customer service was great,Negative,Support Team Interaction
-the product itself is full of bugs,Negative,Product Quality
+support was rude and unhelpful.,Negative,Support Team
+the software quality is excellent.,Positive,Product Quality
+customer service was great,Positive,Support Team
+the product itself is full of bugs.,Negative,Product Quality

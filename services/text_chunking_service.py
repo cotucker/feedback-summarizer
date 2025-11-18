@@ -87,10 +87,16 @@ def extract_semantic_chunks(text: str) -> list:
 
     return results
 
-def test_chunks(text):
+def test_chunks(text: str) -> list[str]:
     list = []
     for item in split_dot(text):
         list.extend(extract_semantic_chunks(item))
+    return list
+
+def feedback_chunking(feedback_list: list[str]):
+    list = []
+    for feedback in feedback_list:
+        list.extend(test_chunks(feedback))
     return list
 
 if __name__ == "__main__":

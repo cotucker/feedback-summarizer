@@ -13,6 +13,7 @@ from fastapi import HTTPException
 import spacy
 from textblob import TextBlob
 from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_feedback_analysis_by_topic
+from services.text_chunking_service import feedback_chunking
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
@@ -421,7 +422,7 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
     summary: TopicSummary = typing.cast(TopicSummary, response.parsed)
     return summary.summary
 
-def feedback_list_analysis(topics_text: str = '') -> list[Subtext]:
+def feedback_list_analysis(topics_text: str = '') -> list[str]:
     if topics_text.replace(' ', '') == '':
         topics = []
     else:
@@ -431,23 +432,9 @@ def feedback_list_analysis(topics_text: str = '') -> list[Subtext]:
 
     print(f"Generaled topics: {topics}")
     filter = not topics
-    sentiments_list: list[Subtext] = []
     feedback_list: list[str] = get_feedback_list()
-    for feedback in feedback_list:
-        sentiments = generate_single_sentiments_feedback_analysis(feedback, ', '.join(topics))
-        for sentiment in sentiments:
-            if filter:
-                if sentiment.topic not in topics:
-                    topics.append(sentiment.topic)
-                    sentiments_list.append(sentiment)
-                else:
-                    sentiments_list.append(sentiment)
-            else:
-                if sentiment.topic in topics:
-                    sentiments_list.append(sentiment)
-
-    print(sentiments_list)
-    return sentiments_list
+    texts_list: list[str] = feedback_chunking(feedback_list)
+    return texts_list
 
 def generate_topics_list(topics_text: str):
     response = client.models.generate_content(

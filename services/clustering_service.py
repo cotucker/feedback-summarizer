@@ -73,19 +73,15 @@ def spectral_clustering(num_clusters: int):
 
     return db_score + 1/score, spectral_clusters
 
-def cluster_texts(sentiment_responses: list[Subtext]) -> tuple[list[dict], list[SentimentResponse]]:
+def cluster_texts(texts_list: list[str]) -> tuple[list[dict], list[SentimentResponse]]:
     global EMBEDDINGS, REDUCED_EMBEDDINGS
 
-    if not sentiment_responses:
+    if not texts_list:
         return ([], [])
 
-    data_size = len(sentiment_responses)
-
-    texts_list = [response.text for response in sentiment_responses]
+    data_size = len(texts_list)
     sentiments = predict_sentiment(texts_list)
-
     abstracts = texts_list
-
     model = SentenceTransformer('all-MiniLM-L12-v2')
     EMBEDDINGS = model.encode(texts_list, device='cuda')
 
