@@ -28,6 +28,7 @@ class Separator(BaseModel):
 
 class ClusterName(BaseModel):
     name: str
+    description: str
 
 class ClusterDescription(BaseModel):
     cluster_name: str

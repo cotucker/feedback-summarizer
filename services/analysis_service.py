@@ -40,14 +40,14 @@ async def analysis(file: UploadFile, topics: str = ''):
 
     analysis["sentiment"] = counts
 
-    analysis["feedback_replies"] = [
-        {
-            "feedback_text": feedback_response.original_feedback_text,
-            "feedback_reply": feedback_response.response,
-            "score": feedback_response.score
-        }
-        for feedback_response in feedback_responces(get_feedbacks_info())
-    ]
+    # analysis["feedback_replies"] = [
+    #     {
+    #         "feedback_text": feedback_response.original_feedback_text,
+    #         "feedback_reply": feedback_response.response,
+    #         "score": feedback_response.score
+    #     }
+    #     for feedback_response in feedback_responces(get_feedbacks_info())
+    # ]
 
 
     return analysis

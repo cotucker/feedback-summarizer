@@ -90,7 +90,7 @@ def cluster_texts(sentiment_responses: list[Subtext]) -> tuple[list[dict], list[
     EMBEDDINGS = model.encode(texts_list, device='cuda')
 
     umap_model = UMAP(
-        n_components=12,
+        n_components=25,
         min_dist=0.1,
         metric='cosine',
         random_state=67
@@ -111,9 +111,9 @@ def cluster_texts(sentiment_responses: list[Subtext]) -> tuple[list[dict], list[
     worst_n_clusters = -1
 
     for n_clusters in range_n_clusters:
-        kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init='auto')
+        kmeans = KMeans(n_clusters=n_clusters, init='k-means++', random_state=67)
         cluster_labels = kmeans.fit_predict(REDUCED_EMBEDDINGS)
-        silhouette_avg = silhouette_score(REDUCED_EMBEDDINGS, cluster_labels, metric='cosine')
+        silhouette_avg = silhouette_score(REDUCED_EMBEDDINGS, cluster_labels, metric='cosine') #+ 1/davies_bouldin_score(REDUCED_EMBEDDINGS, cluster_labels)
         silhouette_scores.append(silhouette_avg)
         print(f"For n_clusters = {n_clusters}, the average silhouette_score is : {silhouette_avg}")
 
@@ -138,12 +138,12 @@ def cluster_texts(sentiment_responses: list[Subtext]) -> tuple[list[dict], list[
     START = tuple[0]
     END = tuple[1]
 
-    study = optuna.create_study(direction='minimize')
-    study.optimize(objective, n_trials=100, n_jobs=2)
+    # study = optuna.create_study(direction='minimize')
+    # study.optimize(objective, n_trials=100, n_jobs=2)
 
-    best_trial = study.best_trial
-    print(f"Best trial value: {best_trial.value}")
-    print(f"Best trial parameters: {best_trial.params}")
+    # best_trial = study.best_trial
+    # print(f"Best trial value: {best_trial.value}")
+    # print(f"Best trial parameters: {best_trial.params}")
 
     clusters = spectral_clustering(BEST_N)[1]
 

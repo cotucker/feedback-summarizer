@@ -10,6 +10,8 @@ import numpy as np
 from models.models import *
 from pydantic import BaseModel
 from fastapi import HTTPException
+import spacy
+from textblob import TextBlob
 from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_feedback_analysis_by_topic
 
 load_dotenv()
@@ -166,6 +168,45 @@ def test_topic_moddeling(cluster_name: str, text: str):
     return quality
 
 
+def get_cluster_name(cluster_terms: str) -> str:
+    response = client.models.generate_content(
+        model='gemini-2.5-flash-lite',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"""
+                                You are an expert Data Analyst and Taxonomist. Your task is to analyze a list of keywords with clustery specificity score representing a cluster of customer feedback and generate a single, concise, and descriptive name for that cluster.
+
+                                OBJECTIVE:
+                                Based on the provided list of `CLUSTER_KEYWORDS`, synthesize them into a clear, high-level topic name that accurately represents the central theme of the cluster.
+
+                                **RULES FOR NAMING:**
+                                1.  **Be Abstract and High-Level:** The name should be a general category, not just a repetition of the keywords. Think about the underlying concept that connects these words.
+                                2.  **Use Business Language:** The name must be professional, clear, and easily understandable by a business audience (e.g., "Project Management", "Technical Competence", "Pricing and Value").
+                                3.  **Be Concise:** The name should be short, ideally 2-4 words long.
+                                4.  **Format:** Use Title Case (e.g., "Customer Support Experience").
+                                5.  **Strict Output Format:** Your response MUST ONLY be the generated cluster name. Do not include any explanation, introductory text like "The cluster name is:", or any quotation marks.
+                                6.  **DO MUST NOT  return empty string.** You must return something.
+
+                                INPUT DATA:
+                                - CLUSTER_KEYWORDS: "{cluster_terms}"
+                            """
+
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": ClusterName,
+        },
+    )
+    cluster_name: ClusterName = typing.cast(ClusterName, response.parsed)
+    return cluster_name.name
+
+
 def generate_cluster_name(cluster_terms: str) -> str:
     movie_schema = {
         "type": "object",
@@ -215,7 +256,7 @@ def generate_cluster_name(cluster_terms: str) -> str:
 
 
 
-def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str) -> list[SentimentResponse]:
+def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str) -> list[Subtext]:
 
     response = client.models.generate_content(
         model=f'{MODEL}',
@@ -225,10 +266,7 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                 parts=[
                     types.Part(
                         text=f"""
-                        You are a meticulous Customer Feedback Analyst. Your primary task is to decompose a user's feedback text into the smallest possible, self-contained, meaningful chunks. For each chunk, you must identify its specific topic and sentiment.
-
-                        **OBJECTIVE:**
-                        Analyze the provided `FEEDBACK_TEXT`. You MUST identify all distinct ideas or events mentioned, even if they are in the same sentence. Your response must be ONLY a single, valid JSON object containing a list of these chunks.
+                        You are a meticulous Customer Feedback Analyst. Your primary task is to decompose a user's feedback text into the subtext, self-contained, meaningful chunks. For each chunk, you must identify its specific topic.
 
                         **INPUT DATA:**
                         - **FEEDBACK_TEXT:** "{feedback_text}"
@@ -237,7 +275,9 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                         **CRITICAL RULES FOR CHUNKING:**
                         1.  **Decomposition is Key:** Your main goal is to break down the text. A single sentence often contains multiple chunks. Coordinating conjunctions like "and", "but", "while" are strong indicators of a boundary between chunks.
                         2.  **Chunk = One Idea:** Each chunk must represent a single, distinct event, opinion, or observation.
+                            Each chunk MUST HAVE a subject (what is descriped in the chunk) and everything related to that subject.
                             -   *Example of a single idea:* "We were overcharged for hours that were not worked."
+                            -   *Example of INVALID chunk:* "and modern."
                             -   *Example of another single idea:* "getting it corrected has been a nightmare."
                         3.  **Chunks Must Be Verbatim:** Each chunk you extract MUST be a direct, word-for-word substring of the original `FEEDBACK_TEXT`. Do not rephrase or summarize.
                         4.  **Topic Assignment:**
@@ -251,11 +291,11 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
         ],
         config={
             "response_mime_type": "application/json",
-            "response_schema": list[SentimentResponse],
+            "response_schema": list[Subtext],
         },
     )
     print(f"Original feedback text: {feedback_text}\n{response.text}")
-    sentiments: list[SentimentResponse] = typing.cast(list[SentimentResponse], response.parsed)
+    sentiments: list[Subtext] = typing.cast(list[Subtext], response.parsed)
     return sentiments
 
 def get_separator(row: str) -> str:
@@ -394,7 +434,7 @@ def feedback_list_analysis(topics_text: str = '') -> list[Subtext]:
     sentiments_list: list[Subtext] = []
     feedback_list: list[str] = get_feedback_list()
     for feedback in feedback_list:
-        sentiments = split_feedback(feedback, ', '.join(topics))
+        sentiments = generate_single_sentiments_feedback_analysis(feedback, ', '.join(topics))
         for sentiment in sentiments:
             if filter:
                 if sentiment.topic not in topics:
@@ -541,6 +581,7 @@ def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
 
 def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
     return [generate_feedback_responce(feedback_info) for feedback_info in feedbacks_info ]
+
 
 if __name__ == "__main__":
     print(split_feedback("We went over a budget", ""))

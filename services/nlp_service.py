@@ -6,7 +6,8 @@ import torch
 from models.models import Sentiment
 import numpy as np
 import pandas as pd
-from services.llm_service import generate_cluster_name
+from typing import List, Dict
+from services.llm_service import generate_cluster_name, get_cluster_name
 
 model_name = "tabularisai/multilingual-sentiment-analysis"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -70,7 +71,7 @@ def extract_cluster_keywords(texts, labels, top_n=10):
         keyword_prompt = " ".join([word for word, score in keywords[:3]])
 
         if keyword_prompt:
-            cluster_name_map[cluster_id] = generate_cluster_name(keyword_prompt)
+            cluster_name_map[cluster_id] = get_cluster_name(keyword_prompt)
         else:
             cluster_name_map[cluster_id] = f"Cluster {cluster_id}"
 

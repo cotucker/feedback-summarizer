@@ -66,23 +66,6 @@ const feedbackAnalysisColumns = [
   { field: "sentiment", headerName: "Sentiment", width: 120 },
 ];
 
-const feedbackRepliesColumns = [
-  {
-    field: "feedback_text",
-    headerName: "Original Feedback",
-    flex: 1,
-    minWidth: 250,
-    renderCell: renderCellWithTooltip,
-  },
-  {
-    field: "feedback_reply",
-    headerName: "AI Generated Reply",
-    flex: 1,
-    minWidth: 250,
-    renderCell: renderCellWithTooltip,
-  },
-  { field: "score", headerName: "Score", width: 100 },
-];
 
 const topicDetailColumns = [
   {
@@ -215,10 +198,6 @@ export const Visualization = ({ results }) => {
   ];
 
   const feedbackAnalysisRows = results.feedback_analysis.map((row, index) => ({
-    ...row,
-    id: index,
-  }));
-  const feedbackRepliesRows = results.feedback_replies.map((row, index) => ({
     ...row,
     id: index,
   }));
@@ -475,18 +454,7 @@ export const Visualization = ({ results }) => {
           </Paper>
         </Grid>
 
-        <Grid item xs={12}>
-          <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
-            Generated AI Replies
-          </Typography>
-          <Paper sx={{ height: 400, width: "100%" }}>
-            <DataGrid
-              rows={feedbackRepliesRows}
-              columns={feedbackRepliesColumns}
-              pageSizeOptions={[5, 10, 20]}
-            />
-          </Paper>
-        </Grid>
+
       </Grid>
 
       {selectedTopicData && (
@@ -599,7 +567,6 @@ Visualization.propTypes = {
     ),
     quotes: PropTypes.array,
     feedback_analysis: PropTypes.array,
-    feedback_replies: PropTypes.array,
     phrase_clusters: PropTypes.arrayOf(
       PropTypes.shape({
         x: PropTypes.number,
