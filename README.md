@@ -58,13 +58,13 @@ Here's a system structure scheme
 
 This project uses a modern, decoupled architecture with a React frontend and a FastAPI backend.
 
-| Frontend                               | Backend                             |
-| -------------------------------------- | ----------------------------------- |
-| **React.js**                           | **Python 3.9+**                     |
-| **MUI X** (for UI components & Charts) | **FastAPI** (for the REST API)      |
-| **Axios** (for API requests)           | **Uvicorn** (as the ASGI server)    |
-| **JavaScript**                         | **Pandas** (for data manipulation)  |
-|                                        | **Cerebras APIs** (for AI processing) |
+| Frontend                               | Backend                                    |
+| -------------------------------------- | ------------------------------------------ |
+| **React.js**                           | **Python 3.9+**                            |
+| **MUI X** (for UI components & Charts) | **FastAPI** (for the REST API)             |
+| **Axios** (for API requests)           | **Uvicorn** (as the ASGI server)           |
+| **JavaScript**                         | **Pandas** (for data manipulation)         |
+|                                        | **Google Gemini APIs** (for AI processing) |
 
 ## 🏁 Getting Started
 
@@ -74,7 +74,7 @@ Follow these instructions to get the project up and running on your local machin
 
 - **Node.js** (v19 or newer)
 - **Python** (v3.10 or newer)
-- Cerebras API key
+- Google Gemini API key
 
 ### ⚙️ Installation
 
@@ -109,10 +109,12 @@ Follow these instructions to get the project up and running on your local machin
 
 4.  **Configure Environment Variables:**
     - Create a `.env` file in the root directory of the project.
-    - Add your Cerebras API key to the file:
+    - Add your Google Gemini API key to the file:
+
     ```env
-    CEREBRAS_API_KEY="your_cerebras_api_key_here"
-    MODEL="cerebras_model_name (e.g. gpt-oss-120b)"
+    GEMINI_API_KEY=your_google_gemini_api_key_here
+    MODEL=google_gemini_model_name (e.g. gemini-2.5-flash-lite)
+    DEVICE=cpu  # or gpu if available
     ```
 
 ### 🏃‍♀️ Running the Application
