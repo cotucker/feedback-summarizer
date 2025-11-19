@@ -9,11 +9,11 @@ from hdbscan import HDBSCAN
 import optuna
 from sklearn.cluster import SpectralClustering, KMeans, BisectingKMeans
 from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score
-from sklearn.metrics.pairwise import cosine_distances
+from sklearn.metrics.pairwise import cosine_distances, cosine_similarity
 import plotly.express as px
 import matplotlib.pyplot as plt
 from services.nlp_service import predict_sentiment, extract_cluster_keywords
-from services.llm_service import generate_cluster_name
+from services.llm_service import generate_cluster_name, filter_topics
 from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
 
@@ -73,14 +73,14 @@ def spectral_clustering(num_clusters: int):
 
     return db_score + 1/score, spectral_clusters
 
-def cluster_texts(texts_list: list[str]) -> tuple[list[dict], list[SentimentResponse]]:
+def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], list[SentimentResponse]]:
     global EMBEDDINGS, REDUCED_EMBEDDINGS
 
     if not texts_list:
         return ([], [])
 
     data_size = len(texts_list)
-    sentiments = predict_sentiment(texts_list)
+    sentiments_list  = predict_sentiment(texts_list)
     abstracts = texts_list
     model = SentenceTransformer('all-MiniLM-L12-v2')
     EMBEDDINGS = model.encode(texts_list, device='cuda')
@@ -145,21 +145,39 @@ def cluster_texts(texts_list: list[str]) -> tuple[list[dict], list[SentimentResp
 
     cluster_keywords, cluster_names_list, texts = extract_cluster_keywords(texts = texts_list, labels = clusters, top_n = 10)
 
+
+    all_topics = set(cluster_names_list)
+
+    filtered_topics = filter_topics(selected_topics=topics, all_topics_list=', '.join(all_topics))
+    print(f"Filter: {len(all_topics)} ---> {len(filtered_topics)}")
+    print(f"Filtered topics: {filtered_topics}")
     tsne = TSNE(n_components=2, perplexity=30, random_state=42)
     reduced_tsne = tsne.fit_transform(REDUCED_EMBEDDINGS)
+
+    reduced_embeddings = []
+    cluster_names = []
+    texts = []
+    sentiments = []
+    for i, cluster_name in enumerate(cluster_names_list):
+        if cluster_name in filtered_topics:
+            reduced_embeddings.append(reduced_tsne[i])
+            cluster_names.append(cluster_name)
+            texts.append(texts_list[i])
+            sentiments.append(sentiments_list[i])
+
 
     phrase_clusters = []
     sentiments_list: list[SentimentResponse] = []
 
-    for i, text in enumerate(texts_list):
+    for i, text in enumerate(texts):
         sentiment = sentiments[i]
         phrase_clusters.append({
-            "x": float(reduced_tsne[i][0]),
-            "y": float(reduced_tsne[i][1]),
-            "cluster": cluster_names_list[i],
+            "x": float(reduced_embeddings[i][0]),
+            "y": float(reduced_embeddings[i][1]),
+            "cluster": cluster_names[i],
             "phrase": text,
         })
-        sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = cluster_names_list[i]))
+        sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = cluster_names[i]))
 
 
     create_dataset_from_sentiment_response_list(sentiments_list)
@@ -171,3 +189,10 @@ def cluster_texts(texts_list: list[str]) -> tuple[list[dict], list[SentimentResp
     print("Sentiment Response List:")
     print(sentiments_list)
     return phrase_clusters, sentiments_list
+
+
+if __name__ == "__main__":
+    texts = ["Pricing and Value", "Budget management"]
+    model = SentenceTransformer('all-MiniLM-L12-v2')
+    embeddings = model.encode(texts, device='cuda')
+    print(cosine_similarity(embeddings))

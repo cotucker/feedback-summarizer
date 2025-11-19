@@ -422,6 +422,52 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
     summary: TopicSummary = typing.cast(TopicSummary, response.parsed)
     return summary.summary
 
+def filter_topics(selected_topics: str, all_topics_list: str):
+
+
+    if len(selected_topics) == 0:
+        return all_topics_list
+
+    response = client.models.generate_content(
+        model=f'{MODEL}',
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"""
+                        You are an intelligent Semantic Filter. Your task is to interpret a user's search query and select the most relevant topics from a provided list of available options.
+
+                        **OBJECTIVE:**
+                        Analyze the `USER_QUERY` and compare it against the `AVAILABLE_TOPICS`. Return a JSON array containing ONLY the topics from the list that are semantically related to the user's intent.
+
+                        **INPUT DATA:**
+                        - **USER_QUERY:** "{selected_topics}"
+                        - **AVAILABLE_TOPICS:** {all_topics_list}
+
+                        **FILTERING RULES:**
+                        1.  **Semantic Matching:** Do not look for exact string matches only. Understand the intent.
+                            -   *Example:* If query is "too expensive", select "Pricing & Cost".
+                            -   *Example:* If query is "bugs and glitches", select "Product Quality" or "Technical Issues".
+                            -   *Example:* If query is "slow app", select "Performance & Speed".
+                        2.  **Strict Constraints:** The output topics MUST be exact strings from the `AVAILABLE_TOPICS` list. Do not invent new topics or modify existing ones.
+                        3.  **"All" Intent:** If the `USER_QUERY` implies "all", "everything", or is empty/generic (e.g., "show me data"), return the entire list of `AVAILABLE_TOPICS`.
+                        4.  **No Match:** If the query is completely unrelated to any available topic, return an empty array `[]`.
+                        """,
+                    )
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": list[str],
+        },
+    )
+    filtered_topics: list[str] = typing.cast(list[str], response.parsed)
+    return filtered_topics
+
+
+
 def feedback_list_analysis(topics_text: str = '') -> list[str]:
     if topics_text.replace(' ', '') == '':
         topics = []
@@ -504,33 +550,6 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     selected_columns: list[str] = typing.cast(list[str], response.parsed)
     return selected_columns
 
-def filter_topics(all_topics: list[str], selected_topics: list[str]) -> list[str]:
-    response = client.models.generate_content(
-        model=f'{MODEL}',
-        contents=[
-            types.Content(
-                role="user",
-                parts=[
-                    types.Part(
-                        text="Filter all existing topics by what topics customer wants to see",
-                    ),
-                    types.Part(
-                        text=f"All topics : {all_topics}",
-                    ),
-                    types.Part(
-                        text=f"Selected topics : {selected_topics}",
-                    ),
-                ],
-            ),
-        ],
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": list[str],
-        },
-    )
-    topics_list: list[str] = typing.cast(list[str], response.parsed)
-    return topics_list
-
 
 def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
 
@@ -572,4 +591,3 @@ def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
 
 if __name__ == "__main__":
     print(split_feedback("We went over a budget", ""))
-    print([item.text for item in feedback_list_analysis("product quality")])

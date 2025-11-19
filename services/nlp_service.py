@@ -80,6 +80,8 @@ def extract_cluster_keywords(texts, labels, top_n=10):
     cluster_names_list = [cluster_name_map[label] for label in labels]
     return cluster_keywords, cluster_names_list, texts
 
+
+
 if __name__ == "__main__":
     texts = [
         "We went over a budget.", "The customer service was disappointing.", "The weather is fine, nothing special.",

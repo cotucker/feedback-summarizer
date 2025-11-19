@@ -13,8 +13,8 @@ async def analysis(file: UploadFile, topics: str = ''):
 
     analysis: dict = {}
 
-    feedback_list_analysis_results = feedback_list_analysis(topics)
-    phrase_clusters, feedback_analysis = cluster_texts(feedback_list_analysis_results)
+    feedback_list_analysis_results = feedback_list_analysis()
+    phrase_clusters, feedback_analysis = cluster_texts(feedback_list_analysis_results, topics)
     analysis["feedback_analysis"] = [
         {
             "text": sentiment_response.text,
@@ -39,15 +39,5 @@ async def analysis(file: UploadFile, topics: str = ''):
             counts[key] += 1
 
     analysis["sentiment"] = counts
-
-    # analysis["feedback_replies"] = [
-    #     {
-    #         "feedback_text": feedback_response.original_feedback_text,
-    #         "feedback_reply": feedback_response.response,
-    #         "score": feedback_response.score
-    #     }
-    #     for feedback_response in feedback_responces(get_feedbacks_info())
-    # ]
-
 
     return analysis
