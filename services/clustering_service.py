@@ -159,7 +159,6 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
     print(sentiments_list)
     return phrase_clusters, sentiments_list
 
-
 if __name__ == "__main__":
     texts = ["Pricing and Value", "Budget management"]
     model = SentenceTransformer('all-MiniLM-L12-v2')

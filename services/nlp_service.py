@@ -8,6 +8,8 @@ import numpy as np
 import pandas as pd
 from typing import List, Dict
 from services.llm_service import get_cluster_name
+from nltk.corpus import stopwords
+import nltk
 
 model_name = "tabularisai/multilingual-sentiment-analysis"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -22,15 +24,10 @@ def predict_sentiment(texts):
     return [sentiment_map[p] for p in torch.argmax(probabilities, dim=-1).tolist()]
 
 def extract_cluster_keywords(texts, labels, top_n=10):
-    """Извлекаем ключевые слова для каждого кластера"""
-    from nltk.corpus import stopwords
-    import nltk
     nltk.download('stopwords', quiet=True)
-
     cluster_keywords = {}
     stop_words = stopwords.words('english')
     texts = np.array(texts)
-
     print(f"Number of unique labels: {len(np.unique(labels))}")
 
     for cluster_id in np.unique(labels):
@@ -39,7 +36,6 @@ def extract_cluster_keywords(texts, labels, top_n=10):
             continue
 
         cluster_texts = texts[labels == cluster_id]
-
         vectorizer = TfidfVectorizer(
             max_features=1000,
             stop_words=stop_words,
@@ -47,21 +43,17 @@ def extract_cluster_keywords(texts, labels, top_n=10):
             min_df=2,
             max_df=0.8
         )
-
         tfidf_matrix = vectorizer.fit_transform(cluster_texts)
 
         if tfidf_matrix.shape[1] == 0:
             cluster_keywords[cluster_id] = []
             continue
-
         scores = np.array(tfidf_matrix.sum(axis=0)).flatten()
         terms = vectorizer.get_feature_names_out()
-
         top_indices = np.argsort(scores)[-top_n:][::-1]
         cluster_keywords[cluster_id] = [
             (terms[i], round(scores[i], 3)) for i in top_indices
         ]
-
     cluster_name_map = {}
     for cluster_id, keywords in cluster_keywords.items():
         if cluster_id == -1:
@@ -80,13 +72,10 @@ def extract_cluster_keywords(texts, labels, top_n=10):
     cluster_names_list = [cluster_name_map[label] for label in labels]
     return cluster_keywords, cluster_names_list, texts
 
-
-
 if __name__ == "__main__":
     texts = [
         "We went over a budget.", "The customer service was disappointing.", "The weather is fine, nothing special.",
         "I like final product."
     ]
-
     for text, sentiment in zip(texts, predict_sentiment(texts)):
         print(f"Text: {text}\nSentiment: {sentiment}\n")

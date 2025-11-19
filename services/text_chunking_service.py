@@ -8,11 +8,8 @@ nlp = spacy.load("en_core_web_sm")
 
 def split_dot(text):
     separators = r'[.!?]\s+'
-
     segments = re.split(separators, text, flags=re.IGNORECASE)
-
     cleaned_segments = [s.strip() for s in segments if s and len(s.strip()) > 10]
-
     return cleaned_segments
 
 def split_feedback_simple(text):
@@ -20,7 +17,6 @@ def split_feedback_simple(text):
     segments = re.split(separators, text, flags=re.IGNORECASE)
     segments = [s.strip() for s in segments if s and len(s.strip()) > 10]
     return segments
-
 
 try:
     nlp = spacy.load("en_core_web_sm")
@@ -30,9 +26,7 @@ except OSError:
     download("en_core_web_sm")
     nlp = spacy.load("en_core_web_sm")
 
-
 def get_sentiment(text: str) -> str:
-    """Определяет тональность текста с помощью TextBlob."""
     polarity = TextBlob(text).sentiment.polarity
     if polarity > 0.1:
         return "Positive"
@@ -42,10 +36,6 @@ def get_sentiment(text: str) -> str:
         return "Neutral"
 
 def find_clause_for_subject(subject, all_subjects):
-    """
-    Находит и "выращивает" текстовую клаузу для данного субъекта,
-    аккуратно определяя ее границы.
-    """
     head_verb = subject.head
     start_index = min([t.i for t in subject.subtree])
     end_index = max([t.i for t in head_verb.subtree])
@@ -64,12 +54,6 @@ def find_clause_for_subject(subject, all_subjects):
     return clause_span.text.strip()
 
 def extract_semantic_chunks(text: str) -> list:
-    """
-    Основная функция. Разделяет текст на осмысленные подтексты (чанки),
-    анализируя синтаксическую структуру предложения.
-
-    Для каждого чанка определяет аспект и тональность.
-    """
     doc = nlp(text)
     results = []
     subjects = [token for token in doc if token.dep_ == "nsubj"]
@@ -89,14 +73,18 @@ def extract_semantic_chunks(text: str) -> list:
 
 def test_chunks(text: str) -> list[str]:
     list = []
+
     for item in split_dot(text):
         list.extend(extract_semantic_chunks(item))
+
     return list
 
 def feedback_chunking(feedback_list: list[str]):
     list = []
+
     for feedback in feedback_list:
         list.extend(test_chunks(feedback))
+
     return list
 
 if __name__ == "__main__":
