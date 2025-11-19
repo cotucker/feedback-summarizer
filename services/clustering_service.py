@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 load_dotenv()
 DEVICE = os.getenv("DEVICE", "cpu")
 REDUCED_EMBEDDINGS: list = []
-EMBEDDINGS: list = []
+EMBEDDINGS = np.array([])
 START: int = 2
 END: int = 10
 BEST_N: int = 0

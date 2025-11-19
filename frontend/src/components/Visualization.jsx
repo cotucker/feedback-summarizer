@@ -465,7 +465,7 @@ export const Visualization = ({ results }) => {
 
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
-            Detailed Feedback Analysis
+            Text Analytics Insights
           </Typography>
           <Paper sx={{ height: 400, width: "100%" }}>
             <DataGrid
