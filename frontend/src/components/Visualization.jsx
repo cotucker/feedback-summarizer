@@ -535,6 +535,9 @@ export const Visualization = ({ results }) => {
           Phrase-Semantic Clusters with Boundaries
         </DialogTitle>
         <DialogContent>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            График показывает положение эмбеддингов текстов в 2D с помощью t-SNE.
+          </Typography>
           <Box sx={{ height: "70vh", width: "100%", mt: 2 }}>
             <Plot
               data={plotlyData}
