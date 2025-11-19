@@ -390,7 +390,7 @@ export const Visualization = ({ results }) => {
               xAxis={[
                 { scaleType: "band", data: topicLabels, label: "Topics" },
               ]}
-              yAxis={[{ label: "Number of feedback on the topic" }]}
+              yAxis={[{ label: "количество фидбэков по топику" }]}
               series={topicCounts.map((value, index) => {
                 const data = Array(topicCounts.length).fill(null);
                 data[index] = value;
@@ -398,8 +398,10 @@ export const Visualization = ({ results }) => {
                   data,
                   stack: "single",
                   color: CLUSTER_COLORS[index % CLUSTER_COLORS.length],
+                  label: topicLabels[index],
                 };
               })}
+              tooltip={{ trigger: "item" }}
               legend={{ hidden: true }}
               onItemClick={handleBarClick}
               sx={{ "& .MuiBarElement-root": { cursor: "pointer" } }}
