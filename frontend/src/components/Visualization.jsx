@@ -341,8 +341,14 @@ export const Visualization = ({ results }) => {
     const yPadding = (maxY - minY) * 0.1 || 0.1;
 
     plotLayout = {
-      xaxis: { range: [minX - xPadding, maxX + xPadding] },
-      yaxis: { range: [minY - yPadding, maxY + yPadding] },
+      xaxis: {
+        range: [minX - xPadding, maxX + xPadding],
+        title: "t-SNE Component 1",
+      },
+      yaxis: {
+        range: [minY - yPadding, maxY + yPadding],
+        title: "t-SNE Component 2",
+      },
       showlegend: true,
       legend: { orientation: "h", xanchor: "center", x: 0.5 },
       margin: { l: 50, r: 50, b: 50, t: 50 },
@@ -536,7 +542,11 @@ export const Visualization = ({ results }) => {
         </DialogTitle>
         <DialogContent>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            График показывает положение эмбеддингов текстов в 2D с помощью t-SNE.
+            The graph shows the position of text embeddings in 2D using t-SNE.
+            The axes (t-SNE Component 1 and t-SNE Component 2) are the result of
+            applying the t-SNE algorithm to reduce the dimensionality of the
+            original vector representations of texts, which allows visualizing
+            their semantic proximity in two-dimensional space.
           </Typography>
           <Box sx={{ height: "70vh", width: "100%", mt: 2 }}>
             <Plot
