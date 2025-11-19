@@ -363,7 +363,9 @@ export const Visualization = ({ results }) => {
                   alignItems: "center",
                 }}
               >
-                <Typography variant="h5">Overall Summary</Typography>
+                <Typography variant="h5">
+                  Overall Summary of Customer Feedbacks
+                </Typography>
                 <Button
                   variant="contained"
                   onClick={handleDownload}
