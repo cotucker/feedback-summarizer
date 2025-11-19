@@ -1,6 +1,5 @@
 from google import genai
 from google.genai import types
-
 import os
 import enum
 from dotenv import load_dotenv
@@ -125,12 +124,6 @@ def get_cluster_name(cluster_terms: str) -> str:
     )
     cluster_name: ClusterName = typing.cast(ClusterName, response.parsed)
     return cluster_name.name
-
-
-
-
-
-
 
 def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str) -> list[Subtext]:
 
