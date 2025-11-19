@@ -384,13 +384,14 @@ export const Visualization = ({ results }) => {
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 2, height: "400px" }}>
             <Typography variant="h6" gutterBottom>
-              Topic Distribution
+              Bar Chart of Topic Distribution
             </Typography>
             <BarChart
+              margin={{ bottom: 40 }}
               xAxis={[
                 { scaleType: "band", data: topicLabels, label: "Topics" },
               ]}
-              yAxis={[{ label: "количество фидбэков по топику" }]}
+              yAxis={[{ label: "Number of feedback on the topic" }]}
               series={topicCounts.map((value, index) => {
                 const data = Array(topicCounts.length).fill(null);
                 data[index] = value;
@@ -411,7 +412,7 @@ export const Visualization = ({ results }) => {
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 2, height: "400px" }}>
             <Typography variant="h6" gutterBottom>
-              Overall Sentiment
+              Pie Chart of Overall Sentiment Distribution
             </Typography>
             <PieChart
               series={[{ data: sentimentChartData, innerRadius: 60 }]}
