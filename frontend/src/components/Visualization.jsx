@@ -387,11 +387,20 @@ export const Visualization = ({ results }) => {
               Topic Distribution
             </Typography>
             <BarChart
-              xAxis={[{ scaleType: "band", data: topicLabels, label: "Topics" }]}
-
+              xAxis={[
+                { scaleType: "band", data: topicLabels, label: "Topics" },
+              ]}
               yAxis={[{ label: "Number of feedback on the topic" }]}
-              series={[{ data: topicCounts }]}
-              layout="vertical"
+              series={topicCounts.map((value, index) => {
+                const data = Array(topicCounts.length).fill(null);
+                data[index] = value;
+                return {
+                  data,
+                  stack: "single",
+                  color: CLUSTER_COLORS[index % CLUSTER_COLORS.length],
+                };
+              })}
+              legend={{ hidden: true }}
               onItemClick={handleBarClick}
               sx={{ "& .MuiBarElement-root": { cursor: "pointer" } }}
             />
