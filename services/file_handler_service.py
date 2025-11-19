@@ -63,6 +63,9 @@ async def get_dataset_from_file(file: UploadFile, process_columns, get_separator
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error loading file: {e}")
+
+    if df.shape[0] < 30:
+        raise HTTPException(status_code=400, detail="t-SNE algorithm requires at least 30 data points")
     return df
 
 def create_dataset_from_sentiment_response_list(sentiments_list) -> pd.DataFrame:
