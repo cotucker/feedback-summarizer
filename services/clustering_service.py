@@ -148,22 +148,33 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
 
     all_topics = set(cluster_names_list)
 
-    filtered_topics = filter_topics(selected_topics=topics, all_topics_list=', '.join(all_topics))
-    print(f"Filter: {len(all_topics)} ---> {len(filtered_topics)}")
-    print(f"Filtered topics: {filtered_topics}")
-    tsne = TSNE(n_components=2, perplexity=30, random_state=42)
-    reduced_tsne = tsne.fit_transform(REDUCED_EMBEDDINGS)
-
     reduced_embeddings = []
     cluster_names = []
     texts = []
     sentiments = []
-    for i, cluster_name in enumerate(cluster_names_list):
-        if cluster_name in filtered_topics:
-            reduced_embeddings.append(reduced_tsne[i])
-            cluster_names.append(cluster_name)
-            texts.append(texts_list[i])
-            sentiments.append(sentiments_list[i])
+
+    tsne = TSNE(n_components=2, perplexity=30, random_state=42)
+    reduced_tsne = tsne.fit_transform(REDUCED_EMBEDDINGS)
+
+    filtered_topics = filter_topics(selected_topics=topics, all_topics_list=', '.join(all_topics))
+    if not filtered_topics:
+        reduced_embeddings = reduced_tsne
+        cluster_names = cluster_names_list
+        texts = texts_list
+        sentiments = sentiments_list
+    else:
+        print(f"Filter: {len(all_topics)} ---> {len(filtered_topics)}")
+        print(f"Filtered topics: {filtered_topics}")
+
+        for i, cluster_name in enumerate(cluster_names_list):
+            if cluster_name in filtered_topics:
+                reduced_embeddings.append(reduced_tsne[i])
+                cluster_names.append(cluster_name)
+                texts.append(texts_list[i])
+                sentiments.append(sentiments_list[i])
+
+
+
 
 
     phrase_clusters = []

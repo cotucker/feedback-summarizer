@@ -422,11 +422,12 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
     summary: TopicSummary = typing.cast(TopicSummary, response.parsed)
     return summary.summary
 
-def filter_topics(selected_topics: str, all_topics_list: str):
+def filter_topics(selected_topics: str, all_topics_list: str) -> list[str]:
+
 
 
     if len(selected_topics) == 0:
-        return all_topics_list
+        return []
 
     response = client.models.generate_content(
         model=f'{MODEL}',
