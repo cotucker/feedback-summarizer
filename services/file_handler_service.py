@@ -15,8 +15,6 @@ async def get_dataset_from_file(file: UploadFile, process_columns, get_separator
     if filetype not in ['csv', 'txt', 'json', 'xlsx']:
         raise HTTPException(status_code=400, detail="Invalid file type. Please upload a CSV | TXT | JSON | XLSX.")
 
-    print(f"Receiving file: {file.filename}, Parameters: {topics}")
-
     try:
         match filetype:
             case 'csv':
@@ -26,11 +24,8 @@ async def get_dataset_from_file(file: UploadFile, process_columns, get_separator
                 file.file.seek(0)
                 decoded_content = contents.decode('utf-8')
                 lines = decoded_content.splitlines()
-                if len(lines) > 1:
-                    print(f"Second row of TXT file content: {lines[0]}")
                 separator = get_separator(lines[0])
                 if separator == 'null':
-                    print("Separator not detected")
                     raise ValueError("Separator not detected")
                 df = pd.read_csv(file.file, sep=separator)
             case 'json':
@@ -40,7 +35,6 @@ async def get_dataset_from_file(file: UploadFile, process_columns, get_separator
                 buffer = io.BytesIO(contents)
                 df = pd.read_excel(buffer)
 
-        print("Columns:", df.columns.tolist())
         flag1, flag2 = False, False
         for col in df.columns.tolist():
             match col.lower():
@@ -56,7 +50,6 @@ async def get_dataset_from_file(file: UploadFile, process_columns, get_separator
 
         if not (flag1 and flag2):
             selected_columns = process_columns(df.columns.tolist())
-            print(f"Selected columns: {selected_columns}")
             if len(selected_columns) == 2:
                 df = df[selected_columns]
                 df.rename(columns={selected_columns[0]: 'Text', selected_columns[1]: 'Rating'}, inplace=True)

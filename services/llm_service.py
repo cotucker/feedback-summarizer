@@ -168,7 +168,6 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
             "response_schema": list[Subtext],
         },
     )
-    print(f"Original feedback text: {feedback_text}\n{response.text}")
     sentiments: list[Subtext] = typing.cast(list[Subtext], response.parsed)
     return sentiments
 
@@ -205,7 +204,6 @@ def get_separator(row: str) -> str:
         },
     )
     separator: Separator = typing.cast(Separator, response.parsed)
-    print(separator)
     return separator.separator
 
 def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
@@ -216,9 +214,6 @@ def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
             topics[sentiment.topic] = 1
         else:
             topics[sentiment.topic] += 1
-
-    for topic in topics:
-        print(f"{topic}: {topics[topic]}")
 
     topic_descriptions = generate_topics_description([topic for topic in topics])
 
@@ -265,7 +260,6 @@ def generate_total_summary(topics_analysis: list[dict]) -> str:
 
 
 def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
-    print(f"Generating summary for topic: {topic_name}, texts: {topic_texts}")
     response = client.models.generate_content(
         model=f'{MODEL}',
         contents=[
@@ -347,7 +341,6 @@ def feedback_list_analysis(topics_text: str = '') -> list[str]:
         if not topics:
             raise HTTPException(status_code=400, detail="Invalid topics")
 
-    print(f"Generaled topics: {topics}")
     filter = not topics
     feedback_list: list[str] = get_feedback_list()
     texts_list: list[str] = feedback_chunking(feedback_list)

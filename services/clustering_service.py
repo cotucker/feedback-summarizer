@@ -40,16 +40,13 @@ def spectral_clustering(num_clusters: int):
             n_jobs=1,
             random_state=67).fit(REDUCED_EMBEDDINGS)
     spectral_clusters = clustering.labels_
-    print(f"Number of unique labels: {len(np.unique(spectral_clusters))}")
+    clustering_info =  ''
 
     if num_clusters > 1:
         try:
             score = silhouette_score(REDUCED_EMBEDDINGS, spectral_clusters, metric='euclidean')
-            print(f"Cluster Quality (Silhouette Score): {score:.4f}")
             db_score = davies_bouldin_score(REDUCED_EMBEDDINGS, spectral_clusters)
-            print(f"Cluster Quality (Davies-Bouldin Index): {db_score:.4f}")
             ch_score = calinski_harabasz_score(REDUCED_EMBEDDINGS, spectral_clusters)
-            print(f"Cluster Quality (Calinski-Harabasz Index): {ch_score:.4f}")
             intra = np.mean([cosine_distances(EMBEDDINGS[spectral_clusters==i]).mean()
                              for i in range(num_clusters)])
             inter = np.mean([cosine_distances(
@@ -57,17 +54,25 @@ def spectral_clustering(num_clusters: int):
                 EMBEDDINGS[spectral_clusters==j].mean(axis=0).reshape(1,-1)
             ) for i in range(num_clusters) for j in range(i+1, num_clusters)])
             ratio = intra / inter
-            print(f"Cluster Quality (Intra/Inter Ratio): {ratio:.4f}")
+            clustering_info = f"""
+
+            Number of cluster labels: {len(np.unique(spectral_clusters))}
+            Cluster Quality (Silhouette Score): {score:.4f}
+            Cluster Quality (Davies-Bouldin Index): {db_score:.4f}"
+            Cluster Quality (Calinski-Harabasz Index): {ch_score:.4f}"
+            Cluster Quality (Intra/Inter Ratio): {ratio:.4f}"
+            """
+
         except ValueError as e:
-            print(f"Could not calculate Silhouette Score: {e}")
+            clustering_info = f"Could not calculate Silhouette Score: {e}"
 
-    return db_score + 1/score, spectral_clusters
+    return clustering_info, spectral_clusters
 
-def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], list[SentimentResponse]]:
+def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], list[SentimentResponse], str]:
     global EMBEDDINGS, REDUCED_EMBEDDINGS
 
     if not texts_list:
-        return ([], [])
+        return ([], [], '')
 
     data_size = len(texts_list)
     sentiments_list  = predict_sentiment(texts_list)
@@ -81,7 +86,6 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
         random_state=67
     )
     REDUCED_EMBEDDINGS = umap_model.fit_transform(EMBEDDINGS)
-    print(f"Shape of reduced embeddings: {REDUCED_EMBEDDINGS.shape}")
     n = len(REDUCED_EMBEDDINGS)
     silhouette_scores = []
     range_n_clusters = range(2, int(np.sqrt(n)))
@@ -113,6 +117,7 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
     START = tuple[0]
     END = tuple[1]
 
+    clustering_info = spectral_clustering(BEST_N)[0]
     clusters = spectral_clustering(BEST_N)[1]
     cluster_keywords, cluster_names_list, texts = extract_cluster_keywords(texts = texts_list, labels = clusters, top_n = 10)
     all_topics = set(cluster_names_list)
@@ -130,8 +135,6 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
         texts = texts_list
         sentiments = sentiments_list
     else:
-        print(f"Filter: {len(all_topics)} ---> {len(filtered_topics)}")
-        print(f"Filtered topics: {filtered_topics}")
 
         for i, cluster_name in enumerate(cluster_names_list):
             if cluster_name in filtered_topics:
@@ -154,14 +157,7 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
         sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = cluster_names[i]))
 
     create_dataset_from_sentiment_response_list(sentiments_list)
-    print("Dataset created successfully")
-    print()
-    print("Clusters List:")
-    print(phrase_clusters)
-    print()
-    print("Sentiment Response List:")
-    print(sentiments_list)
-    return phrase_clusters, sentiments_list
+    return phrase_clusters, sentiments_list, clustering_info
 
 if __name__ == "__main__":
     texts = ["Pricing and Value", "Budget management"]
