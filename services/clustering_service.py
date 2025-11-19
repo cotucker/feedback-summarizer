@@ -6,14 +6,13 @@ from sentence_transformers import SentenceTransformer
 from umap import UMAP
 from sklearn.manifold import TSNE
 from hdbscan import HDBSCAN
-import optuna
 from sklearn.cluster import SpectralClustering, KMeans, BisectingKMeans
 from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score
 from sklearn.metrics.pairwise import cosine_distances, cosine_similarity
 import plotly.express as px
 import matplotlib.pyplot as plt
 from services.nlp_service import predict_sentiment, extract_cluster_keywords
-from services.llm_service import generate_cluster_name, filter_topics
+from services.llm_service import filter_topics
 from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
 
@@ -22,11 +21,6 @@ EMBEDDINGS: list = []
 START: int = 2
 END: int = 10
 BEST_N: int = 0
-
-def objective(trial):
-    num_clusters = trial.suggest_int('num_clusters', START, END)
-    score = spectral_clustering(num_clusters)[0]
-    return score
 
 def spectral_clustering(num_clusters: int):
     score = -1.0
@@ -41,33 +35,25 @@ def spectral_clustering(num_clusters: int):
             affinity='rbf',
             n_jobs=1,
             random_state=67).fit(REDUCED_EMBEDDINGS)
-
     spectral_clusters = clustering.labels_
-
     print(f"Number of unique labels: {len(np.unique(spectral_clusters))}")
-
 
     if num_clusters > 1:
         try:
             score = silhouette_score(REDUCED_EMBEDDINGS, spectral_clusters, metric='euclidean')
             print(f"Cluster Quality (Silhouette Score): {score:.4f}")
-
             db_score = davies_bouldin_score(REDUCED_EMBEDDINGS, spectral_clusters)
             print(f"Cluster Quality (Davies-Bouldin Index): {db_score:.4f}")
-
             ch_score = calinski_harabasz_score(REDUCED_EMBEDDINGS, spectral_clusters)
             print(f"Cluster Quality (Calinski-Harabasz Index): {ch_score:.4f}")
-
             intra = np.mean([cosine_distances(EMBEDDINGS[spectral_clusters==i]).mean()
                              for i in range(num_clusters)])
             inter = np.mean([cosine_distances(
                 EMBEDDINGS[spectral_clusters==i].mean(axis=0).reshape(1,-1),
                 EMBEDDINGS[spectral_clusters==j].mean(axis=0).reshape(1,-1)
             ) for i in range(num_clusters) for j in range(i+1, num_clusters)])
-
             ratio = intra / inter
             print(f"Cluster Quality (Intra/Inter Ratio): {ratio:.4f}")
-
         except ValueError as e:
             print(f"Could not calculate Silhouette Score: {e}")
 
@@ -84,23 +70,17 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
     abstracts = texts_list
     model = SentenceTransformer('all-MiniLM-L12-v2')
     EMBEDDINGS = model.encode(texts_list, device='cuda')
-
     umap_model = UMAP(
         n_components=25,
         min_dist=0.1,
         metric='cosine',
         random_state=67
     )
-
     REDUCED_EMBEDDINGS = umap_model.fit_transform(EMBEDDINGS)
-
     print(f"Shape of reduced embeddings: {REDUCED_EMBEDDINGS.shape}")
-
     n = len(REDUCED_EMBEDDINGS)
-
     silhouette_scores = []
     range_n_clusters = range(2, int(np.sqrt(n)))
-
     max_silhouette_score = -1.0
     min_silhouette_score = 1.0
     best_n_clusters = -1
@@ -122,41 +102,24 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
 
     print(f"\nMaximum Silhouette Score: {max_silhouette_score:.4f} for n_clusters = {best_n_clusters}")
     print(f"Minimum Silhouette Score: {min_silhouette_score:.4f} for n_clusters = {worst_n_clusters}")
-
     tuple = sorted((best_n_clusters, worst_n_clusters))
 
-    global BEST_N
+    global BEST_N, START, END
     BEST_N = best_n_clusters
-
-
-    global START, END
-
     START = tuple[0]
     END = tuple[1]
 
-    # study = optuna.create_study(direction='minimize')
-    # study.optimize(objective, n_trials=100, n_jobs=2)
-
-    # best_trial = study.best_trial
-    # print(f"Best trial value: {best_trial.value}")
-    # print(f"Best trial parameters: {best_trial.params}")
-
     clusters = spectral_clustering(BEST_N)[1]
-
     cluster_keywords, cluster_names_list, texts = extract_cluster_keywords(texts = texts_list, labels = clusters, top_n = 10)
-
-
     all_topics = set(cluster_names_list)
-
     reduced_embeddings = []
     cluster_names = []
     texts = []
     sentiments = []
-
     tsne = TSNE(n_components=2, perplexity=30, random_state=42)
     reduced_tsne = tsne.fit_transform(REDUCED_EMBEDDINGS)
-
     filtered_topics = filter_topics(selected_topics=topics, all_topics_list=', '.join(all_topics))
+
     if not filtered_topics:
         reduced_embeddings = reduced_tsne
         cluster_names = cluster_names_list
@@ -185,7 +148,6 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
             "phrase": text,
         })
         sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = cluster_names[i]))
-
 
     create_dataset_from_sentiment_response_list(sentiments_list)
     print("Dataset created successfully")

@@ -1,6 +1,6 @@
 from google import genai
 from google.genai import types
-from cerebras.cloud.sdk import Cerebras
+
 import os
 import enum
 from dotenv import load_dotenv
@@ -17,78 +17,8 @@ from services.text_chunking_service import feedback_chunking
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-CEREBRAS_API_KEY = os.getenv('CEREBRAS_API_KEY')
 MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
-client_cerebras = Cerebras(api_key=CEREBRAS_API_KEY)
-
-def split_feedback(feedback_text: str, topics: str) -> list[Subtext]:
-
-    movie_schema = {
-        "type": "object",
-        "properties": {
-            "items": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "text": {"type": "string"},
-                        "sentiment": {"type": "string"},
-                        "topic": {"type": "string"}
-                    },
-                    "required": ["text", "sentiment"],
-                }
-            }
-        },
-        "required": ["items"],
-        "additionalProperties": False
-    }
-
-    chat_completion = client_cerebras.chat.completions.create(
-      messages=[
-      {"role": "system", "content": """
-                              You are a meticulous Customer Feedback Analyst. Your primary task is to decompose a user's feedback text into the smallest possible, self-contained, meaningful chunks. For each chunk, you must identify its specific topic and sentiment.
-
-                              **OBJECTIVE:**
-                              Analyze the provided `FEEDBACK_TEXT`. You MUST identify all distinct ideas or events mentioned, even if they are in the same sentence. Your response must be ONLY a single, valid JSON object containing a list of these chunks.
-
-                              **CRITICAL RULES FOR CHUNKING:**
-                              1.  **Decomposition is Key:** Your main goal is to break down the text. A single sentence often contains multiple chunks. Coordinating conjunctions like "and", "but", "while" are strong indicators of a boundary between chunks.
-                              2.  **Chunk = One Idea:** Each chunk must represent a single, distinct event, opinion, or observation.
-                                  -   *Example of a single idea:* "We were overcharged for hours that were not worked."
-                                  -   *Example of another single idea:* "getting it corrected has been a nightmare."
-                              3.  **Chunks Must Be Verbatim:** Each chunk you extract MUST be a direct, word-for-word substring of the original `FEEDBACK_TEXT`. Do not rephrase or summarize.
-                              4.  **Topic Assignment:**
-                                  -   Assign the most relevant topic from the `EXISTING_TOPICS` list.
-                                  -   If no existing topic fits perfectly, create a new, concise topic name (e.g., "Billing Issues", "Support Resolution Process").
-                                  -   If a chunk is a general statement without a specific subject (e.g., "I am very unhappy"), assign it to "General Feedback".
-                              """,},
-      {"role": "user", "content": f"""
-                        **INPUT DATA:**
-                        - **FEEDBACK_TEXT:** "{feedback_text}"
-                        - **EXISTING_TOPICS:** {topics}
-                        """}
-      ],
-      model="gpt-oss-120b",
-      response_format={
-          "type": "json_schema",
-          "json_schema": {
-              "name": "movie_schema",
-              "strict": True,
-              "schema": movie_schema
-          }
-      }
-    )
-    movie_data = json.loads(chat_completion.choices[0].message.content)
-    # print(json.dumps(movie_data, indent=2))
-    # tets: list[SentimentResponse] = typing.cast(list[SentimentResponse], movie_data['items'])
-
-    # return [f"{item['text']} - {item['sentiment']}" for item in movie_data['items']]
-    return [Subtext(text=item['text'], topic=item['topic']) for item in movie_data['items']]
-
-# print(split_feedback("We went over a budget.", ''))
-
-
 
 def generate_topics_description(cluster_names: list[str]) -> list[ClusterDescription]:
     response = client.models.generate_content(
@@ -100,13 +30,10 @@ def generate_topics_description(cluster_names: list[str]) -> list[ClusterDescrip
                     types.Part(
                         text=f"""
                         You are a Senior Business Analyst responsible for interpreting clustered customer feedback for an executive audience.
-
                         **OBJECTIVE:**
                         Analyze the provided list of `CLUSTER_NAMES`. For each name, generate a concise, business-oriented description that explains what this category represents and, most importantly, how it differs from the other categories in the list. Your goal is to clarify the unique focus of each cluster.
-
                         **INPUT DATA:**
                         - **CLUSTER_NAMES:** {cluster_names}
-
                         **CRITICAL RULES FOR DESCRIPTIONS:**
                         1.  **Define the Core Theme:** For each cluster, start by explaining the primary topic it covers. What kind of feedback falls into this category?
                         2.  **Highlight the Distinction:** This is the most important rule. Explicitly state what makes this cluster different from others. Focus on the nuances. For example, if you have both "Performance & Speed" and "Product Quality", explain that one is about *efficiency and responsiveness*, while the other is about *reliability, bugs, and craftsmanship*.
@@ -136,20 +63,15 @@ def test_topic_moddeling(cluster_name: str, text: str):
                     types.Part(
                         text=f"""
                         You are an expert NLP Quality Assurance Analyst. Your task is to perform a strict evaluation to determine if a given `TEXT` is a strong and relevant example of a given `TOPIC_NAME`.
-
                         **OBJECTIVE:**
                         Based on the semantic relevance, evaluate the match between the `TEXT` and the `TOPIC_NAME`. Your analysis must be critical and follow the scoring rules below. Your response MUST be a single, valid JSON object.
-
                         **INPUT DATA:**
                         - **TOPIC_NAME:** "{cluster_name}"
                         - **TEXT:** "{text}"
-
                         **SCORING RULES:**
-
                         -   **Score 3 (Strong Match):** The `TEXT` is a perfect and direct example of the `TOPIC_NAME`. The main subject of the text *is* the topic.
                         -   **Score 2 (Weak Match):** The `TOPIC_NAME` is mentioned or related to the `TEXT`, but it is not the central theme. The text is more about something else, but has a connection.
                         -   **Score 1 (No Match):** The `TEXT` and the `TOPIC_NAME` are unrelated.
-
                         **ADDITIONAL RULES:**
                         1.  **Be Critical:** If the match is not obvious and direct, lean towards a lower score. Do not try to find loose connections.
                         2.  **Provide Justification:** You must provide a brief, one-sentence justification for your score, explaining your reasoning.
@@ -179,10 +101,8 @@ def get_cluster_name(cluster_terms: str) -> str:
                     types.Part(
                         text=f"""
                                 You are an expert Data Analyst and Taxonomist. Your task is to analyze a list of keywords with clustery specificity score representing a cluster of customer feedback and generate a single, concise, and descriptive name for that cluster.
-
                                 OBJECTIVE:
                                 Based on the provided list of `CLUSTER_KEYWORDS`, synthesize them into a clear, high-level topic name that accurately represents the central theme of the cluster.
-
                                 **RULES FOR NAMING:**
                                 1.  **Be Abstract and High-Level:** The name should be a general category, not just a repetition of the keywords. Think about the underlying concept that connects these words.
                                 2.  **Use Business Language:** The name must be professional, clear, and easily understandable by a business audience (e.g., "Project Management", "Technical Competence", "Pricing and Value").
@@ -190,7 +110,6 @@ def get_cluster_name(cluster_terms: str) -> str:
                                 4.  **Format:** Use Title Case (e.g., "Customer Support Experience").
                                 5.  **Strict Output Format:** Your response MUST ONLY be the generated cluster name. Do not include any explanation, introductory text like "The cluster name is:", or any quotation marks.
                                 6.  **DO MUST NOT  return empty string.** You must return something.
-
                                 INPUT DATA:
                                 - CLUSTER_KEYWORDS: "{cluster_terms}"
                             """
@@ -208,51 +127,7 @@ def get_cluster_name(cluster_terms: str) -> str:
     return cluster_name.name
 
 
-def generate_cluster_name(cluster_terms: str) -> str:
-    movie_schema = {
-        "type": "object",
-        "properties": {
-            "cluster_name": {"type": "string"}
-        },
-        "required": ["cluster_name"],
-        "additionalProperties": False
-    }
 
-    chat_completion = client_cerebras.chat.completions.create(
-      messages=[
-      {"role": "system", "content": f"""
-                              You are an expert Data Analyst and Taxonomist. Your task is to analyze a list of keywords with clustery specificity score representing a cluster of customer feedback and generate a single, concise, and descriptive name for that cluster.
-
-                              OBJECTIVE:
-                              Based on the provided list of `CLUSTER_KEYWORDS`, synthesize them into a clear, high-level topic name that accurately represents the central theme of the cluster.
-
-                              **RULES FOR NAMING:**
-                              1.  **Be Abstract and High-Level:** The name should be a general category, not just a repetition of the keywords. Think about the underlying concept that connects these words.
-                              2.  **Use Business Language:** The name must be professional, clear, and easily understandable by a business audience (e.g., "Project Management", "Technical Competence", "Pricing and Value").
-                              3.  **Be Concise:** The name should be short, ideally 2-4 words long.
-                              4.  **Format:** Use Title Case (e.g., "Customer Support Experience").
-                              5.  **Strict Output Format:** Your response MUST ONLY be the generated cluster name. Do not include any explanation, introductory text like "The cluster name is:", or any quotation marks.
-                              6.  **Do not return empty string.** You must return something.
-                              """,},
-      {"role": "user", "content": f"""
-                                INPUT DATA:
-                                - CLUSTER_KEYWORDS: "{cluster_terms}"
-"""}
-      ],
-      model="gpt-oss-120b",
-      response_format={
-          "type": "json_schema",
-          "json_schema": {
-              "name": "movie_schema",
-              "strict": True,
-              "schema": movie_schema
-          }
-      }
-    )
-    movie_data = json.loads(chat_completion.choices[0].message.content)
-    # print(json.dumps(movie_data, indent=2))
-
-    return movie_data['cluster_name']
 
 
 
@@ -268,11 +143,9 @@ def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str
                     types.Part(
                         text=f"""
                         You are a meticulous Customer Feedback Analyst. Your primary task is to decompose a user's feedback text into the subtext, self-contained, meaningful chunks. For each chunk, you must identify its specific topic.
-
                         **INPUT DATA:**
                         - **FEEDBACK_TEXT:** "{feedback_text}"
                         - **EXISTING_TOPICS:** {topics}
-
                         **CRITICAL RULES FOR CHUNKING:**
                         1.  **Decomposition is Key:** Your main goal is to break down the text. A single sentence often contains multiple chunks. Coordinating conjunctions like "and", "but", "while" are strong indicators of a boundary between chunks.
                         2.  **Chunk = One Idea:** Each chunk must represent a single, distinct event, opinion, or observation.
@@ -337,6 +210,7 @@ def get_separator(row: str) -> str:
 
 def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
     topics: dict = {}
+
     for sentiment in feedback_analysis:
         if sentiment.topic not in topics:
             topics[sentiment.topic] = 1
@@ -424,8 +298,6 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
 
 def filter_topics(selected_topics: str, all_topics_list: str) -> list[str]:
 
-
-
     if len(selected_topics) == 0:
         return []
 
@@ -438,14 +310,11 @@ def filter_topics(selected_topics: str, all_topics_list: str) -> list[str]:
                     types.Part(
                         text=f"""
                         You are an intelligent Semantic Filter. Your task is to interpret a user's search query and select the most relevant topics from a provided list of available options.
-
                         **OBJECTIVE:**
                         Analyze the `USER_QUERY` and compare it against the `AVAILABLE_TOPICS`. Return a JSON array containing ONLY the topics from the list that are semantically related to the user's intent.
-
                         **INPUT DATA:**
                         - **USER_QUERY:** "{selected_topics}"
                         - **AVAILABLE_TOPICS:** {all_topics_list}
-
                         **FILTERING RULES:**
                         1.  **Semantic Matching:** Do not look for exact string matches only. Understand the intent.
                             -   *Example:* If query is "too expensive", select "Pricing & Cost".
@@ -470,6 +339,7 @@ def filter_topics(selected_topics: str, all_topics_list: str) -> list[str]:
 
 
 def feedback_list_analysis(topics_text: str = '') -> list[str]:
+
     if topics_text.replace(' ', '') == '':
         topics = []
     else:
@@ -519,13 +389,10 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
                     types.Part(
                         text=f"""
                         You are an expert Data Schema Analyst. Your task is to analyze a given list of column headers from a CSV file and identify which columns contain user feedback text and a numerical user score, respectively.
-
                         **OBJECTIVE:**
                         Based on the provided list of column names, identify the single best candidate for the "Feedback Text" column and the single best candidate for the "Numerical Score" column. Your response MUST be a single, valid JSON array containing exactly two elements in the specified order: `["<FEEDBACK_COLUMN_NAME>", "<SCORE_COLUMN_NAME>"]`.
-
                         **INPUT DATA:**
                         - **COLUMN_NAMES:** `{list_of_column_names}`
-
                         **RULES:**
                         1.  **Feedback Text Column:** This column should contain the main body of the user's review or comment. Common names include `review`, `text`, `comment`, `feedback`, `описание`, `отзыв`. It must be the primary text column, not an ID, title, or summary.
                         2.  **Numerical Score Column:** This column should contain a numerical rating provided by the user (e.g., 1-5, 1-10). Common names include `rating`, `score`, `stars`, `оценка`, `рейтинг`.
@@ -533,7 +400,6 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
                         4.  **Handling Missing Columns:** If you cannot find a suitable candidate for one of the columns, skip it.
                         ---
                         **EXAMPLES (for reference):**
-
                         **Input:** `["Review Text", "Date", "Rating", "User_ID"]`
                         **Expected Output:**
                         ```json
@@ -553,7 +419,6 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
 
 
 def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
-
     response = client.models.generate_content(
         model=f'{MODEL}',
         contents=[
@@ -581,14 +446,8 @@ def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
             "response_schema": FeedbackResponse,
         },
     )
-
     feedback_responce: FeedbackResponse = typing.cast(FeedbackResponse, response.parsed)
-
     return feedback_responce
 
 def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
     return [generate_feedback_responce(feedback_info) for feedback_info in feedbacks_info ]
-
-
-if __name__ == "__main__":
-    print(split_feedback("We went over a budget", ""))

@@ -7,7 +7,7 @@ from models.models import Sentiment
 import numpy as np
 import pandas as pd
 from typing import List, Dict
-from services.llm_service import generate_cluster_name, get_cluster_name
+from services.llm_service import get_cluster_name
 
 model_name = "tabularisai/multilingual-sentiment-analysis"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
