@@ -173,10 +173,6 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
                 texts.append(texts_list[i])
                 sentiments.append(sentiments_list[i])
 
-
-
-
-
     phrase_clusters = []
     sentiments_list: list[SentimentResponse] = []
 
