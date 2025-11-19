@@ -66,7 +66,6 @@ const feedbackAnalysisColumns = [
   { field: "sentiment", headerName: "Sentiment", width: 120 },
 ];
 
-
 const topicDetailColumns = [
   {
     field: "text",
@@ -388,7 +387,9 @@ export const Visualization = ({ results }) => {
               Topic Distribution
             </Typography>
             <BarChart
-              xAxis={[{ scaleType: "band", data: topicLabels }]}
+              xAxis={[{ scaleType: "band", data: topicLabels, label: "Topics" }]}
+
+              yAxis={[{ label: "Number of feedback on the topic" }]}
               series={[{ data: topicCounts }]}
               layout="vertical"
               onItemClick={handleBarClick}
@@ -453,8 +454,6 @@ export const Visualization = ({ results }) => {
             />
           </Paper>
         </Grid>
-
-
       </Grid>
 
       {selectedTopicData && (
