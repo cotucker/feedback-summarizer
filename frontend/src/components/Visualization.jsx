@@ -343,15 +343,15 @@ export const Visualization = ({ results }) => {
     plotLayout = {
       xaxis: {
         range: [minX - xPadding, maxX + xPadding],
-        title: "t-SNE Component 1",
+        title: { text: "t-SNE Component 1" },
       },
       yaxis: {
         range: [minY - yPadding, maxY + yPadding],
-        title: "t-SNE Component 2",
+        title: { text: "t-SNE Component 2" },
       },
       showlegend: true,
       legend: { orientation: "h", xanchor: "center", x: 0.5 },
-      margin: { l: 50, r: 50, b: 50, t: 50 },
+      margin: { l: 80, r: 50, b: 80, t: 50 },
       dragmode: "pan", // Позволяет перемещать график
     };
   }
@@ -538,15 +538,15 @@ export const Visualization = ({ results }) => {
         maxWidth="xl"
       >
         <DialogTitle variant="h4">
-          Phrase-Semantic Clusters with Boundaries
+          Scatter Plot: Phrase-Semantic Clusters with Boundaries
         </DialogTitle>
         <DialogContent>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            The graph shows the position of text embeddings in 2D using t-SNE.
-            The axes (t-SNE Component 1 and t-SNE Component 2) are the result of
-            applying the t-SNE algorithm to reduce the dimensionality of the
-            original vector representations of texts, which allows visualizing
-            their semantic proximity in two-dimensional space.
+            The scatter plot shows the position of text embeddings in 2D using
+            t-SNE. The axes (t-SNE Component 1 and t-SNE Component 2) are the
+            result of applying the t-SNE algorithm to reduce the dimensionality
+            of the original vector representations of texts, which allows
+            visualizing their semantic proximity in two-dimensional space.
           </Typography>
           <Box sx={{ height: "70vh", width: "100%", mt: 2 }}>
             <Plot
