@@ -408,6 +408,7 @@ export const Visualization = ({ results }) => {
                   stack: "single",
                   color: CLUSTER_COLORS[index % CLUSTER_COLORS.length],
                   label: topicLabels[index],
+                  valueFormatter: (v) => (v === null ? null : v.toString()),
                 };
               })}
               tooltip={{ trigger: "item" }}
