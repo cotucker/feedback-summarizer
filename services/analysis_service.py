@@ -3,7 +3,7 @@ from sklearn.metrics import accuracy_score
 from fastapi.datastructures import UploadFile
 from services.clustering_service import cluster_texts
 from services.file_handler_service import get_dataset_from_file, get_feedbacks_info
-from services.llm_service import feedback_list_analysis, topics_analysis, generate_total_summary, feedback_responces, process_columnes_names, get_separator
+from services.llm_service import feedback_list_analysis, topics_analysis, generate_total_summary, process_columnes_names, get_separator
 
 async def analysis(file: UploadFile, topics: str = ''):
     df = await get_dataset_from_file(file, process_columnes_names, get_separator, topics)

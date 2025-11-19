@@ -15,7 +15,11 @@ from services.nlp_service import predict_sentiment, extract_cluster_keywords
 from services.llm_service import filter_topics
 from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+DEVICE = os.getenv("DEVICE", "cpu")
 REDUCED_EMBEDDINGS: list = []
 EMBEDDINGS: list = []
 START: int = 2
@@ -69,7 +73,7 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
     sentiments_list  = predict_sentiment(texts_list)
     abstracts = texts_list
     model = SentenceTransformer('all-MiniLM-L12-v2')
-    EMBEDDINGS = model.encode(texts_list, device='cuda')
+    EMBEDDINGS = model.encode(texts_list, device=DEVICE)
     umap_model = UMAP(
         n_components=25,
         min_dist=0.1,
