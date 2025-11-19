@@ -10,6 +10,8 @@ services:
       - /app/.venv
     environment:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - CEREBRAS_API_KEY=${CEREBRAS_API_KEY}
+      - MODEL=${MODEL}
 
   frontend:
     build:
