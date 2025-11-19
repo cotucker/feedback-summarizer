@@ -1,17 +1,7 @@
 <div align="center">
-  <img src="https://i.imgur.com/your-project-logo-or-screenshot.png" alt="Project Banner" width="800"/>
   <h1>AI Feedback Analysis Dashboard</h1>
   <p>
-    An intelligent dashboard to upload, analyze, and visualize customer feedback using large language models.
-  </p>
-  <p>
-    <a href="#-introduction">Introduction</a> •
-    <a href="#-key-features">Key Features</a> •
-    <a href="#-tech-stack">Tech Stack</a> •
-    <a href="#-getting-started">Getting Started</a> •
-    <a href="#-usage">Usage</a> •
-    <a href="#-api-endpoints">API</a> •
-    <a href="#-contributing">Contributing</a>
+    An intelligent dashboard to upload, analyze, and visualize customer feedback using clustering analysis and large language models.
   </p>
 
   <!-- Badges -->
