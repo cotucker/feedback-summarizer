@@ -27,9 +27,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-with open("mock.json", "r") as f:
-    mock = json.load(f)
-
 @app.post("/api/feedback/analyze")
 async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
     try:
