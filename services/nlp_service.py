@@ -10,6 +10,11 @@ from typing import List, Dict
 from services.llm_service import get_cluster_name
 from nltk.corpus import stopwords
 import nltk
+nltk.download('wordnet')
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+import re
 
 model_name = "tabularisai/multilingual-sentiment-analysis"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -39,8 +44,8 @@ def extract_cluster_keywords(texts, labels, top_n=10):
             max_features=1000,
             stop_words=stop_words,
             ngram_range=(1, 2),
-            min_df=2,
-            max_df=0.8
+            min_df=1,
+            max_df=1.0
         )
         tfidf_matrix = vectorizer.fit_transform(cluster_texts)
 
@@ -68,3 +73,14 @@ def extract_cluster_keywords(texts, labels, top_n=10):
 
     cluster_names_list = [cluster_name_map[label] for label in labels]
     return cluster_keywords, cluster_names_list, texts
+
+def process_text(text :str):
+    text = text.lower()
+    text = re.sub(r'[^\w\s]', '', text)
+    stop_words = set(stopwords.words('english'))
+    word_tokens = word_tokenize(text)
+    filtered_sentence = [w for w in word_tokens if not w.lower() in stop_words]
+    text = ' '.join(filtered_sentence)
+    lemmatizer = WordNetLemmatizer()
+    text = ' '.join([lemmatizer.lemmatize(word) for word in text.split()])
+    return text

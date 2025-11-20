@@ -11,11 +11,12 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_har
 from sklearn.metrics.pairwise import cosine_distances, cosine_similarity
 import plotly.express as px
 import matplotlib.pyplot as plt
-from services.nlp_service import predict_sentiment, extract_cluster_keywords
+from services.nlp_service import predict_sentiment, extract_cluster_keywords, process_text
 from services.llm_service import filter_topics
 from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
 import os
+import math
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -97,15 +98,20 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
     for n_clusters in range_n_clusters:
         kmeans = KMeans(n_clusters=n_clusters, init='k-means++', random_state=67)
         cluster_labels = kmeans.fit_predict(REDUCED_EMBEDDINGS)
-        silhouette_avg = silhouette_score(REDUCED_EMBEDDINGS, cluster_labels, metric='cosine') #+ 1/davies_bouldin_score(REDUCED_EMBEDDINGS, cluster_labels)
-        silhouette_scores.append(silhouette_avg)
-        print(f"For n_clusters = {n_clusters}, the average silhouette_score is : {silhouette_avg}")
+        sil = silhouette_score(REDUCED_EMBEDDINGS, cluster_labels, metric='cosine')
+        db = davies_bouldin_score(REDUCED_EMBEDDINGS, cluster_labels)
+        ch = calinski_harabasz_score(REDUCED_EMBEDDINGS, cluster_labels) # Чем больше, тем лучше
+        base_score = sil + (1 / db)
+        complexity_bonus = math.log(n_clusters)
+        score = base_score * complexity_bonus
+        silhouette_scores.append(score)
+        print(f"For n_clusters = {n_clusters}, the average silhouette_score is : {score}")
 
-        if silhouette_avg > max_silhouette_score:
-            max_silhouette_score = silhouette_avg
+        if score > max_silhouette_score:
+            max_silhouette_score = score
             best_n_clusters = n_clusters
-        if silhouette_avg < min_silhouette_score:
-            min_silhouette_score = silhouette_avg
+        if score < min_silhouette_score:
+            min_silhouette_score = score
             worst_n_clusters = n_clusters
 
     print(f"\nMaximum Silhouette Score: {max_silhouette_score:.4f} for n_clusters = {best_n_clusters}")
