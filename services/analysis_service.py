@@ -15,7 +15,7 @@ async def analysis(file: UploadFile, topics: str = ''):
     df.to_csv("data/dataset.csv", index=False)
     analysis: dict = {}
     logger.info("Starting feedback list analysis.")
-    feedback_list_analysis_results = feedback_list_analysis()
+    feedback_list_analysis_results = feedback_list_analysis(topics)
     logger.info("Feedback list analysis completed. Starting text clustering.")
     phrase_clusters, feedback_analysis, clustering_info = cluster_texts(feedback_list_analysis_results, topics)
     logger.info("Text clustering completed.")
