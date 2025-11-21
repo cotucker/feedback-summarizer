@@ -425,43 +425,30 @@ export const Visualization = ({ results }) => {
             </Typography>
             <BarChart
               layout="horizontal"
-              margin={{ left: 100 }} // Отступ слева для текста (Positive, Negative...)
-              // 1. Ось Y: Передаем массив всех подписей сразу
+              margin={{ left: 120, right: 50, top: 50, bottom: 50 }}
               yAxis={[
                 {
                   scaleType: "band",
-                  data: sentimentChartData.map((s) => s.label), // ["Positive", "Negative", "Neutral"]
+                  data: sentimentChartData.map((s) => s.label),
+                  colorMap: {
+                    type: "ordinal",
+                    colors: sentimentChartData.map((s) => s.color),
+                  },
                 },
               ]}
               xAxis={[{ label: "Number of Feedbacks" }]}
-              // 2. Серии: Должен быть ОДИН объект с массивом ВСЕХ значений
               series={[
                 {
-                  data: sentimentChartData.map((s) => s.value), // [42, 38, 20]
+                  data: sentimentChartData.map((s) => s.value),
                   type: "bar",
-
-                  // Чтобы сделать синим, как на картинке-примере:
-                  color: "#42a5f5",
-
-                  // P.S. Если вы используете новую версию MUI X (v7+) и хотите
-                  // сохранить ваши цвета (Зеленый/Красный/Оранжевый),
-                  // раскомментируйте colorMap ниже:
-                  /*
-                  colorMap: {
-                    type: 'ordinal',
-                    colors: sentimentChartData.map((s) => s.color)
-                  }
-                  */
                 },
               ]}
               tooltip={{ trigger: "item" }}
-              // Легенда здесь не нужна, так как подписи уже есть на оси Y
               legend={{ hidden: true }}
             />
           </Paper>
         </Grid>
 
-        {/* КНОПКА ДЛЯ ОТКРЫТИЯ PLOTLY ГРАФИКА */}
         {Object.keys(clusters).length > 0 && (
           <Grid item xs={12}>
             <Button
