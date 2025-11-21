@@ -421,10 +421,42 @@ export const Visualization = ({ results }) => {
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 2, height: "400px" }}>
             <Typography variant="h6" gutterBottom>
-              Pie Chart of Overall Sentiment Distribution
+              Horizontal Bar Chart of Overall Sentiment Distribution
             </Typography>
-            <PieChart
-              series={[{ data: sentimentChartData, innerRadius: 60 }]}
+            <BarChart
+              layout="horizontal"
+              margin={{ left: 100 }} // Отступ слева для текста (Positive, Negative...)
+              // 1. Ось Y: Передаем массив всех подписей сразу
+              yAxis={[
+                {
+                  scaleType: "band",
+                  data: sentimentChartData.map((s) => s.label), // ["Positive", "Negative", "Neutral"]
+                },
+              ]}
+              xAxis={[{ label: "Number of Feedbacks" }]}
+              // 2. Серии: Должен быть ОДИН объект с массивом ВСЕХ значений
+              series={[
+                {
+                  data: sentimentChartData.map((s) => s.value), // [42, 38, 20]
+                  type: "bar",
+
+                  // Чтобы сделать синим, как на картинке-примере:
+                  color: "#42a5f5",
+
+                  // P.S. Если вы используете новую версию MUI X (v7+) и хотите
+                  // сохранить ваши цвета (Зеленый/Красный/Оранжевый),
+                  // раскомментируйте colorMap ниже:
+                  /*
+                  colorMap: {
+                    type: 'ordinal',
+                    colors: sentimentChartData.map((s) => s.color)
+                  }
+                  */
+                },
+              ]}
+              tooltip={{ trigger: "item" }}
+              // Легенда здесь не нужна, так как подписи уже есть на оси Y
+              legend={{ hidden: true }}
             />
           </Paper>
         </Grid>
