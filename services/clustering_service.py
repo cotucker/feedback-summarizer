@@ -80,15 +80,15 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
     abstracts = texts_list
     model = SentenceTransformer('all-MiniLM-L12-v2')
     EMBEDDINGS = model.encode(texts_list, device=DEVICE)
-    # umap_model = UMAP(
-    #     n_components=25,
-    #     min_dist=0.1,
-    #     metric='cosine',
-    #     random_state=67
-    # )
-    # REDUCED_EMBEDDINGS = umap_model.fit_transform(EMBEDDINGS)
+    umap_model = UMAP(
+        n_components=25,
+        min_dist=0.1,
+        metric='cosine',
+        random_state=67
+    )
+    umap_reduced = umap_model.fit_transform(EMBEDDINGS)
     tsne = TSNE(n_components=2, perplexity=30, random_state=42)
-    REDUCED_EMBEDDINGS = tsne.fit_transform(EMBEDDINGS)
+    REDUCED_EMBEDDINGS = tsne.fit_transform(umap_reduced)
     n = len(REDUCED_EMBEDDINGS)
     silhouette_scores = []
     range_n_clusters = range(2, int(np.sqrt(n)))
@@ -102,7 +102,7 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
         cluster_labels = kmeans.fit_predict(REDUCED_EMBEDDINGS)
         sil = silhouette_score(REDUCED_EMBEDDINGS, cluster_labels, metric='cosine')
         db = davies_bouldin_score(REDUCED_EMBEDDINGS, cluster_labels)
-        ch = calinski_harabasz_score(REDUCED_EMBEDDINGS, cluster_labels) # Чем больше, тем лучше
+        ch = calinski_harabasz_score(REDUCED_EMBEDDINGS, cluster_labels)
         base_score = sil + (1 / db)
         complexity_bonus = math.log(n_clusters)
         score = base_score * complexity_bonus

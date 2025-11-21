@@ -347,9 +347,9 @@ def generate_topics_list(topics_text: str):
                 role="user",
                 parts=[
                     types.Part(
-                        text="""Create Topics list of customers feedback from query
+                        text="""Create Topics list of customers feedback on IT Company from query
                         , keep original topics names
-                        , if there is no information about topics in query return empty list""",
+                        , if there is no information about topics in query OR quety is not related to IT return empty list""",
                     ),
                     types.Part(
                         text=f"Query: {topics_text}",
