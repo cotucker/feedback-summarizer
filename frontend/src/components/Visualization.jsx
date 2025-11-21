@@ -25,7 +25,6 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { PieChart } from "@mui/x-charts/PieChart";
 // Импортируем Plot
 import Plot from "react-plotly.js";
 import { DataGrid } from "@mui/x-data-grid";
@@ -62,7 +61,7 @@ const feedbackAnalysisColumns = [
     minWidth: 300,
     renderCell: renderCellWithTooltip,
   },
-  { field: "topic", headerName: "Topic", width: 180 },
+  { field: "topic", headerName: "Topic", width: 200 },
   { field: "sentiment", headerName: "Sentiment", width: 120 },
 ];
 
@@ -73,7 +72,7 @@ const topicDetailColumns = [
     flex: 1,
     renderCell: renderCellWithTooltip,
   },
-  { field: "sentiment", headerName: "Sentiment", width: 120 },
+  { field: "sentiment", headerName: "Sentiment", width: 700 },
 ];
 
 // === ИЗМЕНЕНИЕ: Палитра цветов для кластеров ===
@@ -389,7 +388,7 @@ export const Visualization = ({ results }) => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12}>
           <Paper sx={{ p: 2, height: "400px" }}>
             <Typography variant="h6" gutterBottom>
               Bar Chart of Topic Distribution
@@ -418,7 +417,7 @@ export const Visualization = ({ results }) => {
             />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12}>
           <Paper sx={{ p: 2, height: "400px" }}>
             <Typography variant="h6" gutterBottom>
               Horizontal Bar Chart of Overall Sentiment Distribution
@@ -449,6 +448,7 @@ export const Visualization = ({ results }) => {
           </Paper>
         </Grid>
 
+        {/* КНОПКА ДЛЯ ОТКРЫТИЯ PLOTLY ГРАФИКА */}
         {Object.keys(clusters).length > 0 && (
           <Grid item xs={12}>
             <Button
