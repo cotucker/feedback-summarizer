@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer
 from umap import UMAP
 from sklearn.manifold import TSNE
 from hdbscan import HDBSCAN
-from sklearn.cluster import SpectralClustering, KMeans, BisectingKMeans
+from sklearn.cluster import SpectralClustering, KMeans, BisectingKMeans, AgglomerativeClustering
 from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score
 from sklearn.metrics.pairwise import cosine_distances, cosine_similarity
 import plotly.express as px
@@ -33,13 +33,16 @@ def spectral_clustering(num_clusters: int):
     if num_clusters < 2:
         print("Silhouette Score not calculated: num_clusters must be >= 2.")
         return score
-    clustering = SpectralClustering(
+    # clustering = SpectralClustering(
+    #         n_clusters=num_clusters,
+    #         assign_labels='discretize',
+    #         gamma=1.0,
+    #         affinity='rbf',
+    #         n_jobs=1,
+    #         random_state=67).fit(REDUCED_EMBEDDINGS)
+    clustering = AgglomerativeClustering(
             n_clusters=num_clusters,
-            assign_labels='discretize',
-            gamma=1.0,
-            affinity='rbf',
-            n_jobs=1,
-            random_state=67).fit(REDUCED_EMBEDDINGS)
+            linkage = 'ward').fit(REDUCED_EMBEDDINGS)
     spectral_clusters = clustering.labels_
     clustering_info =  ''
 
@@ -104,8 +107,8 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
         db = davies_bouldin_score(REDUCED_EMBEDDINGS, cluster_labels)
         ch = calinski_harabasz_score(REDUCED_EMBEDDINGS, cluster_labels)
         base_score = sil + (1 / db)
-        complexity_bonus = math.log(ch) + math.log(n_clusters)
-        score = base_score * 0.5 * complexity_bonus
+        complexity_bonus = math.log(ch) + math.log(n_clusters, 2)
+        score = math.log(ch)
         silhouette_scores.append(score)
         print(f"For n_clusters = {n_clusters}, the average silhouette_score is : {score}")
 
