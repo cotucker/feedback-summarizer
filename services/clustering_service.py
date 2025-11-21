@@ -104,8 +104,8 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
         db = davies_bouldin_score(REDUCED_EMBEDDINGS, cluster_labels)
         ch = calinski_harabasz_score(REDUCED_EMBEDDINGS, cluster_labels)
         base_score = sil + (1 / db)
-        complexity_bonus = math.log(n_clusters)
-        score = base_score * complexity_bonus
+        complexity_bonus = math.log(ch) + math.log(n_clusters)
+        score = base_score * 0.5 * complexity_bonus
         silhouette_scores.append(score)
         print(f"For n_clusters = {n_clusters}, the average silhouette_score is : {score}")
 
