@@ -58,10 +58,10 @@ const feedbackAnalysisColumns = [
     field: "text",
     headerName: "Feedback Text",
     flex: 1,
-    minWidth: 300,
+    minWidth: 770,
     renderCell: renderCellWithTooltip,
   },
-  { field: "topic", headerName: "Topic", width: 200 },
+  { field: "topic", headerName: "Topic", width: 270 },
   { field: "sentiment", headerName: "Sentiment", width: 120 },
 ];
 
@@ -72,7 +72,7 @@ const topicDetailColumns = [
     flex: 1,
     renderCell: renderCellWithTooltip,
   },
-  { field: "sentiment", headerName: "Sentiment", width: 700 },
+  { field: "sentiment", headerName: "Sentiment", width: 120 },
 ];
 
 // === ИЗМЕНЕНИЕ: Палитра цветов для кластеров ===
@@ -164,7 +164,7 @@ const calculateConvexHull = (points) => {
   return hull;
 };
 
-export const Visualization = ({ results }) => {
+export const Visualization = ({ results, analyzedFilename }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTopicData, setSelectedTopicData] = useState(null);
   const [isClusterDialogOpen, setIsClusterDialogOpen] = useState(false);
@@ -382,6 +382,15 @@ export const Visualization = ({ results }) => {
                   {isDownloading ? "Downloading..." : "Download Report"}
                 </Button>
               </Box>
+              {analyzedFilename && (
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  sx={{ mt: 1, mb: 2, textAlign: "center" }}
+                >
+                  Analyzed file: {analyzedFilename}
+                </Typography>
+              )}
               <Divider sx={{ my: 2 }} />
               <Typography variant="body1">{results.summary}</Typography>
             </CardContent>
@@ -486,7 +495,7 @@ export const Visualization = ({ results }) => {
           <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
             Text Analytics Insights
           </Typography>
-          <Paper sx={{ height: 400, width: "100%" }}>
+          <Paper sx={{ height: 600, width: "100%" }}>
             <DataGrid
               rows={feedbackAnalysisRows}
               columns={feedbackAnalysisColumns}
@@ -622,4 +631,5 @@ Visualization.propTypes = {
       }),
     ),
   }).isRequired,
+  analyzedFilename: PropTypes.string, // Add new prop for filename
 };

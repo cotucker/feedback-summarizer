@@ -15,6 +15,7 @@ async def analysis(file: UploadFile, topics: str = ''):
     logger.info("Dataset loaded and preprocessed.")
     await asyncio.to_thread(df.to_csv, "data/dataset.csv", index=False)
     analysis: dict = {}
+    analysis['filename'] = file.filename
     logger.info("Starting feedback list analysis.")
     feedback_list_analysis_results = await asyncio.to_thread(feedback_list_analysis, topics)
     logger.info("Feedback list analysis completed. Starting text clustering.")

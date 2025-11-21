@@ -95,7 +95,9 @@ export const Dashboard = () => {
         onTopicsChange={setTopics}
         onCancel={handleCancel}
       />
-      {results && !isLoading && <Visualization results={results} />}
+      {results && !isLoading && (
+        <Visualization results={results} analyzedFilename={results.filename} />
+      )}
     </Box>
   );
 };
