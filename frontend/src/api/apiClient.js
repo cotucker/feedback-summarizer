@@ -11,9 +11,10 @@ const apiClient = axios.create({
  * @param {File} file The CSV file to upload.
  * @param {string} topics A comma-separated string of topics to filter by.
  * @param {(progressEvent: any) => void} onUploadProgress A callback to track progress.
+ * @param {AbortSignal} [signal] Optional AbortSignal to cancel the request.
  * @returns {Promise<any>} A promise that resolves to the analysis results object.
  */
-export const uploadAndAnalyzeCsv = async (file, topics, onUploadProgress) => {
+export const uploadAndAnalyzeCsv = async (file, topics, onUploadProgress, signal) => {
   const formData = new FormData();
   formData.append("file", file);
 
@@ -30,9 +31,13 @@ export const uploadAndAnalyzeCsv = async (file, topics, onUploadProgress) => {
         "Content-Type": "multipart/form-data",
       },
       onUploadProgress,
+      signal, // Pass the signal to axios
     });
     return response.data;
   } catch (error) {
+    if (axios.isCancel(error)) {
+      throw new Error("Analysis cancelled by user.");
+    }
     if (axios.isAxiosError(error) && error.response) {
       throw new Error(
         error.response.data.detail || "An unexpected error occurred.",

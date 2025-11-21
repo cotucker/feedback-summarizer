@@ -19,6 +19,7 @@ export const FileUpload = ({
   progress,
   topics, // новое свойство
   onTopicsChange, // новый обработчик
+  onCancel, // New prop for cancellation
 }) => {
   const [selectedFile, setSelectedFile] = React.useState(null);
 
@@ -65,6 +66,7 @@ export const FileUpload = ({
         variant="outlined"
         component="label"
         startIcon={<UploadFileIcon />}
+        disabled={isLoading}
       >
         Select CSV File
         <input type="file" accept=".csv" hidden onChange={handleFileChange} />
@@ -76,7 +78,7 @@ export const FileUpload = ({
         </Typography>
       )}
 
-      <Box sx={{ mt: 2 }}>
+      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 2 }}>
         <Button
           variant="contained"
           onClick={handleUploadClick}
@@ -85,6 +87,17 @@ export const FileUpload = ({
         >
           {isLoading ? "Analyzing..." : "Analyze Feedback"}
         </Button>
+        
+        {isLoading && (
+            <Button
+                variant="outlined"
+                color="error"
+                onClick={onCancel}
+                size="large"
+            >
+                Cancel
+            </Button>
+        )}
       </Box>
 
       {isLoading && (
@@ -109,4 +122,5 @@ FileUpload.propTypes = {
   progress: PropTypes.number.isRequired,
   topics: PropTypes.string.isRequired,
   onTopicsChange: PropTypes.func.isRequired,
+  onCancel: PropTypes.func, // Optional, but recommended
 };

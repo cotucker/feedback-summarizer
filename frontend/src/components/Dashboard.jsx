@@ -12,16 +12,36 @@ export const Dashboard = () => {
   const [error, setError] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [topics, setTopics] = useState(""); // New state for topics
+  const abortControllerRef = React.useRef(null);
+
+  const handleCancel = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setIsLoading(false);
+    setUploadProgress(0);
+    // Optionally, you might want to keep the previous error or set a specific "Cancelled" message
+    // setError("Analysis cancelled."); 
+  }, []);
 
   const handleFileUpload = useCallback(
     async (file) => {
+      // Cancel any pending request before starting a new one
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      
+      const abortController = new AbortController();
+      abortControllerRef.current = abortController;
+
       setIsLoading(true);
       setError(null);
       setResults(null);
       setUploadProgress(0);
 
       try {
-        // Pass topics to the API client
+        // Pass topics and signal to the API client
         const analysisData = await uploadAndAnalyzeCsv(
           file,
           topics,
@@ -31,12 +51,26 @@ export const Dashboard = () => {
             );
             setUploadProgress(percentCompleted);
           },
+          abortController.signal
         );
         setResults(analysisData);
       } catch (err) {
-        setError(err.message || "Failed to analyze the file.");
+        if (err.message === "Analysis cancelled by user.") {
+             // Verify if this specific cancellation matches the current operation
+             // (though we usually reset isLoading in handleCancel directly)
+             console.log("Request cancelled");
+        } else {
+            setError(err.message || "Failed to analyze the file.");
+        }
       } finally {
-        setIsLoading(false);
+        // Only turn off loading if it wasn't cancelled manually (which handles its own state)
+        // OR just turn it off here. If cancelled, handleCancel turns it off. 
+        // However, due to async nature, if we cancel, this finally block might run after handleCancel.
+        // Check if we are still "loading" according to the ref (if ref is null, we cancelled).
+        if (abortControllerRef.current === abortController) {
+             setIsLoading(false);
+             abortControllerRef.current = null;
+        }
       }
     },
     [topics],
@@ -59,6 +93,7 @@ export const Dashboard = () => {
         progress={uploadProgress}
         topics={topics}
         onTopicsChange={setTopics}
+        onCancel={handleCancel}
       />
       {results && !isLoading && <Visualization results={results} />}
     </Box>
