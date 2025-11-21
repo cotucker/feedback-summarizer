@@ -135,4 +135,4 @@ def feedback_chunking(feedback_list: list[str]):
     return list
 
 if __name__ == "__main__":
-    test_chunks("The product is bad but the company is good. Support is excellent.")
+   print(test_chunks("The product is bad but the company is good. Support is excellent."))

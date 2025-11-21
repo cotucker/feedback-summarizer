@@ -1,228 +1,362 @@
 text,sentiment,topic
-The software quality is excellent and the project was managed perfectly.,Positive,Software Application Quality
-The application is extremely slow,Negative,Software Application Quality
-the design is very dated.,Negative,Intuitive User Design
-the support team was very helpful,Positive,Customer Support Team
-the application crashes constantly.,Negative,Software Application Quality
-"The new UI is beautiful and modern,",Positive,Intuitive User Design
-the pricing is very fair and transparent.,Positive,Billing and Pricing
-We experience frequent bugs and to make,Negative,Software Application Quality
-matters worse,Negative,Intuitive User Design
-the support was rude and unhelpful.,Negative,Customer Support Team
-"The project manager was very organized,",Positive,Project Management
-the final product feels unfinished.,Negative,Product Quality
-The build quality is top-notch,Positive,Product Quality
-the code is clean and well-written.,Positive,Software Application Quality
-Project management was a disaster,Negative,Project Management
-the billing is a complete rip-off.,Negative,Billing and Pricing
-The design is very intuitive,Positive,Intuitive User Design
-the mobile experience is sluggish.,Negative,Software Application Quality
-The dashboard is well-designed,Positive,Intuitive User Design
-the support team is fantastic.,Positive,Customer Support Team
-The software is full of errors,Negative,Software Application Quality
-it took days to get a response from support.,Negative,Customer Support Team
-"The product is very reliable,",Positive,Product Quality
-I feel,Positive,Intuitive User Design
-the cost is way too high,Negative,Billing and Pricing
-"Performance is lagging on mobile,",Negative,Software Application Quality
-the user interface is cluttered and confusing.,Negative,Intuitive User Design
-The support agent was knowledgeable and the project was delivered on time.,Positive,Customer Support Team
-"The system often freezes, even though",Negative,Software Application Quality
-the build quality is top-notch,Positive,Product Quality
-Customer service resolved my issue,Neutral,Customer Support Team
-the pricing model is very flexible.,Positive,Billing and Pricing
-"The product is very robust and stable,",Positive,Product Quality
-the subscription cost is unreasonable.,Negative,Billing and Pricing
-The UX is a complete nightmare,Negative,Intuitive User Design
-the project manager was unresponsive.,Negative,Project Management
-"The team is friendly and professional,",Positive,Customer Support Team
-the product is very well-engineered.,Positive,Product Quality
-"It is a very polished product,",Positive,Product Quality
-we had to micromanage everything.,Negative,Project Management
-The navigation is not intuitive,Negative,Intuitive User Design
-the software has memory leaks.,Neutral,Software Application Quality
-The cost is justified by the quality and the support team is a huge asset to the company.,Neutral,Customer Support Team
-the code is clean and well-written,Positive,Software Application Quality
-the project lacked leadership.,Negative,Project Management
-the project was a constant source of stress.,Negative,Project Management
-The project was a huge success,Positive,Project Management
-the product has zero downtime.,Neutral,Product Quality
-"The design is a major flaw, but at least",Negative,Intuitive User Design
-the project manager was very organized,Positive,Project Management
-The software is not well-architected,Negative,Software Application Quality
-the support staff seems incompetent.,Negative,Customer Support Team
-"Excellent help from the support staff,",Positive,Customer Support Team
-the final product is flawless.,Positive,Product Quality
-"The manager was proactive and on top of things, however",Negative,Project Management
-the billing is very confusing.,Negative,Billing and Pricing
-The user experience is terrible and the deadlines were constantly missed.,Negative,Intuitive User Design
-The software is of high quality,Neutral,Software Application Quality
-the team is very professional.,Positive,Customer Support Team
-"The product works,",Positive,Product Quality
-the pricing is not straightforward and clear.,Negative,Billing and Pricing
-The application is not reliable,Negative,Software Application Quality
-the support is a constant headache.,Negative,Customer Support Team
-They responded to my ticket quickly,Positive,Delivery Schedule
-the project was a pleasure to work on.,Positive,Project Management
-"The build quality is excellent,",Positive,Product Quality
-the design feels very dated.,Negative,Intuitive User Design
-The final invoice included charges for things,Neutral,Billing and Pricing
-we did not use,Negative,Delivery Schedule
-The product is very well-tested,Positive,Product Quality
-the manager is an excellent communicator.,Positive,Project Management
-the quality is impressive,Positive,Product Quality
-the cost is much higher than competitors.,Negative,Billing and Pricing
-The software is unstable,Negative,Software Application Quality
-the communication from the manager was non-existent.,Negative,Project Management
-The price is affordable,Positive,Billing and Pricing
-the support team is fantastic.,Positive,Customer Support Team
-the final product is full of bugs.,Negative,Product Quality
-The mobile experience is sluggish,Negative,Software Application Quality
-the helpdesk is a complete joke.,Negative,Customer Support Team
-The product is very durable,Positive,Product Quality
-the project manager is a great leader.,Positive,Project Management
-"Support went above and beyond,",Positive,Customer Support Team
-the product itself feels unfinished.,Negative,Product Quality
-The design is not appealing,Negative,Intuitive User Design
-the software is not well-architected.,Negative,Software Application Quality
-The value proposition is excellent,Positive,Billing and Pricing
-the product quality is superb.,Positive,Product Quality
-"The project was a success,",Positive,Project Management
-the negotiation for the next phase was a nightmare.,Negative,Project Management
-The software is of low quality,Neutral,Software Application Quality
-the support team is unresponsive.,Negative,Customer Support Team
-"The code is clean and efficient,",Positive,Software Application Quality
-the pricing is very fair.,Positive,Billing and Pricing
-"The manager handled risks very well,",Positive,Project Management
-the user experience is very frustrating.,Negative,Intuitive User Design
-The product is flimsy,Negative,Product Quality
-the billing is a complete rip-off.,Negative,Billing and Pricing
-"The support team is fantastic,",Positive,Customer Support Team
-the new UI is beautiful and modern.,Positive,Intuitive User Design
-"The product is reliable,",Positive,Product Quality
-the project manager is a bottleneck.,Negative,Project Management
-The application crashes constantly,Negative,Software Application Quality
-the cost is way too high.,Negative,Billing and Pricing
-the build quality is top-notch.,Positive,Product Quality
-"The design is intuitive,",Positive,Intuitive User Design
-the system often freezes.,Negative,Software Application Quality
-The software is full of errors,Negative,Software Application Quality
-the project management was a disaster.,Negative,Project Management
-"Customer service resolved my issue,",Neutral,Customer Support Team
-the product is very robust and stable.,Positive,Product Quality
-"The product is well-engineered,",Positive,Product Quality
-the price is,Neutral,Billing and Pricing
-The user interface is cluttered,Negative,Intuitive User Design
-the support was rude and unhelpful.,Negative,Customer Support Team
-"The project was a huge success,",Positive,Project Management
-the support team was very helpful.,Positive,Customer Support Team
-"The software quality is excellent,",Positive,Software Application Quality
-the design is very dated.,Negative,Intuitive User Design
-"The application is extremely slow,",Negative,Software Application Quality
-the billing is very confusing.,Negative,Billing and Pricing
-"The new UI is beautiful, and the project was delivered on time.",Positive,Intuitive User Design
-"The support team is fantastic,",Positive,Customer Support Team
-the performance is lagging on mobile.,Negative,Software Application Quality
-"The product feels unfinished,",Negative,Product Quality
-the project manager was unresponsive.,Negative,Project Management
-"The build quality is top-notch,",Positive,Product Quality
-the pricing is very fair.,Positive,Billing and Pricing
-"The design is intuitive,",Positive,Intuitive User Design
-the software has memory leaks.,Neutral,Software Application Quality
-The application is extremely slow,Negative,Software Application Quality
-support was rude and unhelpful.,Negative,Customer Support Team
-the software quality is excellent.,Positive,Software Application Quality
-customer service was great,Positive,Customer Support Team
-the product itself is full of bugs.,Negative,Product Quality
-the code quality is messy.,Negative,Software Application Quality
-the client is furious.,Negative,Billing and Pricing
-"We finished ahead of schedule,",Positive,Delivery Schedule
-the final product is flawless.,Positive,Product Quality
-"The delivery was fast,",Positive,Delivery Schedule
-the features are incomplete.,Negative,Intuitive User Design
-the budget was under control.,Neutral,Project Management
-the software is very stable.,Positive,Software Application Quality
-"The team met the deadline,",Neutral,Delivery Schedule
-the documentation is missing.,Negative,Intuitive User Design
-"The project took forever to finish,",Negative,Project Management
-the cost was astronomical.,Neutral,Billing and Pricing
-"Delivery was prompt,",Positive,Delivery Schedule
-the support team was very responsive.,Positive,Customer Support Team
-"The milestone was reached on time, but the testing was skipped.",Negative,Delivery Schedule
-the user experience is terrible.,Negative,Intuitive User Design
-"The rollout was behind schedule,",Negative,Delivery Schedule
-the communication was poor.,Negative,Project Management
-the stakeholders are happy.,Positive,Project Management
-"The schedule was aggressive,",Positive,Delivery Schedule
-the team managed well.,Positive,Customer Support Team
-"The deadline is approaching fast, and the build is still broken.",Positive,Delivery Schedule
-"The project was late,",Negative,Project Management
-the quality made up for it.,Positive,Product Quality
-the design is stunning.,Positive,Intuitive User Design
-"The timeline slipped significantly,",Negative,Delivery Schedule
-the features are buggy.,Negative,Intuitive User Design
-"They hit the deadline,",Neutral,Delivery Schedule
-the performance is unacceptable.,Negative,Intuitive User Design
-"The integration was timely,",Positive,Delivery Schedule
-the system works perfectly.,Positive,Product Quality
-the functionality is very limited.,Negative,Intuitive User Design
-the extra costs were unexpected.,Negative,Billing and Pricing
-"We beat the deadline comfortably,",Positive,Delivery Schedule
-the code structure is clean.,Positive,Software Application Quality
-"The turnaround time was quick,",Positive,Delivery Schedule
-the visual design is unappealing.,Negative,Intuitive User Design
-"The schedule was realistic,",Positive,Delivery Schedule
-the deliverables are high quality.,Positive,Product Quality
-"The launch was postponed twice, and the stakeholders are frustrated.",Negative,Project Management
-the speed was impressive,Positive,Delivery Schedule
-"The timeline was well-managed,",Positive,Delivery Schedule
-the allocated budget was insufficient.,Negative,Project Management
-"The sprint finished early,",Neutral,Delivery Schedule
-the team morale is very high.,Negative,Customer Support Team
-"The delivery took too long,",Negative,Delivery Schedule
-the reliability is rock solid.,Neutral,Product Quality
-the project manager blamed the team.,Negative,Project Management
-"The release was punctual,",Neutral,Delivery Schedule
-the app crashes on startup.,Negative,Software Application Quality
-the reporting was transparent.,Neutral,Delivery Schedule
-"The implementation was fast,",Positive,Delivery Schedule
-the user manual is confusing.,Negative,Intuitive User Design
-"The project dragged on for months,",Negative,Project Management
-the final output is useless.,Negative,Intuitive User Design
-"Everything arrived on schedule,",Positive,Delivery Schedule
-the setup process was easy.,Positive,Delivery Schedule
-"The timeframe was too tight, so the testing phase was rushed.",Negative,Delivery Schedule
-the quality remains poor.,Negative,Intuitive User Design
-"Delivery was instantaneous,",Positive,Delivery Schedule
-the customer service was rude.,Negative,Customer Support Team
-the billing was accurate.,Neutral,Billing and Pricing
-"The interface is stunning, and the project was delivered ahead of schedule.",Positive,Intuitive User Design
-"The navigation is confusing,",Negative,Intuitive User Design
-the launch happened exactly on time.,Neutral,Delivery Schedule
-"The design looks outdated, and the deadline was missed by a week.",Negative,Intuitive User Design
-"The user flow is seamless, but the release was significantly delayed.",Negative,Intuitive User Design
-"The dashboard is intuitive,",Positive,Intuitive User Design
-the team met the aggressive timeline.,Neutral,Delivery Schedule
-"The layout is cluttered, yet the prototype was finished quickly.",Negative,Intuitive User Design
-"The buttons are too small,",Negative,Intuitive User Design
-the development took forever.,Negative,Project Management
-"The visual style is modern, but the sprint was not completed on time.",Negative,Delivery Schedule
-"The user experience is smooth,",Positive,Intuitive User Design
-the rollout was punctual.,Neutral,Delivery Schedule
-"The typography is hard to read,",Negative,Intuitive User Design
-the delivery was very fast.,Positive,Delivery Schedule
-the app looks great,Positive,Software Application Quality
-the project timeline slipped badly.,Negative,Project Management
-"The color scheme is ugly,",Negative,Intuitive User Design
-the final build was late.,Negative,Delivery Schedule
-"The animations are fluid, and the milestone was reached on schedule.",Positive,Delivery Schedule
-"The menus are disorganized, but the beta was released on time.",Negative,Intuitive User Design
-"The aesthetics are pleasing,",Positive,Intuitive User Design
-the turnaround time was too slow.,Negative,Delivery Schedule
-"The form is hard to fill out, and the schedule was completely ignored.",Negative,Delivery Schedule
-"The responsive design works well,",Positive,Intuitive User Design
-we finished before the deadline.,Neutral,Delivery Schedule
-"The icons are inconsistent, but the update was shipped fast.",Negative,Intuitive User Design
-"The graphics are high quality, but the due date was missed.",Negative,Product Quality
-"The workflow is frustrating,",Negative,Intuitive User Design
-the project dragged on for months.,Negative,Project Management
+The project management was flawless,Positive,Project Completion
+"Our dedicated manager, Alex, was always on top of things and communication was crystal clear",Positive,Project Management
+"A bit pricey, but worth every penny for the peace of mind.",Negative,Recommendation and Advocacy
+We are extremely disappointed with the technical skills of the junior developers assigned to us,Negative,Development Process
+The code was buggy,Negative,Code Delivery
+required constant oversight from our in-house team.,Negative,Communication Time Issues
+Their support team is incredibly responsive,Positive,Team Quality
+We had a critical issue over the weekend,Neutral,Communication Time Issues
+they had it resolved within two hours,Neutral,Critical Misses
+Truly impressive.,Positive,Recommendation and Advocacy
+The final product was delivered on time,Neutral,Budget and Final Product
+met all our specifications,Neutral,Requirement Clarity
+Solid work from a reliable team.,Neutral,Team Capability
+Billing is a complete mess,Negative,Budget and Final Product
+We were overcharged for hours that were not worked,Negative,Budget and Final Product
+getting it corrected has been a nightmare.,Neutral,Project Completion
+The developers are technically brilliant,Positive,Development Process
+their project manager seems completely overwhelmed,Negative,Project Management
+Deadlines were missed repeatedly due to poor planning.,Negative,Critical Misses
+Good value for the price,Positive,Recommendation and Advocacy
+The quality isn't top-tier,Negative,Years of Great Work
+"for our budget, it's more than acceptable",Negative,Budget and Final Product
+You get what you pay for.,Neutral,Recommendation and Advocacy
+They promised expertise in cloud migration,Neutral,Development Process
+their team was clearly learning on the job,Positive,Team Quality
+The project was delayed by two months,Negative,Project Completion
+went over budget.,Negative,Budget and Final Product
+The platform they provided for tracking progress is intuitive and a huge help,Positive,Partner Relations
+It makes collaboration seamless.,Positive,Team Project Collaboration
+I'm giving three stars because the developers are skilled,Negative,Development Process
+the communication from the management team is severely lacking,Negative,Communication Time Issues
+We often felt in the dark about progress.,Negative,Project Completion
+A fantastic partner for our startup,Positive,Partner Relations
+They understood our vision,Positive,Requirement Clarity
+delivered a high-quality MVP well within our tight deadline.,Positive,Team Capability
+The time zone difference was a much bigger issue than we anticipated,Negative,Communication Time Issues
+Getting timely responses to urgent questions was a constant struggle.,Negative,Critical Misses
+Their QA process needs a serious overhaul,Negative,Contractual Agreement
+We found so many obvious bugs in the final delivery that it felt like it wasn't tested at all.,Negative,Contractual Agreement
+The initial consultation was amazing,Positive,Partner Relations
+They really took the time to understand our business needs before proposing a solution.,Positive,Communication Time Issues
+"While the project was successful, the constant upselling was exhausting",Negative,Project Completion
+Every call felt like a new sales pitch for another service.,Negative,Partner Relations
+"Technically, the work is fine",Neutral,Recommendation and Advocacy
+But their team shows zero proactivity,Negative,Team Quality
+They only do exactly what is asked,Negative,Contractual Agreement
+never suggest improvements.,Negative,Recommendation and Advocacy
+We've been working with them for over two years now,Positive,Years of Great Work
+they've become an indispensable part of our team,Positive,Team Capability
+Highly recommend.,Positive,Recommendation and Advocacy
+"The lead developer we worked with, Maria, was a rockstar",Positive,Development Process
+Her expertise in AI was a game-changer for our project.,Positive,Industry Expertise
+The cost savings are significant,Positive,Scalable Cost Architecture
+be prepared to invest a lot of your own time in managing the project,Positive,Project Management
+clarifying requirements.,Neutral,Requirement Clarity
+They completely missed the deadline for our critical launch,Negative,Critical Misses
+the communication leading up to the failure was poor,Negative,Critical Misses
+We can't trust them again.,Negative,Requirement Clarity
+Their ability to scale the team up or down based on our needs has been incredibly valuable for our fluctuating workload.,Neutral,Team Capability
+The code quality is excellent,Positive,Code Delivery
+"It's clean, well-documented",Positive,Years of Great Work
+follows best practices,Neutral,Team Project Collaboration
+Our internal team was very impressed.,Positive,Team Capability
+Customer support is friendly,Positive,Partner Relations
+they don't seem empowered to solve problems,Negative,Future Maintenance Challenges
+"Every issue has to be escalated, causing delays.",Negative,Communication Time Issues
+The project was a disaster from start to finish,Negative,Project Completion
+"Poor communication, missed deadlines, and a buggy final product.",Negative,Critical Misses
+Their pricing is transparent and fair,Positive,Recommendation and Advocacy
+"No hidden fees or surprises, which we really appreciate.",Negative,Code Delivery
+The team is eager and hardworking,Positive,Team Capability
+lacks the senior-level experience we needed for a complex architectural project.,Negative,Critical Misses
+They did a great job on the UI/UX design,Positive,Partner Relations
+The app they delivered is beautiful and a pleasure to use.,Positive,Partner Relations
+It feels like we're working with a black box,Negative,Team Project Collaboration
+We send requirements,Neutral,Requirement Clarity
+code comes back,Neutral,Code Delivery
+there's no collaboration or discussion.,Negative,Future Maintenance Challenges
+"For basic website maintenance, they are a cost-effective and reliable choice",Neutral,Scalable Cost Architecture
+No complaints.,Negative,Recommendation and Advocacy
+They assigned a new project manager halfway through,Neutral,Project Management
+the transition was chaotic,Negative,Project Completion
+It completely derailed our progress.,Negative,Project Completion
+The security audit they performed on our application was incredibly thorough,Positive,Contractual Agreement
+identified several critical vulnerabilities,Neutral,Critical Misses
+Great work.,Negative,Recommendation and Advocacy
+Their English proficiency was a barrier,Negative,Critical Misses
+"Technical details were often lost in translation, leading to rework.",Negative,Critical Misses
+A truly agile team,Positive,Team Capability
+They adapted to our changing requirements without any fuss,Neutral,Requirement Clarity
+delivered great results.,Positive,Recommendation and Advocacy
+The project started strong,Positive,Project Completion
+lost momentum,Negative,Team Quality
+It feels like our project was de-prioritized in favor of other clients.,Negative,Project Completion
+We were promised a team of senior developers,Neutral,Development Process
+the code we received suggests otherwise,Neutral,Code Delivery
+Very disappointed in the bait-and-switch.,Negative,Requirement Clarity
+The onboarding process was seamless,Positive,Project Completion
+We were up,Positive,Requirement Clarity
+running with our new team in less than a week.,Neutral,Team Capability
+Their expertise in legacy system modernization saved us from a complete rewrite,Positive,Industry Expertise
+They know their stuff.,Positive,Industry Expertise
+The contract negotiation was painful and rigid,Negative,Contractual Agreement
+They were not willing to accommodate any of our standard clauses.,Negative,Requirement Clarity
+I'm impressed by their commitment to quality,Positive,Years of Great Work
+They have a rigorous code review and testing process that caught issues early.,Positive,Contractual Agreement
+They are great at execution,Positive,Years of Great Work
+lack strategic input,Negative,Team Quality
+"We were hoping for a partner, not just a team of coders.",Negative,Development Process
+The project was a huge success,Positive,Project Completion
+delivered under budget,Neutral,Budget and Final Product
+Management is very happy,Positive,Project Management
+We will be using them for future projects.,Neutral,Partner Relations
+Turnover on their team is high,Neutral,Team Quality
+"We've had three different lead developers in six months, which has been disruptive.",Negative,Development Process
+Their documentation is top-notch,Positive,Scalable Cost Architecture
+It makes handing over the project to our internal team so much easier.,Negative,Team Project Collaboration
+The initial estimates were way off,Negative,Requirement Clarity
+The project ended up costing nearly double what was quoted.,Neutral,Project Completion
+"They are very process-oriented, which brings a level of predictability and stability that we appreciate.",Positive,Scalable Cost Architecture
+The team seems burnt out,Negative,Team Quality
+The quality of work and communication has noticeably declined over the past few months.,Negative,Critical Misses
+An excellent choice for staff augmentation,Positive,Team Capability
+The developers they provided integrated perfectly with our existing team.,Positive,Development Process
+Their legal and compliance team was a nightmare to work with,Negative,Communication Time Issues
+It slowed down the project start by over a month.,Negative,Critical Misses
+They went above and beyond to help us meet a critical investor deadline,Positive,Project Completion
+We couldn't have done it without them.,Negative,Requirement Clarity
+The user acceptance testing phase was a mess,Negative,Contractual Agreement
+The product was nowhere near ready for us to review.,Negative,Future Maintenance Challenges
+Their understanding of our industry's specific regulations was a huge asset,Positive,Industry Expertise
+It saved us a lot of time and potential legal issues.,Positive,Communication Time Issues
+The project manager is a great communicator,Positive,Project Management
+lacks the technical depth to understand the challenges our project faced.,Negative,Critical Misses
+They delivered the project,Neutral,Project Completion
+the architecture is not scalable,Negative,Scalable Cost Architecture
+We're already facing issues as our user base grows.,Negative,Contractual Agreement
+The daily stand-up meetings are efficient,Neutral,Team Project Collaboration
+keep everyone aligned,Negative,Team Project Collaboration
+Great project management practice.,Negative,Project Management
+We had to pull the plug halfway through,Negative,Requirement Clarity
+The team was just not capable of delivering on their promises.,Negative,Team Quality
+Their design team is fantastic,Positive,Partner Relations
+They took our vague ideas,Negative,Requirement Clarity
+turned them into a stunning and functional interface.,Positive,Partner Relations
+The reporting they provide is vague and not very useful,Negative,Contractual Agreement
+We have little visibility into the actual work being done.,Negative,Future Maintenance Challenges
+"They are a reliable, no-frills outsourcing partner",Positive,Partner Relations
+"They do the job as specified, on time, and on budget.",Neutral,Years of Great Work
+We experienced significant data loss during the migration they handled,Neutral,Critical Misses
+A catastrophic failure.,Negative,Project Completion
+Their proactive suggestions for improving our app's performance have been incredibly valuable.,Positive,Partner Relations
+The support ticketing system they use is clunky and outdated,Negative,Contractual Agreement
+It's frustrating to submit and track issues.,Negative,Future Maintenance Challenges
+We've seen a massive improvement in our development velocity since partnering with them.,Positive,Partner Relations
+The final invoice included charges for software licenses we were told were included,Neutral,Budget and Final Product
+Felt dishonest.,Negative,Requirement Clarity
+Their expertise in DevOps has streamlined our entire release process,Neutral,Development Process
+We're deploying code faster and more reliably than ever.,Positive,Contractual Agreement
+They are very rigid in their interpretation of the scope,Negative,Scalable Cost Architecture
+Any minor change requires a new contract and lengthy negotiation.,Neutral,Contractual Agreement
+The team is friendly,Positive,Team Capability
+"has a great attitude, which makes working with them a pleasure.",Positive,Years of Great Work
+"The project failed to meet basic accessibility standards, which is a major compliance issue for us.",Negative,Project Completion
+They have a deep pool of talent to draw from,Positive,Team Capability
+"When we needed a specialist in a niche technology, they had someone ready.",Neutral,Industry Expertise
+Communication is sporadic,Neutral,Communication Time Issues
+"We sometimes go days without hearing anything, even when deadlines are approaching.",Negative,Communication Time Issues
+The quality of their work is consistently high,Positive,Years of Great Work
+We can always trust that what they deliver will be solid.,Positive,Years of Great Work
+They were acquired by another company mid-project,Negative,Project Completion
+the resulting chaos completely derailed our timeline.,Negative,Project Completion
+Their commitment to our success feels genuine,Positive,Years of Great Work
+"They act like true partners, not just vendors.",Positive,Partner Relations
+The time tracking is not transparent,Negative,Communication Time Issues
+We have no way of verifying the hours they are billing us for.,Negative,Budget and Final Product
+They were able to salvage a failing project that another vendor had botched,Negative,Project Completion
+They are lifesavers.,Positive,Years of Great Work
+The code is a tangled mess of spaghetti,Negative,Code Delivery
+It works,Positive,Recommendation and Advocacy
+it will be impossible to maintain.,Negative,Future Maintenance Challenges
+Their CEO was personally involved in ensuring our project was a success,Positive,Project Completion
+That level of commitment is rare.,Neutral,Years of Great Work
+They are slow to adopt new technologies,Negative,Future Maintenance Challenges
+It feels like we are paying for solutions that are already becoming outdated.,Negative,Contractual Agreement
+The handoff at the end of the project was seamless,Positive,Project Completion
+They provided excellent documentation and training for our team.,Positive,Team Capability
+We had a major security breach that was traced back to a vulnerability in the code they wrote,Negative,Critical Misses
+Unacceptable.,Negative,Requirement Clarity
+They are great at what they do,Positive,Years of Great Work
+they are not cheap,Negative,Recommendation and Advocacy
+You are paying a premium for their quality.,Neutral,Recommendation and Advocacy
+The project manager is too passive,Negative,Project Management
+They don't push back on bad ideas,Negative,Future Maintenance Challenges
+manage expectations effectively.,Neutral,Team Project Collaboration
+They consistently deliver high-quality work ahead of schedule,Positive,Years of Great Work
+We couldn't be happier.,Negative,Requirement Clarity
+"The language barrier was a significant issue, leading to frequent misunderstandings and rework.",Negative,Critical Misses
+Their flexibility in adapting to our internal tools and processes was a huge help.,Positive,Industry Expertise
+We were sold a dream during the sales process that the delivery team simply could not execute on.,Negative,Team Quality
+Their deep expertise in the fintech domain was evident,Positive,Industry Expertise
+They understood our challenges without needing much explanation.,Neutral,Requirement Clarity
+The team is spread too thin across too many projects,Negative,Team Project Collaboration
+We never felt like we had their full attention.,Negative,Requirement Clarity
+"The solution they built is robust, scalable",Positive,Scalable Cost Architecture
+has had zero downtime since launch,Negative,Critical Misses
+Excellent engineering.,Positive,Development Process
+The contract is very one-sided,Positive,Contractual Agreement
+offers us little protection if things go wrong,Negative,Contractual Agreement
+We had to walk away.,Negative,Requirement Clarity
+They provide detailed weekly reports that give us full visibility into progress and potential blockers.,Neutral,Contractual Agreement
+They are just a body shop,Negative,Years of Great Work
+There's no innovation or thought leadership,Negative,Future Maintenance Challenges
+You have to provide all the direction.,Positive,Requirement Clarity
+The team's positive attitude,Positive,Team Capability
+can-do spirit are infectious,Positive,Years of Great Work
+It's a pleasure to work with them.,Positive,Years of Great Work
+"They missed a critical security requirement in the specifications, which could have had severe consequences.",Negative,Critical Misses
+Their ability to quickly build,Positive,Team Capability
+deploy a proof-of-concept was instrumental in getting stakeholder buy-in.,Neutral,Project Completion
+The project manager is a bottleneck,Negative,Project Management
+"All communication has to go through them, which slows everything down.",Negative,Communication Time Issues
+We've been with them for years,Positive,Years of Great Work
+consider them a long-term strategic partner.,Neutral,Partner Relations
+The code they delivered was not optimized at all,Negative,Code Delivery
+It was slow and resource-intensive.,Negative,Critical Misses
+Their QA testers are incredibly thorough,Positive,Contractual Agreement
+They find bugs that our own team misses.,Negative,Team Quality
+"They seem to have a high rate of employee attrition, leading to a lack of continuity on our project.",Negative,Years of Great Work
+The project was a textbook example of how outsourcing should work,Neutral,Project Completion
+"Great communication, on-time delivery, and high-quality results.",Negative,Scalable Cost Architecture
+Their initial discovery phase was a bit slow,Negative,Communication Time Issues
+it paid off in the long run by ensuring there were no surprises later.,Positive,Budget and Final Product
+They are very resistant to feedback,Positive,Recommendation and Advocacy
+get defensive when we point out issues in their work.,Negative,Team Quality
+The mobile app they developed has received rave reviews from our users,Positive,Partner Relations
+It's a huge success.,Positive,Project Completion
+The project felt disorganized and chaotic from day one,Negative,Project Completion
+There was no clear plan or direction.,Negative,Requirement Clarity
+Their expertise in UI/UX has dramatically improved the usability of our product.,Positive,Partner Relations
+"The time zone overlap is only a few hours, which makes real-time collaboration very difficult.",Negative,Communication Time Issues
+They are a very professional,Positive,Years of Great Work
+well-run organization,Positive,Team Project Collaboration
+We have been impressed at every stage.,Positive,Team Capability
+The final product was functional,Neutral,Budget and Final Product
+lacked the polish and attention to detail we were expecting.,Negative,Requirement Clarity
+Their ability to integrate with our complex legacy systems was impressive.,Positive,Industry Expertise
+We had to micromanage every aspect of the project,Negative,Project Completion
+It ended up taking more of our time than if we had done it ourselves.,Negative,Requirement Clarity
+"The project was delivered on time, on budget",Neutral,Budget and Final Product
+exceeded our expectations,Positive,Requirement Clarity
+An absolute home run.,Negative,Team Capability
+The developers are good,Positive,Development Process
+"the project management tools they use are terrible, making it hard to track progress.",Negative,Project Management
+They have a very strong company culture that emphasizes quality and client satisfaction,Positive,Partner Relations
+it shows.,Neutral,Recommendation and Advocacy
+They are very secretive about their development process,Positive,Development Process
+We have no visibility into the code until it's delivered.,Negative,Code Delivery
+Their post-launch support has been excellent,Positive,Partner Relations
+They are quick to address any bugs or issues that come up.,Positive,Contractual Agreement
+The sales team overpromised on the team's capabilities,Negative,Team Quality
+The developers we got were not as experienced as we were led to believe.,Negative,Development Process
+They are a great partner for augmenting our internal team with specific skill sets we lack.,Positive,Team Capability
+The project was constantly blocked waiting for decisions or approvals from their side.,Negative,Project Completion
+They are incredibly organized and efficient,Positive,Scalable Cost Architecture
+The project ran like a well-oiled machine.,Neutral,Project Completion
+The code is not self-explanatory,Negative,Code Delivery
+"lacks comments, which will make future maintenance difficult.",Negative,Future Maintenance Challenges
+Their ability to understand our complex business logic,Neutral,Industry Expertise
+translate it into a functional application was outstanding.,Neutral,Industry Expertise
+"They are very inflexible with their work hours, which makes it hard to schedule meetings.",Negative,Communication Time Issues
+The team is passionate about their work,Positive,Team Capability
+genuinely invested in our project's success.,Positive,Project Completion
+They delivered a product that technically works,Positive,Recommendation and Advocacy
+completely missed the mark on user experience.,Negative,Partner Relations
+Their knowledge of cybersecurity best practices is impressive,Positive,Industry Expertise
+We feel our application is in safe hands.,Positive,Contractual Agreement
+The project manager is great at shielding the team from distractions,Positive,Project Management
+it also means we have limited direct access to the developers.,Negative,Development Process
+They have a very structured and transparent development process,Positive,Development Process
+We always know what's going on.,Positive,Contractual Agreement
+The team seems to lack a sense of ownership,Negative,Team Quality
+They are just completing tasks without thinking about the bigger picture.,Negative,Future Maintenance Challenges
+They were able to turn our vague requirements into a detailed technical specification that was spot on.,Positive,Requirement Clarity
+The project was a constant struggle due to cultural differences and communication styles.,Negative,Project Completion
+"They provide a dedicated QA engineer for the project, which has significantly improved the quality of the deliverables.",Neutral,Industry Expertise
+The team is not very good at estimating effort,Negative,Team Quality
+Their timelines are consistently underestimated.,Neutral,Team Quality
+"They are a true partner, not just a vendor",Positive,Partner Relations
+They are always looking for ways to add value beyond the contract.,Positive,Contractual Agreement
+The code is poorly structured,Negative,Code Delivery
+will be difficult to refactor in the future.,Negative,Future Maintenance Challenges
+Their design mockups were beautiful,Positive,Partner Relations
+the final product didn't quite capture the same level of polish.,Negative,Budget and Final Product
+They have a very strong grasp of agile methodologies,Positive,Scalable Cost Architecture
+run sprints very effectively.,Positive,Team Capability
+The team is very junior,Positive,Team Capability
+requires a lot of hand-holding from our senior engineers.,Negative,Development Process
+Their ability to deliver a complex feature under a tight deadline was nothing short of heroic.,Negative,Communication Time Issues
+"The project manager is not very organized, leading to missed details and confusion.",Negative,Project Management
+They have a very collaborative and open communication style,Positive,Partner Relations
+We feel like we are part of the same team.,Negative,Team Capability
+The final product is not very intuitive,Negative,Budget and Final Product
+We are getting a lot of support tickets from confused users.,Negative,Contractual Agreement
+Their expertise in data analytics has helped us unlock valuable insights from our data.,Neutral,Industry Expertise
+"They are very slow to respond to emails and messages, which can be frustrating.",Negative,Communication Time Issues
+They are a very reliable and trustworthy partner,Positive,Partner Relations
+We have been working with them for over  years.,Positive,Years of Great Work
+The project was a technical success but a commercial failure because they didn't understand our users.,Negative,Project Completion
+"Their ability to provide end-to-end services, from design to deployment and maintenance, is a huge advantage.",Neutral,Scalable Cost Architecture
+"They are very resistant to using our internal project management tools, which creates friction.",Positive,Project Management
+The team is incredibly smart and talented,Positive,Team Capability
+They are always coming up with innovative solutions to our problems.,Positive,Contractual Agreement
+"The project manager is a bit of a micromanager, which can be frustrating for our team.",Negative,Project Management
+They have a very strong focus on user experience,Positive,Partner Relations
+it shows in the quality of their work.,Positive,Years of Great Work
+The team seems to be juggling too many projects at once,Negative,Team Project Collaboration
+the quality of their work on our project has suffered.,Negative,Project Completion
+They are a great partner for rapid prototyping,Positive,Partner Relations
+building MVPs.,Positive,Team Capability
+The project was a constant source of stress and frustration,Negative,Project Completion
+I would not recommend them.,Negative,Recommendation and Advocacy
+Their ability to adapt to our changing priorities has been a huge asset.,Positive,Team Capability
+The team is not very proactive about identifying potential risks or issues.,Negative,Team Quality
+They have a very strong engineering culture that values clean code and good design.,Positive,Partner Relations
+"The project manager is not very good at communicating bad news, which leads to surprises.",Negative,Project Management
+They are a true pleasure to work with,Positive,Years of Great Work
+"Professional, friendly",Positive,Years of Great Work
+talented.,Positive,Recommendation and Advocacy
+"The final product is not very well-documented, which will make it hard for us to maintain.",Negative,Future Maintenance Challenges
+Their expertise in our niche industry is a huge advantage,Positive,Industry Expertise
+They get it.,Negative,Contractual Agreement
+The team is not very good at following our coding standards.,Negative,Team Quality
+"They are a great partner for long-term, complex projects.",Positive,Partner Relations
+The project was a complete mess,Negative,Project Completion
+I would give them zero stars if I could.,Neutral,Recommendation and Advocacy
+Their ability to work independently and with minimal supervision is a huge plus.,Positive,Team Capability
+The team is not very good at providing regular status updates.,Negative,Team Quality
+They are a great partner for companies that need to scale their development team quickly.,Positive,Partner Relations
+The project was a huge waste of time and money,Negative,Project Completion
+I would never work with them again.,Negative,Recommendation and Advocacy
+"Their ability to provide a full-service team, including developers, QA, and a project manager, is very convenient.",Positive,Team Capability
+The team is not very good at taking feedback.,Negative,Team Quality
+They are a great partner for companies that need to build a high-quality product from scratch.,Positive,Partner Relations
+The project was a complete disaster,Negative,Project Completion
+I would not recommend them to my worst enemy.,Negative,Recommendation and Advocacy
+Their ability to provide a dedicated team that feels like an extension of our own is a huge advantage.,Positive,Team Capability
+The team is not very good at communicating their progress.,Negative,Team Quality
+They are a great partner for companies that need to modernize their legacy systems.,Positive,Partner Relations
+The project was a complete failure,Negative,Project Completion
+I would not recommend them to anyone.,Negative,Recommendation and Advocacy
+Their ability to provide a cost-effective solution without sacrificing quality is a huge plus.,Positive,Scalable Cost Architecture
+The team is not very good at meeting deadlines.,Negative,Team Quality
+"They are a great partner for companies that need to build a complex, enterprise-grade application.",Positive,Partner Relations
+The project was a complete and utter nightmare,Negative,Project Completion
+I would not wish this experience on anyone.,Negative,Recommendation and Advocacy
+Their ability to provide a flexible and scalable team that can grow with our needs is a huge plus.,Positive,Team Capability
+The team is not very good at providing clear and concise documentation.,Negative,Team Quality
+They are a great partner for companies that need to build a beautiful and intuitive user interface.,Positive,Partner Relations
+The project was a complete and utter failure,Negative,Project Completion
+I would not recommend them to anyone.,Negative,Recommendation and Advocacy
