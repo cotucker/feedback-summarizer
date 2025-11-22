@@ -84,7 +84,7 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
     model = SentenceTransformer('all-MiniLM-L12-v2')
     EMBEDDINGS = model.encode(texts_list, device=DEVICE)
     umap_model = UMAP(
-        n_components=25,
+        n_components=12,
         min_dist=0.1,
         metric='cosine',
         random_state=67
