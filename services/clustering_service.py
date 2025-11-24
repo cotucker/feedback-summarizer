@@ -13,7 +13,6 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from services.nlp_service import predict_sentiment, extract_cluster_keywords, process_text
 from services.llm_service import filter_topics
-from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
 import os
 import math
@@ -33,13 +32,6 @@ def spectral_clustering(num_clusters: int):
     if num_clusters < 2:
         print("Silhouette Score not calculated: num_clusters must be >= 2.")
         return score
-    # clustering = SpectralClustering(
-    #         n_clusters=num_clusters,
-    #         assign_labels='discretize',
-    #         gamma=1.0,
-    #         affinity='rbf',
-    #         n_jobs=1,
-    #         random_state=67).fit(REDUCED_EMBEDDINGS)
     clustering = AgglomerativeClustering(
             n_clusters=num_clusters,
             linkage = 'ward').fit(REDUCED_EMBEDDINGS)
@@ -168,7 +160,6 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
         })
         sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = cluster_names[i]))
 
-    create_dataset_from_sentiment_response_list(sentiments_list)
     return phrase_clusters, sentiments_list, clustering_info
 
 if __name__ == "__main__":

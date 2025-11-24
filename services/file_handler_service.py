@@ -3,11 +3,13 @@ from fastapi import HTTPException
 import pandas as pd
 import io
 
+POCESSED_DATAFRAME: pd.DataFrame = pd.DataFrame()
+
 def get_dataset_from_file_path(file_path: str) -> pd.DataFrame:
     df = pd.read_csv(file_path)
     return df
 
-async def get_dataset_from_file(file: UploadFile, process_columns, get_separator, topics: str = '') -> pd.DataFrame:
+async def get_dataset_from_file(file: UploadFile, process_columns, get_separator, topics: str = ''):
 
     if file.filename is None:
         raise HTTPException(status_code=400, detail="No filename provided for the uploaded file.")
@@ -59,7 +61,9 @@ async def get_dataset_from_file(file: UploadFile, process_columns, get_separator
 
     if df.shape[0] < 30:
         raise HTTPException(status_code=400, detail="t-SNE algorithm requires at least 30 data points")
-    return df
+
+    global POCESSED_DATAFRAME
+    POCESSED_DATAFRAME = df.copy()
 
 def create_dataset_from_sentiment_response_list(sentiments_list) -> pd.DataFrame:
     df = pd.DataFrame({
@@ -71,7 +75,7 @@ def create_dataset_from_sentiment_response_list(sentiments_list) -> pd.DataFrame
     return df
 
 def get_feedback_list() -> list[str]:
-    df = pd.read_csv('data/dataset.csv')
+    df = POCESSED_DATAFRAME
     return df["Text"].dropna().apply(process_text).values.tolist()
 
 def process_text(text) -> str:

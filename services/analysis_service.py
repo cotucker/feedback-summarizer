@@ -1,4 +1,3 @@
-import pandas as pd
 from sklearn.metrics import accuracy_score
 from fastapi.datastructures import UploadFile
 from services.clustering_service import cluster_texts
@@ -11,9 +10,8 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(name)s:%(message
 logger = logging.getLogger(__name__)
 
 async def analysis(file: UploadFile, topics: str = ''):
-    df = await get_dataset_from_file(file, process_columnes_names, get_separator, topics)
+    await get_dataset_from_file(file, process_columnes_names, get_separator, topics)
     logger.info("Dataset loaded and preprocessed.")
-    await asyncio.to_thread(df.to_csv, "data/dataset.csv", index=False)
     analysis: dict = {}
     analysis['filename'] = file.filename
     logger.info("Starting feedback list analysis.")

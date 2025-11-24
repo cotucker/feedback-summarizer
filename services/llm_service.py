@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from fastapi import HTTPException
 import spacy
 from textblob import TextBlob
-from services.file_handler_service import create_dataset_from_sentiment_response_list, get_feedback_list, get_feedback_analysis_by_topic
+from services.file_handler_service import get_feedback_list, get_feedback_analysis_by_topic
 from services.text_chunking_service import feedback_chunking
 
 load_dotenv()
