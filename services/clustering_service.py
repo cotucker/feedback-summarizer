@@ -103,7 +103,6 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
         complexity_bonus = math.log(ch) + math.log(n_clusters, 2)
         score = math.log(ch)
         silhouette_scores.append(score)
-        print(f"For n_clusters = {n_clusters}, the average silhouette_score is : {score}")
 
         if score > max_silhouette_score:
             max_silhouette_score = score
@@ -112,8 +111,6 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
             min_silhouette_score = score
             worst_n_clusters = n_clusters
 
-    print(f"\nMaximum Silhouette Score: {max_silhouette_score:.4f} for n_clusters = {best_n_clusters}")
-    print(f"Minimum Silhouette Score: {min_silhouette_score:.4f} for n_clusters = {worst_n_clusters}")
     tuple = sorted((best_n_clusters, worst_n_clusters))
 
     global BEST_N, START, END

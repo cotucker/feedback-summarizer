@@ -45,4 +45,5 @@ async def analysis(file: UploadFile, topics: str = ''):
             counts[key] += 1
 
     analysis["sentiment"] = counts
+    logger.info("Analysis completed.")
     return analysis
