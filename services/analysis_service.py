@@ -2,7 +2,7 @@ from sklearn.metrics import accuracy_score
 from fastapi.datastructures import UploadFile
 from services.clustering_service import cluster_texts
 from services.file_handler_service import get_dataset_from_file, get_feedbacks_info
-from services.llm_service import feedback_list_analysis, topics_analysis, get_total_summary, process_columnes_names, get_separator
+from services.llm_service import feedback_list_analysis, topics_analysis, get_total_summary, get_processed_columns, get_separator
 import logging
 import asyncio
 
@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(name)s:%(message
 logger = logging.getLogger(__name__)
 
 async def analysis(file: UploadFile, topics: str = ''):
-    await get_dataset_from_file(file, process_columnes_names, get_separator, topics)
+    await get_dataset_from_file(file, get_processed_columns, get_separator, topics)
     logger.info("Dataset loaded and preprocessed.")
     analysis: dict = {}
     analysis['filename'] = file.filename

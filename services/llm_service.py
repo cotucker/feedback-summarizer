@@ -588,6 +588,51 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     selected_columns: list[str] = typing.cast(list[str], response.parsed)
     return selected_columns
 
+def process_columnes_names_cerebras(list_of_column_names: list[str]) -> list[str]:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {"role": "system", "content": """
+                You are an expert Data Schema Analyst. Your task is to analyze a given list of column headers from a CSV file and identify which columns contain user feedback text and a numerical user score, respectively.
+                **OBJECTIVE:**
+                Based on the provided list of column names, identify the single best candidate for the "Feedback Text" column and the single best candidate for the "Numerical Score" column. Your response MUST be a single, valid JSON array containing exactly two elements in the specified order: `["<FEEDBACK_COLUMN_NAME>", "<SCORE_COLUMN_NAME>"]`.
+                **RULES:**
+                1.  **Feedback Text Column:** This column should contain the main body of the user's review or comment. Common names include `review`, `text`, `comment`, `feedback`, `описание`, `отзыв`. It must be the primary text column, not an ID, title, or summary.
+                2.  **Numerical Score Column:** This column should contain a numerical rating provided by the user (e.g., 1-5, 1-10). Common names include `rating`, `score`, `stars`, `оценка`, `рейтинг`.
+                3.  **Case-Insensitive Analysis:** Analyze the column names in a case-insensitive manner, but you MUST return the original, exact names as they appeared in the input list.
+                4.  **Handling Missing Columns:** If you cannot find a suitable candidate for one of the columns, skip it.
+                ---
+                **EXAMPLES (for reference):**
+                **Input:** `["Review Text", "Date", "Rating", "User_ID"]`
+                **Expected Output:**
+                ```json
+                ["Review Text", "Rating"]
+                ```
+                """},
+            {"role": "user", "content": f"""
+                **INPUT DATA:**
+                - **COLUMN_NAMES:** `{list_of_column_names}`
+                """},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "list_str_schema",
+                "strict": True,
+                "schema": LIST_STR_SCHEMA
+            }
+        }
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    return response_json['items']
+
+def get_processed_columns(list_of_column_names: list[str]) -> list[str]:
+    try:
+        return process_columnes_names(list_of_column_names)
+    except Exception as e:
+        return process_columnes_names_cerebras(list_of_column_names)
+
 if __name__ == "__main__":
-   a = generate_topics_list_cerebras("performance, speed, bugs, cost, pricing, value for money, customer support, service quality")
+   a = process_columnes_names_cerebras(['Review Text', 'Date', 'Rating', 'User_ID'])
    print(a)
