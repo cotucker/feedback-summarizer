@@ -22,6 +22,40 @@ MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
 client_cerebras = Cerebras(api_key=CEREBRAS_API_KEY)
 
+
+def generate_topics_description_cerebras(cluster_names: list[str]) -> list[ClusterDescription]:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {"role": "system", "content": """
+                You are a Senior Business Analyst responsible for interpreting clustered customer feedback for an executive audience.
+                **OBJECTIVE:**
+                Analyze the provided list of `CLUSTER_NAMES`. For each name, generate a concise, business-oriented description that explains what this category represents and, most importantly, how it differs from the other categories in the list. Your goal is to clarify the unique focus of each cluster.
+                **INPUT DATA:**
+                **CRITICAL RULES FOR DESCRIPTIONS:**
+                1.  **Define the Core Theme:** For each cluster, start by explaining the primary topic it covers. What kind of feedback falls into this category?
+                2.  **Highlight the Distinction:** This is the most important rule. Explicitly state what makes this cluster different from others. Focus on the nuances. For example, if you have both "Performance & Speed" and "Product Quality", explain that one is about *efficiency and responsiveness*, while the other is about *reliability, bugs, and craftsmanship*.
+                3.  **Use Business Language:** Write in a clear, strategic tone. Avoid technical jargon. The descriptions should be immediately understandable to a product manager or executive.
+                4.  **Be Concise:** Each description should be 2-3 sentences long.
+                5.  **Strict Output Format:** Your response MUST be a object where keys are the original cluster names and values are their corresponding descriptions. Do not include any other text or explanations.
+                """},
+            {"role": "user", "content": f"- **CLUSTER_NAMES:** {cluster_names}"},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "cluster_description_schema",
+                "strict": True,
+                "schema": CLUSTER_DESCRIPTION_SCHEMA
+            }
+        }
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    raw_list = response_json.get("clusters", [])
+    cluster_descriptions = [ClusterDescription(**item) for item in raw_list]
+    return cluster_descriptions
+
 def generate_topics_description(cluster_names: list[str]) -> list[ClusterDescription]:
     response = client.models.generate_content(
         model=f'{MODEL}',
@@ -54,6 +88,12 @@ def generate_topics_description(cluster_names: list[str]) -> list[ClusterDescrip
     )
     cluster_descriptions: list[ClusterDescription] = typing.cast(list[ClusterDescription], response.parsed)
     return cluster_descriptions
+
+def get_topic_description(cluster_names: list[str]) -> list[ClusterDescription]:
+    try:
+        return generate_topics_description(cluster_names)
+    except Exception as e:
+        return generate_topics_description_cerebras(cluster_names)
 
 def get_cluster_name(cluster_terms: str) -> str:
     response = client.models.generate_content(
@@ -173,7 +213,7 @@ def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
         else:
             topics[sentiment.topic] += 1
 
-    topic_descriptions = generate_topics_description([topic for topic in topics])
+    topic_descriptions = get_topic_description([topic for topic in topics])
 
     return [
         {
@@ -402,3 +442,8 @@ def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
 
 def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
     return [generate_feedback_responce(feedback_info) for feedback_info in feedbacks_info ]
+
+
+if __name__ == "__main__":
+   a =  generate_topics_description_cerebras(["Customer Support", "Pricing and Value", "Performance and Speed", "Product Quality", "User Interface and Experience"])
+   print(a)

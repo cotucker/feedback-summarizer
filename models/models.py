@@ -1,3 +1,4 @@
+import json
 import enum
 from pydantic import BaseModel
 
@@ -42,3 +43,24 @@ class TopicQuality(BaseModel):
 class Subtext(BaseModel):
     text: str
     topic: str
+
+
+CLUSTER_DESCRIPTION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "clusters": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "cluster_name": {"type": "string"},
+                    "description": {"type": "string"}
+                },
+                "required": ["cluster_name", "description"],
+                "additionalProperties": False
+            }
+        }
+    },
+    "required": ["clusters"],
+    "additionalProperties": False
+}
