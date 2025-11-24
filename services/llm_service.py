@@ -175,46 +175,6 @@ def get_cluster_name(cluster_terms: str) -> str:
     except Exception as e:
         return generate_cluster_name_cerebras(cluster_terms)
 
-
-def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str) -> list[Subtext]:
-
-    response = client.models.generate_content(
-        model=f'{MODEL}',
-        contents=[
-            types.Content(
-                role="user",
-                parts=[
-                    types.Part(
-                        text=f"""
-                        You are a meticulous Customer Feedback Analyst. Your primary task is to decompose a user's feedback text into the subtext, self-contained, meaningful chunks. For each chunk, you must identify its specific topic.
-                        **INPUT DATA:**
-                        - **FEEDBACK_TEXT:** "{feedback_text}"
-                        - **EXISTING_TOPICS:** {topics}
-                        **CRITICAL RULES FOR CHUNKING:**
-                        1.  **Decomposition is Key:** Your main goal is to break down the text. A single sentence often contains multiple chunks. Coordinating conjunctions like "and", "but", "while" are strong indicators of a boundary between chunks.
-                        2.  **Chunk = One Idea:** Each chunk must represent a single, distinct event, opinion, or observation.
-                            Each chunk MUST HAVE a subject (what is descriped in the chunk) and everything related to that subject.
-                            -   *Example of a single idea:* "We were overcharged for hours that were not worked."
-                            -   *Example of INVALID chunk:* "and modern."
-                            -   *Example of another single idea:* "getting it corrected has been a nightmare."
-                        3.  **Chunks Must Be Verbatim:** Each chunk you extract MUST be a direct, word-for-word substring of the original `FEEDBACK_TEXT`. Do not rephrase or summarize.
-                        4.  **Topic Assignment:**
-                            -   Assign the most relevant topic from the `EXISTING_TOPICS` list.
-                            -   If no existing topic fits perfectly, create a new, concise topic name (e.g., "Billing Issues", "Support Resolution Process").
-                            -   If a chunk is a general statement without a specific subject (e.g., "I am very unhappy"), assign it to "General Feedback".
-                        """,
-                    ),
-                ],
-            ),
-        ],
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": list[Subtext],
-        },
-    )
-    sentiments: list[Subtext] = typing.cast(list[Subtext], response.parsed)
-    return sentiments
-
 def get_separator(row: str) -> str:
     response = client.models.generate_content(
         model=f'{MODEL}',
@@ -416,6 +376,7 @@ def generate_topics_list(topics_text: str):
     topics_list: list[str] = typing.cast(list[str], response.parsed)
     return topics_list
 
+
 def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     response = client.models.generate_content(
         model=f'{MODEL}',
@@ -454,42 +415,6 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     selected_columns: list[str] = typing.cast(list[str], response.parsed)
     return selected_columns
 
-
-def generate_feedback_responce(feedback_info: str) -> FeedbackResponse:
-    response = client.models.generate_content(
-        model=f'{MODEL}',
-        contents=[
-            types.Content(
-                role="user",
-                parts=[
-                    types.Part(
-                        text="""
-                        You are a highly skilled Customer Support Professional with a talent for crafting empathetic, concise, and effective replies.
-                        Your primary goal is to make the customer feel heard and valued, aiming to de-escalate negative experiences and reinforce positive ones.
-                        Analyze the provided customer feedback and its accompanying rating.
-                        Generate the best possible reply that is tailored to the specific situation.
-                        """,
-                    ),
-                    types.Part(
-                        text=f"""
-                        - feedback text and rating: {feedback_info}
-                        """,
-                    ),
-                ],
-            ),
-        ],
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": FeedbackResponse,
-        },
-    )
-    feedback_responce: FeedbackResponse = typing.cast(FeedbackResponse, response.parsed)
-    return feedback_responce
-
-def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
-    return [generate_feedback_responce(feedback_info) for feedback_info in feedbacks_info ]
-
-
 if __name__ == "__main__":
-   a =  gete_cluster_name("pricing, cost, expensive, affordable, value for money")
+   a =  get_cluster_name("pricing, cost, expensive, affordable, value for money")
    print(a)
