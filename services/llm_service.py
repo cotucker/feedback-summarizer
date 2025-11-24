@@ -55,44 +55,6 @@ def generate_topics_description(cluster_names: list[str]) -> list[ClusterDescrip
     cluster_descriptions: list[ClusterDescription] = typing.cast(list[ClusterDescription], response.parsed)
     return cluster_descriptions
 
-def test_topic_moddeling(cluster_name: str, text: str):
-    response = client.models.generate_content(
-        model='gemini-flash-lite-latest',
-        contents=[
-            types.Content(
-                role="user",
-                parts=[
-                    types.Part(
-                        text=f"""
-                        You are an expert NLP Quality Assurance Analyst. Your task is to perform a strict evaluation to determine if a given `TEXT` is a strong and relevant example of a given `TOPIC_NAME`.
-                        **OBJECTIVE:**
-                        Based on the semantic relevance, evaluate the match between the `TEXT` and the `TOPIC_NAME`. Your analysis must be critical and follow the scoring rules below. Your response MUST be a single, valid JSON object.
-                        **INPUT DATA:**
-                        - **TOPIC_NAME:** "{cluster_name}"
-                        - **TEXT:** "{text}"
-                        **SCORING RULES:**
-                        -   **Score 3 (Strong Match):** The `TEXT` is a perfect and direct example of the `TOPIC_NAME`. The main subject of the text *is* the topic.
-                        -   **Score 2 (Weak Match):** The `TOPIC_NAME` is mentioned or related to the `TEXT`, but it is not the central theme. The text is more about something else, but has a connection.
-                        -   **Score 1 (No Match):** The `TEXT` and the `TOPIC_NAME` are unrelated.
-                        **ADDITIONAL RULES:**
-                        1.  **Be Critical:** If the match is not obvious and direct, lean towards a lower score. Do not try to find loose connections.
-                        2.  **Provide Justification:** You must provide a brief, one-sentence justification for your score, explaining your reasoning.
-                        3.  **Strict Output Format:** Do not include any other text.
-                        """
-
-                    ),
-                ],
-            ),
-        ],
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": TopicQuality,
-        },
-    )
-    quality: TopicQuality = typing.cast(TopicQuality, response.parsed)
-    return quality
-
-
 def get_cluster_name(cluster_terms: str) -> str:
     response = client.models.generate_content(
         model='gemini-2.5-flash-lite',
