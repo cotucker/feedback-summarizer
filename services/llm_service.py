@@ -31,7 +31,6 @@ def generate_topics_description_cerebras(cluster_names: list[str]) -> list[Clust
                 You are a Senior Business Analyst responsible for interpreting clustered customer feedback for an executive audience.
                 **OBJECTIVE:**
                 Analyze the provided list of `CLUSTER_NAMES`. For each name, generate a concise, business-oriented description that explains what this category represents and, most importantly, how it differs from the other categories in the list. Your goal is to clarify the unique focus of each cluster.
-                **INPUT DATA:**
                 **CRITICAL RULES FOR DESCRIPTIONS:**
                 1.  **Define the Core Theme:** For each cluster, start by explaining the primary topic it covers. What kind of feedback falls into this category?
                 2.  **Highlight the Distinction:** This is the most important rule. Explicitly state what makes this cluster different from others. Focus on the nuances. For example, if you have both "Performance & Speed" and "Product Quality", explain that one is about *efficiency and responsiveness*, while the other is about *reliability, bugs, and craftsmanship*.
@@ -39,7 +38,10 @@ def generate_topics_description_cerebras(cluster_names: list[str]) -> list[Clust
                 4.  **Be Concise:** Each description should be 2-3 sentences long.
                 5.  **Strict Output Format:** Your response MUST be a object where keys are the original cluster names and values are their corresponding descriptions. Do not include any other text or explanations.
                 """},
-            {"role": "user", "content": f"- **CLUSTER_NAMES:** {cluster_names}"},
+            {"role": "user", "content": f"""
+                INPUT DATA:
+                - **CLUSTER_NAMES:** {cluster_names}
+                """},
         ],
         response_format={
             "type": "json_schema",
@@ -95,7 +97,9 @@ def get_topic_description(cluster_names: list[str]) -> list[ClusterDescription]:
     except Exception as e:
         return generate_topics_description_cerebras(cluster_names)
 
-def get_cluster_name(cluster_terms: str) -> str:
+
+
+def generate_cluster_name(cluster_terms: str) -> str:
     response = client.models.generate_content(
         model='gemini-2.5-flash-lite',
         contents=[
@@ -129,6 +133,48 @@ def get_cluster_name(cluster_terms: str) -> str:
     )
     cluster_name: ClusterName = typing.cast(ClusterName, response.parsed)
     return cluster_name.name
+
+def generate_cluster_name_cerebras(cluster_terms: str) -> str:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {"role": "system", "content": """
+                You are an expert Data Analyst and Taxonomist. Your task is to analyze a list of keywords with clustery specificity score representing a cluster of customer feedback and generate a single, concise, and descriptive name for that cluster.
+                OBJECTIVE:
+                Based on the provided list of `CLUSTER_KEYWORDS`, synthesize them into a clear, high-level topic name that accurately represents the central theme of the cluster.
+                **RULES FOR NAMING:**
+                1.  **Be Abstract and High-Level:** The name should be a general category, not just a repetition of the keywords. Think about the underlying concept that connects these words.
+                2.  **Use Business Language:** The name must be professional, clear, and easily understandable by a business audience (e.g., "Project Management", "Technical Competence", "Pricing and Value").
+                3.  **Be Concise:** The name should be short, ideally 2-4 words long.
+                4.  **Format:** Use Title Case (e.g., "Customer Support Experience").
+                5.  **Strict Output Format:** Your response MUST ONLY be the generated cluster name. Do not include any explanation, introductory text like "The cluster name is:", or any quotation marks.
+                6.  **DO MUST NOT  return empty string.** You must return something.
+                """},
+            {"role": "user", "content": f"""
+                INPUT DATA:
+                - CLUSTER_KEYWORDS: "{cluster_terms}
+                """},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "cluster_name_schema",
+                "strict": True,
+                "schema": CLUSTER_NAME_SCHEMA
+            }
+        }
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    return response_json['name']
+
+
+def get_cluster_name(cluster_terms: str) -> str:
+    try:
+        return generate_cluster_name(cluster_terms)
+    except Exception as e:
+        return generate_cluster_name_cerebras(cluster_terms)
+
 
 def generate_single_sentiments_feedback_analysis(feedback_text: str, topics: str) -> list[Subtext]:
 
@@ -445,5 +491,5 @@ def feedback_responces(feedbacks_info: list[str]) -> list[FeedbackResponse]:
 
 
 if __name__ == "__main__":
-   a =  generate_topics_description_cerebras(["Customer Support", "Pricing and Value", "Performance and Speed", "Product Quality", "User Interface and Experience"])
+   a =  gete_cluster_name("pricing, cost, expensive, affordable, value for money")
    print(a)

@@ -64,3 +64,19 @@ CLUSTER_DESCRIPTION_SCHEMA = {
     "required": ["clusters"],
     "additionalProperties": False
 }
+
+CLUSTER_NAME_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "A short, concise title for the cluster (2-4 words)."
+        },
+        "description": {
+            "type": "string",
+            "description": "A brief explanation of what this cluster represents."
+        }
+    },
+    "required": ["name", "description"],
+    "additionalProperties": False
+}
