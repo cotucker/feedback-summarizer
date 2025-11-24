@@ -1,5 +1,6 @@
 from google import genai
 from google.genai import types
+from cerebras.cloud.sdk import Cerebras
 import os
 import enum
 from dotenv import load_dotenv
@@ -16,8 +17,10 @@ from services.text_chunking_service import feedback_chunking
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+CEREBRAS_API_KEY = os.getenv('CEREBRAS_API_KEY')
 MODEL = os.getenv('MODEL')
 client = genai.Client(api_key=GEMINI_API_KEY)
+client_cerebras = Cerebras(api_key=CEREBRAS_API_KEY)
 
 def generate_topics_description(cluster_names: list[str]) -> list[ClusterDescription]:
     response = client.models.generate_content(

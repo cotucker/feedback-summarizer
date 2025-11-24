@@ -14,12 +14,17 @@ const apiClient = axios.create({
  * @param {AbortSignal} [signal] Optional AbortSignal to cancel the request.
  * @returns {Promise<any>} A promise that resolves to the analysis results object.
  */
-export const uploadAndAnalyzeCsv = async (file, topics, onUploadProgress, signal) => {
+export const uploadAndAnalyzeCsv = async (
+  file,
+  topics,
+  onUploadProgress,
+  signal,
+) => {
   const formData = new FormData();
   formData.append("file", file);
 
   // Формируем URL с параметрами
-  let url = "/api/feedback/analyze/";
+  let url = "/api/feedback/analyze";
   if (topics && topics.trim() !== "") {
     // encodeURIComponent важен, чтобы безопасно передавать спецсимволы
     url += `?topics=${encodeURIComponent(topics.trim())}`;
@@ -54,15 +59,19 @@ export const uploadAndAnalyzeCsv = async (file, topics, onUploadProgress, signal
  */
 export const downloadPdfReport = async (analysisData) => {
   try {
-    const response = await apiClient.post("/api/feedback/report", analysisData, {
-      responseType: 'blob', // Important to handle the binary PDF data
-    });
+    const response = await apiClient.post(
+      "/api/feedback/report",
+      analysisData,
+      {
+        responseType: "blob", // Important to handle the binary PDF data
+      },
+    );
 
     // Create a URL for the blob
     const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.setAttribute('download', 'feedback_report.pdf'); // or any other filename
+    link.setAttribute("download", "feedback_report.pdf"); // or any other filename
     document.body.appendChild(link);
     link.click();
 
@@ -74,7 +83,10 @@ export const downloadPdfReport = async (analysisData) => {
       // Handle blob error response
       const errorText = await new Response(error.response.data).text();
       const errorJson = JSON.parse(errorText);
-      throw new Error(errorJson.detail || "An unexpected error occurred while generating the report.");
+      throw new Error(
+        errorJson.detail ||
+          "An unexpected error occurred while generating the report.",
+      );
     }
     throw new Error("Network error or server is not responding.");
   }
