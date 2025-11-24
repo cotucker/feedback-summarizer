@@ -223,7 +223,7 @@ def generate_separator_cerebras(row: str) -> str:
                 """},
             {"role": "user", "content": f"""
                 INPUT DATA:
-                    - first line of text: {row}
+                - first line of text: {row}
                 """},
         ],
         response_format={
@@ -265,7 +265,6 @@ def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
         for i, topic in enumerate(topics)
     ]
 
-
 def generate_total_summary(topics_analysis: list[dict]) -> str:
     response = client.models.generate_content(
         model=f'{MODEL}',
@@ -282,9 +281,7 @@ def generate_total_summary(topics_analysis: list[dict]) -> str:
                         """,
                     ),
                     types.Part(
-                        text=f"""
-                            - topics summaries:
-                            {topics_analysis}""",
+                        text=f"- topics summaries: {topics_analysis}",
                     ),
                 ],
             ),
@@ -296,6 +293,40 @@ def generate_total_summary(topics_analysis: list[dict]) -> str:
     )
     total_summary: TotalSummary = typing.cast(TotalSummary, response.parsed)
     return total_summary.summary
+
+def generate_total_summary_cerebras(topics_analysis: list[dict]) -> str:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {"role": "system", "content": """
+                You are a Senior Product Analyst responsible for creating a high-level executive summary for leadership.
+                Your goal is to synthesize a list of pre-analyzed topic summaries into a single, cohesive paragraph.
+                This total summary must provide a bird's-eye view of the most critical takeaways from all customer feedback,
+                highlighting both key strengths and major pain points.
+                """},
+            {"role": "user", "content": f"""
+                INPUT DATA:
+                - topics summaries: {topics_analysis}
+                """},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "cluster_name_schema",
+                "strict": True,
+                "schema": TOTAL_SUMMARY_SCHEMA
+            }
+        }
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    return response_json['summary']
+
+def get_total_summary(topics_analysis: list[dict]) -> str:
+    try:
+        return generate_total_summary(topics_analysis)
+    except Exception as e:
+        return generate_total_summary_cerebras(topics_analysis)
 
 
 def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
@@ -451,5 +482,5 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     return selected_columns
 
 if __name__ == "__main__":
-   a =  get_separator("Text;Rating")
+   a = generate_total_summary_cerebras([{'topic': 'Pricing and Value', 'count': 10, 'summary': 'This topic focuses on customer feedback regarding the cost of products or services. Customers often discuss whether they perceive the pricing as fair, affordable, or expensive in relation to the value they receive. Key points include comparisons to competitors, suggestions for discounts or promotions, and overall satisfaction with the price-to-value ratio.'}])
    print(a)

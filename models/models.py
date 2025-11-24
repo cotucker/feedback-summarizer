@@ -92,3 +92,15 @@ SEPARATOR_SCHEMA = {
     "required": ["separator"],
     "additionalProperties": False
 }
+
+TOTAL_SUMMARY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "summary": {
+            "type": "string",
+            "description": "A concise summary that encapsulates the main points from the analyzed feedback."
+        }
+    },
+    "required": ["summary"],
+    "additionalProperties": False
+}

@@ -2,7 +2,7 @@ from sklearn.metrics import accuracy_score
 from fastapi.datastructures import UploadFile
 from services.clustering_service import cluster_texts
 from services.file_handler_service import get_dataset_from_file, get_feedbacks_info
-from services.llm_service import feedback_list_analysis, topics_analysis, generate_total_summary, process_columnes_names, get_separator
+from services.llm_service import feedback_list_analysis, topics_analysis, get_total_summary, process_columnes_names, get_separator
 import logging
 import asyncio
 
@@ -34,7 +34,7 @@ async def analysis(file: UploadFile, topics: str = ''):
     topics_analysis_results = await asyncio.to_thread(topics_analysis, feedback_analysis)
     logger.info("Topics analysis completed. Generating total summary.")
     analysis["topics"] = topics_analysis_results
-    analysis["summary"] = await asyncio.to_thread(generate_total_summary, topics_analysis_results)
+    analysis["summary"] = await asyncio.to_thread(get_total_summary, topics_analysis_results)
     logger.info("Total summary generated. Calculating sentiment counts.")
     counts = {"positive": 0, "negative": 0, "neutral": 0}
 
