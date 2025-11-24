@@ -6,12 +6,10 @@ from dotenv import load_dotenv
 from services.analysis_service import analysis
 from services.pdf_service import generate_pdf_from_data
 from google.genai.errors import ServerError
-import json
-from fpdf import FPDF
 import io
 
 load_dotenv()
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 app = FastAPI()
 
@@ -25,16 +23,20 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["Content-Disposition"]
+    expose_headers=["Content-Disposition"],
 )
 
+
 @app.post("/api/feedback/analyze")
-async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
+async def analyze_feedback(
+    topics: str | None = Query(default=None), file: UploadFile = File(...)
+):
     try:
-        analysis_results = await analysis(file, topics if topics else '')
+        analysis_results = await analysis(file, topics if topics else "")
         return analysis_results
     except ServerError as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/api/feedback/report")
 async def generate_report(data: dict = Body(...)):
@@ -42,5 +44,5 @@ async def generate_report(data: dict = Body(...)):
     return StreamingResponse(
         io.BytesIO(pdf_bytes),
         media_type="application/pdf",
-        headers={"Content-Disposition": "attachment; filename=feedback_report.pdf"}
+        headers={"Content-Disposition": "attachment; filename=feedback_report.pdf"},
     )

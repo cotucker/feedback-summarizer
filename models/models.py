@@ -1,44 +1,53 @@
-import json
 import enum
 from pydantic import BaseModel
+
 
 class Sentiment(enum.Enum):
     POSITIVE = "Positive"
     NEGATIVE = "Negative"
     NEUTRAL = "Neutral"
 
+
 class FeedbackResponse(BaseModel):
     original_feedback_text: str
     response: str
     score: int
+
 
 class SentimentResponse(BaseModel):
     text: str
     topic: str
     sentiment: str
 
+
 class TopicSummary(BaseModel):
     topic: str
     summary: str
 
+
 class TotalSummary(BaseModel):
     summary: str
 
+
 class Separator(BaseModel):
     separator: str
+
 
 class ClusterName(BaseModel):
     name: str
     description: str
 
+
 class ClusterDescription(BaseModel):
     cluster_name: str
     description: str
+
 
 class TopicQuality(BaseModel):
     score: int
     is_match: bool
     justification: str
+
 
 class Subtext(BaseModel):
     text: str
@@ -54,15 +63,15 @@ CLUSTER_DESCRIPTION_SCHEMA = {
                 "type": "object",
                 "properties": {
                     "cluster_name": {"type": "string"},
-                    "description": {"type": "string"}
+                    "description": {"type": "string"},
                 },
                 "required": ["cluster_name", "description"],
-                "additionalProperties": False
-            }
+                "additionalProperties": False,
+            },
         }
     },
     "required": ["clusters"],
-    "additionalProperties": False
+    "additionalProperties": False,
 }
 
 CLUSTER_NAME_SCHEMA = {
@@ -70,15 +79,15 @@ CLUSTER_NAME_SCHEMA = {
     "properties": {
         "name": {
             "type": "string",
-            "description": "A short, concise title for the cluster (2-4 words)."
+            "description": "A short, concise title for the cluster (2-4 words).",
         },
         "description": {
             "type": "string",
-            "description": "A brief explanation of what this cluster represents."
-        }
+            "description": "A brief explanation of what this cluster represents.",
+        },
     },
     "required": ["name", "description"],
-    "additionalProperties": False
+    "additionalProperties": False,
 }
 
 SEPARATOR_SCHEMA = {
@@ -86,11 +95,11 @@ SEPARATOR_SCHEMA = {
     "properties": {
         "separator": {
             "type": "string",
-            "description": "The detected delimiter character (e.g., ',', ';', '|', '\t')."
+            "description": "The detected delimiter character (e.g., ',', ';', '|', '\t').",
         }
     },
     "required": ["separator"],
-    "additionalProperties": False
+    "additionalProperties": False,
 }
 
 TOTAL_SUMMARY_SCHEMA = {
@@ -98,11 +107,11 @@ TOTAL_SUMMARY_SCHEMA = {
     "properties": {
         "summary": {
             "type": "string",
-            "description": "A concise summary that encapsulates the main points from the analyzed feedback."
+            "description": "A concise summary that encapsulates the main points from the analyzed feedback.",
         }
     },
     "required": ["summary"],
-    "additionalProperties": False
+    "additionalProperties": False,
 }
 
 TOPIC_SUMMARY_SCHEMA = {
@@ -110,27 +119,20 @@ TOPIC_SUMMARY_SCHEMA = {
     "properties": {
         "topic": {
             "type": "string",
-            "description": "The main subject or theme of the text."
+            "description": "The main subject or theme of the text.",
         },
         "summary": {
             "type": "string",
-            "description": "A concise summary of the content related to this topic."
-        }
+            "description": "A concise summary of the content related to this topic.",
+        },
     },
     "required": ["topic", "summary"],
-    "additionalProperties": False
+    "additionalProperties": False,
 }
 
 LIST_STR_SCHEMA = {
     "type": "object",
-    "properties": {
-        "items": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        }
-    },
+    "properties": {"items": {"type": "array", "items": {"type": "string"}}},
     "required": ["items"],
-    "additionalProperties": False
+    "additionalProperties": False,
 }

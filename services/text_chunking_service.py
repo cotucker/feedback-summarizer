@@ -1,29 +1,34 @@
 import re
 import spacy
 from textblob import TextBlob
-from typing import List, Dict
-from textblob import TextBlob
 
 nlp = spacy.load("en_core_web_sm")
 
+
 def split_dot(text):
-    separators = r'[.!?]\s+'
+    separators = r"[.!?]\s+"
     segments = re.split(separators, text, flags=re.IGNORECASE)
     cleaned_segments = [s.strip() for s in segments if s and len(s.strip()) > 10]
     return cleaned_segments
 
+
 def split_feedback_simple(text):
-    separators = r'\b(and|but|however|though|while|although|yet|plus|also|meanwhile)\b|[.!?]\s+'
+    separators = (
+        r"\b(and|but|however|though|while|although|yet|plus|also|meanwhile)\b|[.!?]\s+"
+    )
     segments = re.split(separators, text, flags=re.IGNORECASE)
     segments = [s.strip() for s in segments if s and len(s.strip()) > 10]
     return segments
+
 
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
     from spacy.cli import download
+
     download("en_core_web_sm")
     nlp = spacy.load("en_core_web_sm")
+
 
 def get_sentiment(text: str) -> str:
     polarity = TextBlob(text).sentiment.polarity
@@ -33,6 +38,7 @@ def get_sentiment(text: str) -> str:
         return "Negative"
     else:
         return "Neutral"
+
 
 def find_clause_for_subject(subject, all_subjects):
     head_verb = subject.head
@@ -52,6 +58,7 @@ def find_clause_for_subject(subject, all_subjects):
 
     return clause_span.text.strip()
 
+
 def extract_semantic_chunks(text: str) -> list:
     doc = nlp(text)
     results = []
@@ -70,6 +77,7 @@ def extract_semantic_chunks(text: str) -> list:
 
     return results
 
+
 def split_sentences_by_conjunctions(text):
     doc = nlp(text)
     sentences = []
@@ -78,7 +86,6 @@ def split_sentences_by_conjunctions(text):
     for token in doc:
         # Ищем союзы (cc) или запятые (punct), за которыми следуют союзы
         if token.pos_ == "CCONJ" or (token.pos_ == "PUNCT" and token.text == ","):
-
             # Логика:
             # 1. Это союз (например, "but", "and").
             # 2. У союза есть "голова" (head), и это глагол?
@@ -98,14 +105,16 @@ def split_sentences_by_conjunctions(text):
                 # Проверяем, есть ли у родителя (глагола) связь 'conj' с другим глаголом
                 # И находится ли текущий токен между ними
                 for child in head.children:
-                    if child.dep_ == "conj" and (child.pos_ == "VERB" or child.pos_ == "AUX"):
+                    if child.dep_ == "conj" and (
+                        child.pos_ == "VERB" or child.pos_ == "AUX"
+                    ):
                         is_clause_separator = True
                         break
 
             # Если нашли разделитель, режем строку
             if is_clause_separator:
                 # Формируем подстроку, убираем пробелы и запятые в начале/конце
-                part = doc.text[start:token.idx].strip(" ,")
+                part = doc.text[start : token.idx].strip(" ,")
                 if part:
                     sentences.append(part)
                 start = token.idx + len(token.text)
@@ -117,6 +126,7 @@ def split_sentences_by_conjunctions(text):
 
     return sentences
 
+
 def test_chunks(text: str) -> list[str]:
     list = []
 
@@ -126,6 +136,7 @@ def test_chunks(text: str) -> list[str]:
 
     return list
 
+
 def feedback_chunking(feedback_list: list[str]):
     list = []
 
@@ -134,5 +145,8 @@ def feedback_chunking(feedback_list: list[str]):
 
     return list
 
+
 if __name__ == "__main__":
-   print(test_chunks("The product is bad but the company is good. Support is excellent."))
+    print(
+        test_chunks("The product is bad but the company is good. Support is excellent.")
+    )
