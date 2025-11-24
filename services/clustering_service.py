@@ -13,6 +13,7 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from services.nlp_service import predict_sentiment, extract_cluster_keywords, process_text
 from services.llm_service import filter_topics
+from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
 import os
 import math
@@ -160,6 +161,7 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
         })
         sentiments_list.append(SentimentResponse(text = text, sentiment = sentiment, topic = cluster_names[i]))
 
+    create_dataset_from_sentiment_response_list(sentiments_list)
     return phrase_clusters, sentiments_list, clustering_info
 
 if __name__ == "__main__":
