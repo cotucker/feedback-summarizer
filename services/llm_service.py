@@ -229,7 +229,7 @@ def generate_separator_cerebras(row: str) -> str:
         response_format={
             "type": "json_schema",
             "json_schema": {
-                "name": "cluster_name_schema",
+                "name": "separator_schema",
                 "strict": True,
                 "schema": SEPARATOR_SCHEMA
             }
@@ -312,7 +312,7 @@ def generate_total_summary_cerebras(topics_analysis: list[dict]) -> str:
         response_format={
             "type": "json_schema",
             "json_schema": {
-                "name": "cluster_name_schema",
+                "name": "total_summary_schema",
                 "strict": True,
                 "schema": TOTAL_SUMMARY_SCHEMA
             }
@@ -378,7 +378,7 @@ def generate_topic_summary_cerebras(topic_texts: list[str], topic_name: str) -> 
         response_format={
             "type": "json_schema",
             "json_schema": {
-                "name": "cluster_description_schema",
+                "name": "tpoic_summary_schema",
                 "strict": True,
                 "schema": TOPIC_SUMMARY_SCHEMA
             }
@@ -457,7 +457,7 @@ def filter_topics_cerebras(selected_topics: str, all_topics_list: str) -> list[s
         response_format={
             "type": "json_schema",
             "json_schema": {
-                "name": "cluster_description_schema",
+                "name": "list_str_schema",
                 "strict": True,
                 "schema": LIST_STR_SCHEMA
             }
@@ -482,7 +482,7 @@ def feedback_list_analysis(topics_text: str = '') -> list[str]:
     if topics_text.replace(' ', '') == '':
         topics = []
     else:
-        topics: list[str] = generate_topics_list(topics_text)
+        topics: list[str] = get_topics_list(topics_text)
         if not topics:
             raise HTTPException(status_code=400, detail="Invalid topics")
 
@@ -491,7 +491,7 @@ def feedback_list_analysis(topics_text: str = '') -> list[str]:
     texts_list: list[str] = feedback_chunking(feedback_list)
     return texts_list
 
-def generate_topics_list(topics_text: str):
+def generate_topics_list(topics_text: str) -> list[str]:
     response = client.models.generate_content(
         model="gemini-flash-lite-latest",
         contents=[
@@ -517,6 +517,38 @@ def generate_topics_list(topics_text: str):
     topics_list: list[str] = typing.cast(list[str], response.parsed)
     return topics_list
 
+def generate_topics_list_cerebras(topics_text: str) -> list[str]:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {"role": "system", "content": """
+                Create Topics list of customers feedback on IT Company from query
+                , keep original topics names
+                , if there is no information about topics in query OR quety is not related to IT return empty list
+                """},
+            {"role": "user", "content": f"""
+                **INPUT DATA:**
+                - Query: {topics_text}
+                """},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "list_str_schema",
+                "strict": True,
+                "schema": LIST_STR_SCHEMA
+            }
+        }
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    return response_json['items']
+
+def get_topics_list(topics_text: str) -> list[str]:
+    try:
+        return generate_topics_list(topics_text)
+    except Exception as e:
+        return generate_topics_list_cerebras(topics_text)
 
 def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     response = client.models.generate_content(
@@ -557,5 +589,5 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     return selected_columns
 
 if __name__ == "__main__":
-   a = filter_topics_cerebras("performance, speed", "Customer Support, Performance & Speed, Pricing & Cost, Product Quality")
+   a = generate_topics_list_cerebras("performance, speed, bugs, cost, pricing, value for money, customer support, service quality")
    print(a)
