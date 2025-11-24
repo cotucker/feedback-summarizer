@@ -104,3 +104,19 @@ TOTAL_SUMMARY_SCHEMA = {
     "required": ["summary"],
     "additionalProperties": False
 }
+
+TOPIC_SUMMARY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "topic": {
+            "type": "string",
+            "description": "The main subject or theme of the text."
+        },
+        "summary": {
+            "type": "string",
+            "description": "A concise summary of the content related to this topic."
+        }
+    },
+    "required": ["topic", "summary"],
+    "additionalProperties": False
+}

@@ -260,7 +260,7 @@ def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
         {
             "topic": topic,
             "count": topics[topic],
-            "summary": topic_descriptions[i].description + '\n' + generate_topic_summary(get_feedback_analysis_by_topic(topic), topic)
+            "summary": topic_descriptions[i].description + '\n' + get_topic_summary(get_feedback_analysis_by_topic(topic), topic)
         }
         for i, topic in enumerate(topics)
     ]
@@ -359,6 +359,40 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
     )
     summary: TopicSummary = typing.cast(TopicSummary, response.parsed)
     return summary.summary
+
+def generate_topic_summary_cerebras(topic_texts: list[str], topic_name: str) -> str:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {"role": "system", "content": """
+                You are an expert Data Analyst specializing in synthesizing qualitative user feedback into actionable business insights.
+                Analyze the provided list of user feedback comments, which all relate to the single topic of "{topic_name}".
+                Your task is to explain topic name in simple terms, generate a concise, neutral, and informative summary that captures the main points from the feedback list.
+                """},
+            {"role": "user", "content": f"""
+                INPUT DATA:
+                - topic name: "{topic_name}"
+                - feedback texts list: {topic_texts}
+                """},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "cluster_description_schema",
+                "strict": True,
+                "schema": TOPIC_SUMMARY_SCHEMA
+            }
+        }
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    return response_json['summary']
+
+def get_topic_summary(topic_texts: list[str], topic_name: str) -> str:
+    try:
+        return generate_topic_summary(topic_texts, topic_name)
+    except Exception as e:
+        return generate_topic_summary_cerebras(topic_texts, topic_name)
 
 def filter_topics(selected_topics: str, all_topics_list: str) -> list[str]:
 
@@ -482,5 +516,5 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     return selected_columns
 
 if __name__ == "__main__":
-   a = generate_total_summary_cerebras([{'topic': 'Pricing and Value', 'count': 10, 'summary': 'This topic focuses on customer feedback regarding the cost of products or services. Customers often discuss whether they perceive the pricing as fair, affordable, or expensive in relation to the value they receive. Key points include comparisons to competitors, suggestions for discounts or promotions, and overall satisfaction with the price-to-value ratio.'}])
+   a = generate_topic_summary_cerebras(["The pricing is too high compared to competitors.", "I think the value for money is not there.", "The cost is justified by the features offered.", "I find the product expensive for what it offers."], "Pricing and Value")
    print(a)
