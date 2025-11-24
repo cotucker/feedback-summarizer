@@ -60,7 +60,14 @@ async def get_dataset_from_file(
                 break
 
         if not (flag1 and flag2):
+            print(f"columns: {df.columns.tolist()}")
             selected_columns = process_columns(df.columns.tolist())
+            print(f"selected_columns: {selected_columns}")
+            if '' in selected_columns:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Could not detect 'Text' and 'Rating' columns in the dataset.",
+                )
             if len(selected_columns) == 2:
                 df = df[selected_columns]
                 df.rename(
@@ -69,6 +76,11 @@ async def get_dataset_from_file(
                         selected_columns[1]: "Rating",
                     },
                     inplace=True,
+                )
+            else:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Could not detect 'Text' and 'Rating' columns in the dataset.",
                 )
 
     except Exception as e:
@@ -81,7 +93,6 @@ async def get_dataset_from_file(
 
     global POCESSED_DF
     POCESSED_DF = df.copy()
-
 
 def create_dataset_from_sentiment_response_list(sentiments_list):
     df = pd.DataFrame(

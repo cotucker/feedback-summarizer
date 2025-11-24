@@ -630,13 +630,11 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
                         1.  **Feedback Text Column:** This column should contain the main body of the user's review or comment. Common names include `review`, `text`, `comment`, `feedback`, `описание`, `отзыв`. It must be the primary text column, not an ID, title, or summary.
                         2.  **Numerical Score Column:** This column should contain a numerical rating provided by the user (e.g., 1-5, 1-10). Common names include `rating`, `score`, `stars`, `оценка`, `рейтинг`.
                         3.  **Case-Insensitive Analysis:** Analyze the column names in a case-insensitive manner, but you MUST return the original, exact names as they appeared in the input list.
-                        4.  **Handling Missing Columns:** If you cannot find a suitable candidate for one of the columns, skip it.
+                        4.  **Handling Missing Columns:** If you cannot find a suitable candidate for one of the columns RETURN EMPTY STRING.
                         ---
                         **EXAMPLES (for reference):**
                         **Input:** `["Review Text", "Date", "Rating", "User_ID"]`
-                        **Expected Output:**
-                        ```json
-                        ["Review Text", "Rating"]
+                        **Expected Output:**["Review Text", "Rating"]
                         """,
                     ),
                 ],
@@ -665,7 +663,7 @@ def process_columnes_names_cerebras(list_of_column_names: list[str]) -> list[str
                 1.  **Feedback Text Column:** This column should contain the main body of the user's review or comment. Common names include `review`, `text`, `comment`, `feedback`, `описание`, `отзыв`. It must be the primary text column, not an ID, title, or summary.
                 2.  **Numerical Score Column:** This column should contain a numerical rating provided by the user (e.g., 1-5, 1-10). Common names include `rating`, `score`, `stars`, `оценка`, `рейтинг`.
                 3.  **Case-Insensitive Analysis:** Analyze the column names in a case-insensitive manner, but you MUST return the original, exact names as they appeared in the input list.
-                4.  **Handling Missing Columns:** If you cannot find a suitable candidate for one of the columns, skip it.
+                4.  **Handling Missing Columns:** If you cannot find a suitable candidate for one of the columns RETURN EMPTY STRING.
                 ---
                 **EXAMPLES (for reference):**
                 **Input:** `["Review Text", "Date", "Rating", "User_ID"]`
