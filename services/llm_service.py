@@ -97,8 +97,6 @@ def get_topic_description(cluster_names: list[str]) -> list[ClusterDescription]:
     except Exception as e:
         return generate_topics_description_cerebras(cluster_names)
 
-
-
 def generate_cluster_name(cluster_terms: str) -> str:
     response = client.models.generate_content(
         model='gemini-2.5-flash-lite',
@@ -175,7 +173,7 @@ def get_cluster_name(cluster_terms: str) -> str:
     except Exception as e:
         return generate_cluster_name_cerebras(cluster_terms)
 
-def get_separator(row: str) -> str:
+def generate_separator(row: str) -> str:
     response = client.models.generate_content(
         model=f'{MODEL}',
         contents=[
@@ -209,6 +207,43 @@ def get_separator(row: str) -> str:
     )
     separator: Separator = typing.cast(Separator, response.parsed)
     return separator.separator
+
+def generate_separator_cerebras(row: str) -> str:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {"role": "system", "content": """
+                You are an expert Data Parsing utility. Your task is to analyze the first line of a text file and determine the most likely column separator (delimiter) used.
+                Based on the provided first line of text, identify the single character used as a delimiter.
+                This line must contain at least two columns about customer feedback and feedback rating.
+                the most common delimiters in this order of precedence: comma (`,`), semicolon (`;`), tab (`\t`), pipe (`|`)
+                If no consistent delimiter from the list above is found (e.g.
+                , the line is a single-column header or a natural language sentence)
+                , the value for the "separator" MUST be string 'null'.
+                """},
+            {"role": "user", "content": f"""
+                INPUT DATA:
+                    - first line of text: {row}
+                """},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "cluster_name_schema",
+                "strict": True,
+                "schema": SEPARATOR_SCHEMA
+            }
+        }
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    return response_json['separator']
+
+def get_separator(row: str) -> str:
+    try:
+        return generate_separator(row)
+    except Exception as e:
+        return generate_separator_cerebras(row)
 
 def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
     topics: dict = {}
@@ -416,5 +451,5 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     return selected_columns
 
 if __name__ == "__main__":
-   a =  get_cluster_name("pricing, cost, expensive, affordable, value for money")
+   a =  get_separator("Text;Rating")
    print(a)

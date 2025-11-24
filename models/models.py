@@ -80,3 +80,15 @@ CLUSTER_NAME_SCHEMA = {
     "required": ["name", "description"],
     "additionalProperties": False
 }
+
+SEPARATOR_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "separator": {
+            "type": "string",
+            "description": "The detected delimiter character (e.g., ',', ';', '|', '\t')."
+        }
+    },
+    "required": ["separator"],
+    "additionalProperties": False
+}
