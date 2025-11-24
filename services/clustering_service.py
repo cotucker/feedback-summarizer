@@ -12,7 +12,7 @@ from sklearn.metrics.pairwise import cosine_distances, cosine_similarity
 import plotly.express as px
 import matplotlib.pyplot as plt
 from services.nlp_service import predict_sentiment, extract_cluster_keywords, process_text
-from services.llm_service import filter_topics
+from services.llm_service import get_filtered_topics
 from services.file_handler_service import create_dataset_from_sentiment_response_list
 from models.models import SentimentResponse, Subtext
 import os
@@ -129,7 +129,7 @@ def cluster_texts(texts_list: list[str], topics: str = '') -> tuple[list[dict], 
     tsne = TSNE(n_components=2, perplexity=30, random_state=42)
     reduced_tsne = tsne.fit_transform(REDUCED_EMBEDDINGS)
     reduced_tsne = REDUCED_EMBEDDINGS
-    filtered_topics = filter_topics(selected_topics=topics, all_topics_list=', '.join(all_topics))
+    filtered_topics = get_filtered_topics(selected_topics=topics, all_topics_list=', '.join(all_topics))
 
     if not filtered_topics:
         reduced_embeddings = reduced_tsne

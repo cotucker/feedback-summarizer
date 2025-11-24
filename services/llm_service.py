@@ -395,10 +395,6 @@ def get_topic_summary(topic_texts: list[str], topic_name: str) -> str:
         return generate_topic_summary_cerebras(topic_texts, topic_name)
 
 def filter_topics(selected_topics: str, all_topics_list: str) -> list[str]:
-
-    if len(selected_topics) == 0:
-        return []
-
     response = client.models.generate_content(
         model=f'{MODEL}',
         contents=[
@@ -435,6 +431,51 @@ def filter_topics(selected_topics: str, all_topics_list: str) -> list[str]:
     return filtered_topics
 
 
+def filter_topics_cerebras(selected_topics: str, all_topics_list: str) -> list[str]:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {"role": "system", "content": """
+                You are an intelligent Semantic Filter. Your task is to interpret a user's search query and select the most relevant topics from a provided list of available options.
+                **OBJECTIVE:**
+                Analyze the `USER_QUERY` and compare it against the `AVAILABLE_TOPICS`. Return a JSON array containing ONLY the topics from the list that are semantically related to the user's intent.
+                **FILTERING RULES:**
+                1.  **Semantic Matching:** Do not look for exact string matches only. Understand the intent.
+                    -   *Example:* If query is "too expensive", select "Pricing & Cost".
+                    -   *Example:* If query is "bugs and glitches", select "Product Quality" or "Technical Issues".
+                    -   *Example:* If query is "slow app", select "Performance & Speed".
+                2.  **Strict Constraints:** The output topics MUST be exact strings from the `AVAILABLE_TOPICS` list. Do not invent new topics or modify existing ones.
+                3.  **"All" Intent:** If the `USER_QUERY` implies "all", "everything", or is empty/generic (e.g., "show me data"), return the entire list of `AVAILABLE_TOPICS`.
+                4.  **No Match:** If the query is completely unrelated to any available topic, return an empty array `[]`.
+                """},
+            {"role": "user", "content": f"""
+                **INPUT DATA:**
+                - **USER_QUERY:** "{selected_topics}"
+                - **AVAILABLE_TOPICS:** {all_topics_list}
+                """},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "cluster_description_schema",
+                "strict": True,
+                "schema": LIST_STR_SCHEMA
+            }
+        }
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    return response_json['items']
+
+def get_filtered_topics(selected_topics: str, all_topics_list: str) -> list[str]:
+
+    if len(selected_topics) == 0:
+        return []
+
+    try:
+        return filter_topics(selected_topics, all_topics_list)
+    except Exception as e:
+        return filter_topics_cerebras(selected_topics, all_topics_list)
 
 def feedback_list_analysis(topics_text: str = '') -> list[str]:
 
@@ -516,5 +557,5 @@ def process_columnes_names(list_of_column_names: list[str]) -> list[str]:
     return selected_columns
 
 if __name__ == "__main__":
-   a = generate_topic_summary_cerebras(["The pricing is too high compared to competitors.", "I think the value for money is not there.", "The cost is justified by the features offered.", "I find the product expensive for what it offers."], "Pricing and Value")
+   a = filter_topics_cerebras("performance, speed", "Customer Support, Performance & Speed, Pricing & Cost, Product Quality")
    print(a)

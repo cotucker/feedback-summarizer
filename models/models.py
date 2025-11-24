@@ -120,3 +120,17 @@ TOPIC_SUMMARY_SCHEMA = {
     "required": ["topic", "summary"],
     "additionalProperties": False
 }
+
+LIST_STR_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "items": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": ["items"],
+    "additionalProperties": False
+}
