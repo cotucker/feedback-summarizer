@@ -495,7 +495,7 @@ def filter_topics_cerebras(selected_topics: str, all_topics_list: str) -> list[s
                     -   *Example:* If query is "slow app", select "Performance & Speed".
                 2.  **Strict Constraints:** The output topics MUST be exact strings from the `AVAILABLE_TOPICS` list. Do not invent new topics or modify existing ones.
                 3.  **"All" Intent:** If the `USER_QUERY` implies "all", "everything", or is empty/generic (e.g., "show me data"), return the entire list of `AVAILABLE_TOPICS`.
-                4.  **No Match:** If the query is unrelated to any available topic, return an empty array `[]`.
+                4.  **No Match:** If the query is completely unrelated to any available topic, return an empty array `[]`.
                 """,
             },
             {
