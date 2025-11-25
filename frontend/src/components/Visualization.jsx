@@ -30,7 +30,6 @@ import { DataGrid } from "@mui/x-data-grid";
 
 import { downloadPdfReport } from "../api/apiClient";
 
-// === Вспомогательная функция для рендеринга ячеек с подсказками ===
 const renderCellWithTooltip = (params) => (
   <Tooltip title={params.value} placement="bottom-start">
     <Box
@@ -45,7 +44,6 @@ const renderCellWithTooltip = (params) => (
   </Tooltip>
 );
 
-// === Определения колонок ===
 const feedbackAnalysisColumns = [
   {
     field: "text",
@@ -68,7 +66,6 @@ const topicDetailColumns = [
   { field: "sentiment", headerName: "Sentiment", width: 120 },
 ];
 
-// === Палитра цветов для кластеров ===
 const CLUSTER_COLORS = [
   "#1f77b4",
   "#ff7f0e",
@@ -92,7 +89,6 @@ const CLUSTER_COLORS = [
   "#9edae5",
 ];
 
-// === Функция для вычисления выпуклой оболочки (Graham Scan) ===
 const calculateConvexHull = (points) => {
   if (points.length < 3) return points;
 
@@ -103,7 +99,6 @@ const calculateConvexHull = (points) => {
   points.sort((a, b) => (a.x !== b.x ? a.x - b.x : a.y - b.y));
 
   const hull = [];
-  // Нижняя оболочка
   for (let i = 0; i < points.length; ++i) {
     while (
       hull.length >= 2 &&
@@ -114,7 +109,6 @@ const calculateConvexHull = (points) => {
     hull.push(points[i]);
   }
 
-  // Верхняя оболочка
   const lowerSize = hull.length;
   for (let i = points.length - 2; i >= 0; --i) {
     while (
@@ -166,7 +160,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
     id: index,
   }));
 
-  // Обработка данных для кластеров
   const clusterData = results.phrase_clusters || [];
   const clusters = clusterData.reduce((acc, point) => {
     const cluster = point.cluster;
@@ -182,7 +175,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
     return acc;
   }, {});
 
-  // Функция для подготовки данных Plotly
   const preparePlotlyData = () => {
     const plotlyTraces = [];
 
@@ -309,7 +301,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
   return (
     <Box sx={{ mt: 4 }}>
       <Grid container spacing={3}>
-        {/* 1. Overall Summary */}
         <Grid item xs={12}>
           <Card variant="outlined">
             <CardContent>
@@ -349,7 +340,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
           </Card>
         </Grid>
 
-        {/* 2. Topic Bar Chart */}
         <Grid item xs={12}>
           <Paper sx={{ p: 2, height: "600px" }}>
             <Typography variant="h6" gutterBottom>
@@ -380,7 +370,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
           </Paper>
         </Grid>
 
-        {/* 1. График занимает всю ширину (xs={12}) */}
         <Grid item xs={12}>
           <Paper sx={{ p: 2, height: "400px", width: "1150px" }}>
             <Typography variant="h6" gutterBottom>
@@ -388,7 +377,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
             </Typography>
             <BarChart
               layout="horizontal"
-              // Увеличиваем отступ слева (left: 100), чтобы слова Positive/Negative не обрезались
               margin={{ left: 100, right: 50, top: 50, bottom: 50 }}
               yAxis={[
                 {
@@ -413,7 +401,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
           </Paper>
         </Grid>
 
-        {/* 2. Кнопка находится в ОТДЕЛЬНОМ Grid item ниже, тоже на всю ширину */}
         {Object.keys(clusters).length > 0 && (
           <Grid item xs={12}>
             <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
@@ -428,7 +415,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
           </Grid>
         )}
 
-        {/* 5. Topic Summaries */}
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom sx={{ mb: 2, mt: 2 }}>
             Topic Summaries
@@ -465,7 +451,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
         </Grid>
       </Grid>
 
-      {/* Dialogs... (остальной код диалогов без изменений) */}
       {selectedTopicData && (
         <Dialog
           open={isDialogOpen}

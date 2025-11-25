@@ -21,17 +21,14 @@ export const Dashboard = () => {
     }
     setIsLoading(false);
     setUploadProgress(0);
-    // Optionally, you might want to keep the previous error or set a specific "Cancelled" message
-    // setError("Analysis cancelled."); 
   }, []);
 
   const handleFileUpload = useCallback(
     async (file) => {
-      // Cancel any pending request before starting a new one
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
-      
+
       const abortController = new AbortController();
       abortControllerRef.current = abortController;
 
@@ -41,7 +38,6 @@ export const Dashboard = () => {
       setUploadProgress(0);
 
       try {
-        // Pass topics and signal to the API client
         const analysisData = await uploadAndAnalyzeCsv(
           file,
           topics,
@@ -51,30 +47,24 @@ export const Dashboard = () => {
             );
             setUploadProgress(percentCompleted);
           },
-          abortController.signal
+          abortController.signal,
         );
         setResults(analysisData);
       } catch (err) {
         if (err.message === "Analysis cancelled by user.") {
-             // Verify if this specific cancellation matches the current operation
-             // (though we usually reset isLoading in handleCancel directly)
-             console.log("Request cancelled");
+          console.log("Request cancelled");
         } else {
-            setError(err.message || "Failed to analyze the file.");
+          setError(err.message || "Failed to analyze the file.");
         }
       } finally {
-        // Only turn off loading if it wasn't cancelled manually (which handles its own state)
-        // OR just turn it off here. If cancelled, handleCancel turns it off. 
-        // However, due to async nature, if we cancel, this finally block might run after handleCancel.
-        // Check if we are still "loading" according to the ref (if ref is null, we cancelled).
         if (abortControllerRef.current === abortController) {
-             setIsLoading(false);
-             abortControllerRef.current = null;
+          setIsLoading(false);
+          abortControllerRef.current = null;
         }
       }
     },
     [topics],
-  ); // Добавляем topics в массив зависимостей
+  );
 
   return (
     <Box sx={{ width: "100%", maxWidth: 1400, mx: "auto", my: 4 }}>
@@ -82,9 +72,12 @@ export const Dashboard = () => {
         Feedback Summarizer - Voice of the Customer Dashboard
       </Typography>
       <Typography variant="body1" paragraph>
-        This AI-powered dashboard helps you summarize customer feedback, extract key themes, and identify sentiment patterns.
-        Simply upload your CSV file containing feedback text and ratings, and the system will cluster feedback by topics, perform sentiment analysis (positive/negative/neutral),
-        and display summarized insights, representative quotes, and interactive charts.
+        This AI-powered dashboard helps you summarize customer feedback, extract
+        key themes, and identify sentiment patterns. Simply upload your CSV file
+        containing feedback text and ratings, and the system will cluster
+        feedback by topics, perform sentiment analysis
+        (positive/negative/neutral), and display summarized insights,
+        representative quotes, and interactive charts.
       </Typography>
       <FileUpload
         onFileUpload={handleFileUpload}
