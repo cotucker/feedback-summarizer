@@ -103,6 +103,7 @@ Follow these instructions to get the project up and running on your local machin
 
     ```env
     GEMINI_API_KEY=your_google_gemini_api_key_here
+    CEREBRAS_API_KEY=your_cerebras_api_key_here # Optional: For resilience if Google Gemini API is overloaded
     MODEL=google_gemini_model_name (e.g. gemini-2.5-flash-lite)
     DEVICE=cpu  # or gpu if available
     ```
