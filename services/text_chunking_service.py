@@ -25,7 +25,6 @@ try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
     from spacy.cli import download
-
     download("en_core_web_sm")
     nlp = spacy.load("en_core_web_sm")
 
@@ -84,26 +83,13 @@ def split_sentences_by_conjunctions(text):
     start = 0
 
     for token in doc:
-        # Ищем союзы (cc) или запятые (punct), за которыми следуют союзы
+
         if token.pos_ == "CCONJ" or (token.pos_ == "PUNCT" and token.text == ","):
-            # Логика:
-            # 1. Это союз (например, "but", "and").
-            # 2. У союза есть "голова" (head), и это глагол?
-            # 3. Или этот союз связывает части сложного предложения (dep_ == 'cc')?
-
-            # Простой эвристический метод:
-            # Если "голова" союза — это глагол, и у этого глагола есть зависимый глагол (conj),
-            # то это, скорее всего, разделение предложений.
-
             head = token.head
-
-            # Проверяем, является ли слово разделителем клоз (Clauses)
-            # Мы смотрим, соединяет ли этот элемент два глагола/предиката
             is_clause_separator = False
 
             if token.pos_ == "CCONJ":
-                # Проверяем, есть ли у родителя (глагола) связь 'conj' с другим глаголом
-                # И находится ли текущий токен между ними
+
                 for child in head.children:
                     if child.dep_ == "conj" and (
                         child.pos_ == "VERB" or child.pos_ == "AUX"
@@ -111,15 +97,13 @@ def split_sentences_by_conjunctions(text):
                         is_clause_separator = True
                         break
 
-            # Если нашли разделитель, режем строку
             if is_clause_separator:
-                # Формируем подстроку, убираем пробелы и запятые в начале/конце
                 part = doc.text[start : token.idx].strip(" ,")
+
                 if part:
                     sentences.append(part)
                 start = token.idx + len(token.text)
 
-    # Добавляем последний кусок
     last_part = doc.text[start:].strip(" ,")
     if last_part:
         sentences.append(last_part)
@@ -132,7 +116,6 @@ def test_chunks(text: str) -> list[str]:
 
     for item in split_dot(text):
         list.extend(split_sentences_by_conjunctions(item))
-        # list.extend(extract_semantic_chunks(item))
 
     return list
 
