@@ -24,6 +24,9 @@ This project introduces an **AI-powered dashboard** designed to solve this exact
 
 It provides product managers, marketing teams, and customer service leaders with insights into customer sentiment, identifies emerging themes, and even helps shape responses, enabling teams to make faster and more informed decisions.
 
+You can try in yourself here:
+https://huggingface.co/spaces/cotucker/feedback-summarizer-frontend
+
 ## ✨ Key Features
 
 - **📄 Simple CSV Upload:** Easily upload customer feedback in a CSV format.
