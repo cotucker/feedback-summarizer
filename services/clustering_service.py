@@ -142,21 +142,27 @@ def cluster_texts(
         selected_topics=topics, all_topics_list=", ".join(all_topics)
     )
 
-    if not filtered_topics:
-        reduced_embeddings = reduced_tsne
-        cluster_names = cluster_names_list
-        texts = texts_list
-        sentiments = sentiments_list
+    if not filtered_topics and topics.strip() != "":
+        reduced_embeddings = []
+        cluster_names = []
+        texts = []
+        sentiments = []
     else:
-        for i, cluster_name in enumerate(cluster_names_list):
-            if cluster_name in filtered_topics:
-                reduced_embeddings.append(reduced_tsne[i])
-                cluster_names.append(cluster_name)
-                texts.append(texts_list[i])
-                sentiments.append(sentiments_list[i])
+        if not filtered_topics:
+            reduced_embeddings = reduced_tsne
+            cluster_names = cluster_names_list
+            texts = texts_list
+            sentiments = sentiments_list
+        else:
+            for i, cluster_name in enumerate(cluster_names_list):
+                if cluster_name in filtered_topics:
+                    reduced_embeddings.append(reduced_tsne[i])
+                    cluster_names.append(cluster_name)
+                    texts.append(texts_list[i])
+                    sentiments.append(sentiments_list[i])
 
-    phrase_clusters = []
-    sentiments_list: list[SentimentResponse] = []
+        phrase_clusters = []
+        sentiments_list: list[SentimentResponse] = []
 
     for i, text in enumerate(texts):
         sentiment = sentiments[i]
