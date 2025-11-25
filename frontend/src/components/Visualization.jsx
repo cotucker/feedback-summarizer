@@ -341,9 +341,12 @@ export const Visualization = ({ results, analyzedFilename }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper sx={{ p: 2, height: "600px" }}>
+          <Paper sx={{ p: 2, height: "650px" }}>
             <Typography variant="h6" gutterBottom>
               Bar Chart of Topic Distribution
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              This chart illustrates the frequency of feedback across different topics, highlighting the most discussed areas to help prioritize business focus.
             </Typography>
             <BarChart
               margin={{ bottom: 40 }}
@@ -371,9 +374,12 @@ export const Visualization = ({ results, analyzedFilename }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper sx={{ p: 2, height: "400px", width: "1150px" }}>
+          <Paper sx={{ p: 2, height: "450px", width: "1150px" }}>
             <Typography variant="h6" gutterBottom>
               Horizontal Bar Chart of Overall Sentiment Distribution
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              This overview visualizes the aggregate customer sentiment, providing a quick gauge of overall satisfaction levels across all feedback.
             </Typography>
             <BarChart
               layout="horizontal"
@@ -419,6 +425,9 @@ export const Visualization = ({ results, analyzedFilename }) => {
           <Typography variant="h5" gutterBottom sx={{ mb: 2, mt: 2 }}>
             Topic Summaries
           </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+            Detailed AI-generated summaries for each identified topic, providing actionable insights into specific customer pain points and praises.
+          </Typography>
           {results.topics.map((topic, index) => (
             <Accordion key={index}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -440,6 +449,9 @@ export const Visualization = ({ results, analyzedFilename }) => {
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
             Text Analytics Insights
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+            This data grid presents a comprehensive view of individual feedback entries, categorized by topic and sentiment, enabling detailed review and analysis.
           </Typography>
           <Paper sx={{ height: 600, width: "100%" }}>
             <DataGrid
