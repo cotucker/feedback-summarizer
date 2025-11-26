@@ -445,14 +445,13 @@ export const Visualization = ({ results, analyzedFilename }) => {
             </Box>
           </Grid>
         )}
-
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom sx={{ mb: 2, mt: 2 }}>
             Topic Summaries
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Detailed AI-generated summaries for each identified topic, providing
-            actionable insights into specific customer pain points and praises.
+            actionable insights into specific customer pain points and praises
           </Typography>
           {results.topics.map((topic, index) => (
             <Accordion key={index}>
@@ -465,7 +464,10 @@ export const Visualization = ({ results, analyzedFilename }) => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>{topic.summary}</Typography>
+                {/* Вот сюда вставляем стиль для переноса строк */}
+                <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                  {topic.summary}
+                </Typography>
               </AccordionDetails>
             </Accordion>
           ))}
@@ -519,10 +521,7 @@ export const Visualization = ({ results, analyzedFilename }) => {
             Details for Topic: "{selectedTopicData.topic}"
           </DialogTitle>
           <DialogContent>
-            <Box sx={{ my: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                Summary for this Topic
-              </Typography>
+            <Box sx={{ my: 2, whiteSpace: "pre-wrap" }}>
               <Typography variant="body1" color="text.secondary">
                 {selectedTopicData.summary}
               </Typography>

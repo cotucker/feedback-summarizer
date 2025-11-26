@@ -287,8 +287,8 @@ def topics_analysis(feedback_analysis: list[SentimentResponse]) -> list[dict]:
         {
             "topic": topic,
             "count": topics[topic],
-            "summary": topic_descriptions[i].description
-            + "\n"
+            "summary": "Topic description: " + topic_descriptions[i].description
+            + "\n"*2
             + get_topic_summary(get_feedback_analysis_by_topic(topic), topic),
         }
         for i, topic in enumerate(topics)
@@ -379,6 +379,7 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
                         You are an expert Data Analyst specializing in synthesizing qualitative user feedback into actionable business insights.
                         Analyze the provided list of user feedback comments, which all relate to the single topic of "{topic_name}".
                         Your task is to explain topic name in simple terms, generate a concise, neutral, and informative summary that captures the main points from the feedback list.
+                        Find THREE Representative quotes in feedback texts list that thr best describe the cluster.
                         """,
                     ),
                     types.Part(
@@ -396,7 +397,8 @@ def generate_topic_summary(topic_texts: list[str], topic_name: str) -> str:
         },
     )
     summary: TopicSummary = typing.cast(TopicSummary, response.parsed)
-    return summary.summary
+    result = "Topic summary: " + summary.summary + '\n'*2 + "Representative quotes: " + '\n  ● ' + '\n  ● '.join(summary.representative_quotes)
+    return result
 
 
 def generate_topic_summary_cerebras(topic_texts: list[str], topic_name: str) -> str:

@@ -23,6 +23,7 @@ class SentimentResponse(BaseModel):
 class TopicSummary(BaseModel):
     topic: str
     summary: str
+    representative_quotes: list[str]
 
 
 class TotalSummary(BaseModel):
