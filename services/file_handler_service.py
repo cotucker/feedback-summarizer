@@ -11,6 +11,9 @@ def get_dataset_from_file_path(file_path: str) -> pd.DataFrame:
     df = pd.read_csv(file_path)
     return df
 
+import io
+import pandas as pd
+from fastapi import UploadFile, HTTPException
 
 async def get_dataset_from_file(
     file: UploadFile, process_columns, get_separator, topics: str = ""
@@ -19,8 +22,11 @@ async def get_dataset_from_file(
         raise HTTPException(
             status_code=400, detail="No filename provided for the uploaded file."
         )
-    filetype = file.filename.split(".")[-1]
-    if filetype not in ["csv", "txt", "json", "xlsx"]:
+
+    filetype = file.filename.split(".")[-1].lower()
+    allowed_extensions = ["csv", "txt", "json", "xlsx"]
+
+    if filetype not in allowed_extensions:
         raise HTTPException(
             status_code=400,
             detail="Invalid file type. Please upload a CSV | TXT | JSON | XLSX.",
@@ -28,83 +34,62 @@ async def get_dataset_from_file(
 
     try:
         df: pd.DataFrame
+
         match filetype:
             case "csv":
                 df = pd.read_csv(file.file)
+
             case "txt":
                 contents = await file.read()
                 decoded_content = contents.decode("utf-8")
                 lines = decoded_content.splitlines()
 
                 if len(lines) == 0:
-                    raise HTTPException(status_code=400, detail=f"Empty TXT file.")
+                    raise HTTPException(status_code=400, detail="Empty TXT file.")
+
+                separator = get_separator(lines[0])
+                if separator == "null":
+                    df = pd.DataFrame({"Text": lines})
                 else:
-                    separator = get_separator(lines[0])
-                    if separator == "null":
-                        df = pd.DataFrame({"Text": lines})
-                    else:
-                        df = pd.read_csv(io.StringIO(decoded_content), sep=separator)
+                    df = pd.read_csv(io.StringIO(decoded_content), sep=separator)
 
             case "json":
                 df = pd.read_json(file.file)
+
             case "xlsx":
                 contents = await file.read()
                 buffer = io.BytesIO(contents)
                 df = pd.read_excel(buffer)
 
-        flag1, flag2 = False, False
-        df_renamed: pd.DataFrame = pd.DataFrame()
+        cols_map = {c.lower().strip(): c for c in df.columns}
 
-        df_original = df.copy()
-        print("Original:")
-        print(df_original.head())
-        for col in df.columns.tolist():
-            print(f"Processing column: {col}")
-            match col.lower().strip():
-                case "text":
-                    df_renamed['Text'] = df[col].to_list()
-                    print(df[col].to_list())
-                    flag1 = True
-                case "rating":
-                    df_renamed['Rating'] = df[col].to_list()
-                    flag2 = True
+        text_col_exact = cols_map.get("text")
+        rating_col_exact = cols_map.get("rating")
 
-            if flag1 and flag2:
-                break
 
-        if flag1:
-            if flag2:
-                df = df_renamed.copy()
-            else:
-                df = df_renamed.copy()
-                df['Index'] = range(1, len(df) + 1)
+        if text_col_exact and rating_col_exact:
+            df = df[[text_col_exact, rating_col_exact]].copy()
+            df.rename(columns={text_col_exact: "Text", rating_col_exact: "Rating"}, inplace=True)
+        else:
+            selected_columns = process_columns(df.columns.tolist())
+            text_col_llm = selected_columns[0]
+            rating_col_llm = selected_columns[1] if len(selected_columns) > 1 else ""
 
-        if not flag1 or not flag2:
-            selected_columns = process_columns(df_original.columns.tolist())
-            print(f"Columns: {df_original.columns.tolist()}")
-            print(f"Selected: {selected_columns}")
-            if selected_columns[0] != '':
-                df_original.rename(
-                    columns={
-                        selected_columns[0]: "Text",
-                    },
-                    inplace=True,
-                )
-                if selected_columns[1] != '':
-                    df_original.rename(
-                        columns={
-                            selected_columns[1]: "Rating"
-                        },
-                        inplace=True
-                    )
+            if text_col_llm and text_col_llm in df.columns:
+                rename_dict = {text_col_llm: "Text"}
+
+                if rating_col_llm and rating_col_llm in df.columns:
+                    rename_dict[rating_col_llm] = "Rating"
+
+                df.rename(columns=rename_dict, inplace=True)
             else:
                 raise HTTPException(
                     status_code=400,
                     detail="Could not detect 'Text' column in the dataset.",
                 )
 
-            df = df_original
-
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error loading file: {e}")
 
@@ -119,7 +104,6 @@ async def get_dataset_from_file(
         )
 
     global POCESSED_DF
-    print(df.head())
     POCESSED_DF = df.copy()
 
 def create_dataset_from_sentiment_response_list(sentiments_list):
