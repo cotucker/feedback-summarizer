@@ -122,11 +122,13 @@ def test_chunks(text: str) -> list[str]:
 
 def feedback_chunking(feedback_list: list[str]):
     list = []
-
+    number_list = []
     for feedback in feedback_list:
-        list.extend(test_chunks(feedback))
+        text_chunks = test_chunks(feedback)
+        list.extend(text_chunks)
+        number_list.append(len(text_chunks))
 
-    return list
+    return list, number_list
 
 
 if __name__ == "__main__":

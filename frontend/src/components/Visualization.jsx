@@ -66,6 +66,18 @@ const topicDetailColumns = [
   { field: "sentiment", headerName: "Sentiment", width: 120 },
 ];
 
+const allFeedbacksColumns = [
+  {
+    field: "feedback",
+    headerName: "Original Feedback",
+    flex: 1,
+    minWidth: 770,
+    renderCell: renderCellWithTooltip,
+  },
+  { field: "topics", headerName: "Topics", width: 270 },
+  { field: "rating", headerName: "Rating", width: 120 },
+];
+
 const CLUSTER_COLORS = [
   "#1f77b4",
   "#ff7f0e",
@@ -156,6 +168,11 @@ export const Visualization = ({ results, analyzedFilename }) => {
   ];
 
   const feedbackAnalysisRows = results.feedback_analysis.map((row, index) => ({
+    ...row,
+    id: index,
+  }));
+
+  const allFeedbacksRows = results.all_feedbacks.map((row, index) => ({
     ...row,
     id: index,
   }));
@@ -346,7 +363,9 @@ export const Visualization = ({ results, analyzedFilename }) => {
               Bar Chart of Topic Distribution
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              This chart illustrates the frequency of feedback across different topics, highlighting the most discussed areas to help prioritize business focus.
+              This chart illustrates the frequency of feedback across different
+              topics, highlighting the most discussed areas to help prioritize
+              business focus.
             </Typography>
             <BarChart
               margin={{ bottom: 40 }}
@@ -379,7 +398,9 @@ export const Visualization = ({ results, analyzedFilename }) => {
               Horizontal Bar Chart of Overall Sentiment Distribution
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              This overview visualizes the aggregate customer sentiment, providing a quick gauge of overall satisfaction levels across all feedback.
+              This overview visualizes the aggregate customer sentiment,
+              providing a quick gauge of overall satisfaction levels across all
+              feedback.
             </Typography>
             <BarChart
               layout="horizontal"
@@ -426,7 +447,8 @@ export const Visualization = ({ results, analyzedFilename }) => {
             Topic Summaries
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-            Detailed AI-generated summaries for each identified topic, providing actionable insights into specific customer pain points and praises.
+            Detailed AI-generated summaries for each identified topic, providing
+            actionable insights into specific customer pain points and praises.
           </Typography>
           {results.topics.map((topic, index) => (
             <Accordion key={index}>
@@ -451,12 +473,31 @@ export const Visualization = ({ results, analyzedFilename }) => {
             Text Analytics Insights
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-            This data grid presents a comprehensive view of individual feedback entries, categorized by topic and sentiment, enabling detailed review and analysis.
+            This data grid presents a comprehensive view of individual feedback
+            entries, categorized by topic and sentiment, enabling detailed
+            review and analysis.
           </Typography>
           <Paper sx={{ height: 600, width: "100%" }}>
             <DataGrid
               rows={feedbackAnalysisRows}
               columns={feedbackAnalysisColumns}
+              pageSizeOptions={[5, 10, 20]}
+            />
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="h5" gutterBottom sx={{ mb: 2, mt: 4 }}>
+            All Original Feedbacks
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+            This section provides a complete list of all original customer
+            feedbacks, alongside their identified topics and assigned ratings.
+          </Typography>
+          <Paper sx={{ height: 600, width: "100%" }}>
+            <DataGrid
+              rows={allFeedbacksRows}
+              columns={allFeedbacksColumns}
               pageSizeOptions={[5, 10, 20]}
             />
           </Paper>
@@ -581,6 +622,13 @@ Visualization.propTypes = {
     ),
     quotes: PropTypes.array,
     feedback_analysis: PropTypes.array,
+    all_feedbacks: PropTypes.arrayOf(
+      PropTypes.shape({
+        feedback: PropTypes.string,
+        topics: PropTypes.string,
+        rating: PropTypes.number,
+      }),
+    ),
     phrase_clusters: PropTypes.arrayOf(
       PropTypes.shape({
         x: PropTypes.number,

@@ -34,38 +34,30 @@ async def get_dataset_from_file(
 
     try:
         df: pd.DataFrame
-
         match filetype:
             case "csv":
                 df = pd.read_csv(file.file)
-
             case "txt":
                 contents = await file.read()
                 decoded_content = contents.decode("utf-8")
                 lines = decoded_content.splitlines()
-
                 if len(lines) == 0:
                     raise HTTPException(status_code=400, detail="Empty TXT file.")
-
                 separator = get_separator(lines[0])
                 if separator == "null":
                     df = pd.DataFrame({"Text": lines})
                 else:
                     df = pd.read_csv(io.StringIO(decoded_content), sep=separator)
-
             case "json":
                 df = pd.read_json(file.file)
-
             case "xlsx":
                 contents = await file.read()
                 buffer = io.BytesIO(contents)
                 df = pd.read_excel(buffer)
 
         cols_map = {c.lower().strip(): c for c in df.columns}
-
         text_col_exact = cols_map.get("text")
         rating_col_exact = cols_map.get("rating")
-
 
         if text_col_exact and rating_col_exact:
             df = df[[text_col_exact, rating_col_exact]].copy()
@@ -77,16 +69,15 @@ async def get_dataset_from_file(
 
             if text_col_llm and text_col_llm in df.columns:
                 rename_dict = {text_col_llm: "Text"}
-
                 if rating_col_llm and rating_col_llm in df.columns:
                     rename_dict[rating_col_llm] = "Rating"
-
                 df.rename(columns=rename_dict, inplace=True)
             else:
-                raise HTTPException(
-                    status_code=400,
-                    detail="Could not detect 'Text' column in the dataset.",
-                )
+                raise HTTPException(status_code=400, detail="Could not detect 'Text' column.")
+
+        df.dropna(subset=["Text"], inplace=True)
+        df = df[df["Text"].astype(str).str.strip() != ""]
+        df.reset_index(drop=True, inplace=True)
 
     except HTTPException:
         raise
@@ -95,16 +86,27 @@ async def get_dataset_from_file(
 
     if df.shape[0] < 30:
         raise HTTPException(
-            status_code=400, detail="t-SNE algorithm requires at least 30 data points"
+            status_code=400, detail="Dataset requires at least 30 valid text rows."
         )
-
     if df.shape[0] > 15000:
         raise HTTPException(
-            status_code=400, detail="Dataset size exceeds the maximum limit of 15,000 rows."
+            status_code=400, detail="Dataset size exceeds 15,000 rows."
         )
 
     global POCESSED_DF
     POCESSED_DF = df.copy()
+
+    if "Text" in POCESSED_DF.columns:
+        text_series = POCESSED_DF["Text"]
+    else:
+        text_series = pd.Series([], dtype=object)
+
+    if "Rating" in POCESSED_DF.columns:
+        rating_series = POCESSED_DF["Rating"]
+    else:
+        rating_series = pd.Series([], dtype=object)
+
+    return text_series, rating_series
 
 def create_dataset_from_sentiment_response_list(sentiments_list):
     df = pd.DataFrame(

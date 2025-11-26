@@ -29,7 +29,7 @@ async def analyze_feedback(topics: str | None = Query(default=None), file: Uploa
         analysis_results = await analysis(file, topics if topics else '')
         return analysis_results
     except ServerError as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Error processing file, please check uploaded file structure")
 
 @app.post("/api/feedback/report")
 async def generate_report(data: dict = Body(...)):

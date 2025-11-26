@@ -443,7 +443,7 @@ def get_topic_summary(topic_texts: list[str], topic_name: str) -> str:
 
 def filter_topics(selected_topics: str, all_topics_list: str) -> list[str]:
     response = client.models.generate_content(
-        model=f"{MODEL}",
+        model="gemini-flash-lite-latest",
         contents=[
             types.Content(
                 role="user",
@@ -531,7 +531,7 @@ def get_filtered_topics(selected_topics: str, all_topics_list: str) -> list[str]
         return filter_topics_cerebras(selected_topics, all_topics_list)
 
 
-def feedback_list_analysis(topics_text: str = "") -> list[str]:
+def feedback_list_analysis(topics_text: str = "") -> tuple[list[str], list[int]]:
     if topics_text.replace(" ", "") == "":
         topics = []
     else:
@@ -540,8 +540,8 @@ def feedback_list_analysis(topics_text: str = "") -> list[str]:
             raise HTTPException(status_code=400, detail="Invalid topics")
 
     feedback_list: list[str] = get_feedback_list()
-    texts_list: list[str] = feedback_chunking(feedback_list)
-    return texts_list
+    texts_list, number_list = feedback_chunking(feedback_list)
+    return texts_list, number_list
 
 
 def generate_topics_list(topics_text: str) -> list[str]:
