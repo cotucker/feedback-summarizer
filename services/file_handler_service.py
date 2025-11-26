@@ -27,18 +27,24 @@ async def get_dataset_from_file(
         )
 
     try:
+        df: pd.DataFrame
         match filetype:
             case "csv":
                 df = pd.read_csv(file.file)
             case "txt":
                 contents = await file.read()
-                file.file.seek(0)
                 decoded_content = contents.decode("utf-8")
                 lines = decoded_content.splitlines()
-                separator = get_separator(lines[0])
-                if separator == "null":
-                    raise ValueError("Separator not detected")
-                df = pd.read_csv(file.file, sep=separator)
+
+                if len(lines) == 0:
+                    raise HTTPException(status_code=400, detail=f"Empty TXT file.")
+                else:
+                    separator = get_separator(lines[0])
+                    if separator == "null":
+                        df = pd.DataFrame({"Text": lines})
+                    else:
+                        df = pd.read_csv(io.StringIO(decoded_content), sep=separator)
+
             case "json":
                 df = pd.read_json(file.file)
             case "xlsx":
@@ -47,41 +53,57 @@ async def get_dataset_from_file(
                 df = pd.read_excel(buffer)
 
         flag1, flag2 = False, False
+        df_renamed: pd.DataFrame = pd.DataFrame()
+
+        df_original = df.copy()
+        print("Original:")
+        print(df_original.head())
         for col in df.columns.tolist():
-            match col.lower():
+            print(f"Processing column: {col}")
+            match col.lower().strip():
                 case "text":
-                    df.rename(columns={col: "Text"}, inplace=True)
+                    df_renamed['Text'] = df[col].to_list()
+                    print(df[col].to_list())
                     flag1 = True
                 case "rating":
-                    df.rename(columns={col: "Rating"}, inplace=True)
+                    df_renamed['Rating'] = df[col].to_list()
                     flag2 = True
+
             if flag1 and flag2:
-                df = df[["Text", "Rating"]]
                 break
 
-        if not (flag1 and flag2):
-            print(f"columns: {df.columns.tolist()}")
-            selected_columns = process_columns(df.columns.tolist())
-            print(f"selected_columns: {selected_columns}")
-            if '' in selected_columns:
-                raise HTTPException(
-                    status_code=400,
-                    detail="Could not detect 'Text' and 'Rating' columns in the dataset.",
-                )
-            if len(selected_columns) == 2:
-                df = df[selected_columns]
-                df.rename(
+        if flag1:
+            if flag2:
+                df = df_renamed.copy()
+            else:
+                df = df_renamed.copy()
+                df['Index'] = range(1, len(df) + 1)
+
+        if not flag1 or not flag2:
+            selected_columns = process_columns(df_original.columns.tolist())
+            print(f"Columns: {df_original.columns.tolist()}")
+            print(f"Selected: {selected_columns}")
+            if selected_columns[0] != '':
+                df_original.rename(
                     columns={
                         selected_columns[0]: "Text",
-                        selected_columns[1]: "Rating",
                     },
                     inplace=True,
                 )
+                if selected_columns[1] != '':
+                    df_original.rename(
+                        columns={
+                            selected_columns[1]: "Rating"
+                        },
+                        inplace=True
+                    )
             else:
                 raise HTTPException(
                     status_code=400,
-                    detail="Could not detect 'Text' and 'Rating' columns in the dataset.",
+                    detail="Could not detect 'Text' column in the dataset.",
                 )
+
+            df = df_original
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error loading file: {e}")
@@ -91,7 +113,13 @@ async def get_dataset_from_file(
             status_code=400, detail="t-SNE algorithm requires at least 30 data points"
         )
 
+    if df.shape[0] > 15000:
+        raise HTTPException(
+            status_code=400, detail="Dataset size exceeds the maximum limit of 15,000 rows."
+        )
+
     global POCESSED_DF
+    print(df.head())
     POCESSED_DF = df.copy()
 
 def create_dataset_from_sentiment_response_list(sentiments_list):
