@@ -358,8 +358,8 @@ export const Visualization = ({ results, analyzedFilename }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper sx={{ p: 2, height: "650px" }}>
-            <Typography variant="h6" gutterBottom>
+          <Paper sx={{ p: 2, height: "700px" }}>
+            <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
               Bar Chart of Topic Distribution
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -368,7 +368,7 @@ export const Visualization = ({ results, analyzedFilename }) => {
               business focus.
             </Typography>
             <BarChart
-              margin={{ bottom: 40 }}
+              margin={{ bottom: 80 }}
               xAxis={[
                 { scaleType: "band", data: topicLabels, label: "Topics" },
               ]}
@@ -393,8 +393,12 @@ export const Visualization = ({ results, analyzedFilename }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper sx={{ p: 2, height: "450px", width: "1150px" }}>
-            <Typography variant="h6" gutterBottom>
+          <Paper sx={{ p: 2, height: "500px", width: "1150px" }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ mb: 2, position: "relative", zIndex: 1 }}
+            >
               Horizontal Bar Chart of Overall Sentiment Distribution
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -404,7 +408,7 @@ export const Visualization = ({ results, analyzedFilename }) => {
             </Typography>
             <BarChart
               layout="horizontal"
-              margin={{ left: 100, right: 50, top: 50, bottom: 50 }}
+              margin={{ left: 100, right: 50, top: 70, bottom: 80 }}
               yAxis={[
                 {
                   scaleType: "band",
