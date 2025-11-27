@@ -12,6 +12,7 @@ export const Dashboard = () => {
   const [error, setError] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [topics, setTopics] = useState(""); // New state for topics
+  const [columns, setColumns] = useState(""); // New state for columns
   const abortControllerRef = React.useRef(null);
 
   const handleCancel = useCallback(() => {
@@ -41,6 +42,7 @@ export const Dashboard = () => {
         const analysisData = await uploadAndAnalyzeCsv(
           file,
           topics,
+          columns,
           (progressEvent) => {
             const percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total,
@@ -63,7 +65,7 @@ export const Dashboard = () => {
         }
       }
     },
-    [topics],
+    [topics, columns],
   );
 
   return (
@@ -86,6 +88,8 @@ export const Dashboard = () => {
         progress={uploadProgress}
         topics={topics}
         onTopicsChange={setTopics}
+        columns={columns}
+        onColumnsChange={setColumns}
         onCancel={handleCancel}
       />
       {results && !isLoading && (

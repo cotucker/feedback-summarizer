@@ -24,9 +24,9 @@ app.add_middleware(
 )
 
 @app.post("/api/feedback/analyze")
-async def analyze_feedback(topics: str | None = Query(default=None), file: UploadFile = File(...)):
+async def analyze_feedback(topics: str | None = Query(default=None), columns: str | None = Query(default=None), file: UploadFile = File(...)):
     try:
-        analysis_results = await analysis(file, topics if topics else '')
+        analysis_results = await analysis(file, topics if topics else '', columns if columns else '')
         return analysis_results
     except ServerError as e:
         raise HTTPException(status_code=500, detail="Error processing file, please check uploaded file structure")

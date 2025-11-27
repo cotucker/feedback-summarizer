@@ -17,6 +17,7 @@ const apiClient = axios.create({
 export const uploadAndAnalyzeCsv = async (
   file,
   topics,
+  columns,
   onUploadProgress,
   signal,
 ) => {
@@ -25,9 +26,16 @@ export const uploadAndAnalyzeCsv = async (
 
   // Формируем URL с параметрами
   let url = "/api/feedback/analyze";
+  const params = new URLSearchParams();
   if (topics && topics.trim() !== "") {
-    // encodeURIComponent важен, чтобы безопасно передавать спецсимволы
-    url += `?topics=${encodeURIComponent(topics.trim())}`;
+    params.append("topics", topics.trim());
+  }
+  if (columns && columns.trim() !== "") {
+    params.append("columns", columns.trim());
+  }
+
+  if (params.toString()) {
+    url += `?${params.toString()}`;
   }
 
   try {

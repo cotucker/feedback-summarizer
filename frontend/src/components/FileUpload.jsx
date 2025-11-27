@@ -20,6 +20,8 @@ export const FileUpload = ({
   topics,
   onTopicsChange,
   onCancel,
+  columns,
+  onColumnsChange,
 }) => {
   const [selectedFile, setSelectedFile] = React.useState(null);
 
@@ -57,6 +59,16 @@ export const FileUpload = ({
         fullWidth
         value={topics}
         onChange={(e) => onTopicsChange(e.target.value)}
+        sx={{ mb: 2 }}
+        disabled={isLoading}
+      />
+
+      <TextField
+        label="Desired Columns (comma-separated, e.g., Text, Rating)"
+        variant="outlined"
+        fullWidth
+        value={columns}
+        onChange={(e) => onColumnsChange(e.target.value)}
         sx={{ mb: 2 }}
         disabled={isLoading}
       />
@@ -122,4 +134,6 @@ FileUpload.propTypes = {
   topics: PropTypes.string.isRequired,
   onTopicsChange: PropTypes.func.isRequired,
   onCancel: PropTypes.func, // Optional, but recommended
+  columns: PropTypes.string.isRequired,
+  onColumnsChange: PropTypes.func.isRequired,
 };
