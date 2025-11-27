@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 async def analysis(file: UploadFile, topics: str = "", columns: str = ""):
-    original_texts, rating_series = await get_dataset_from_file(file, get_processed_columns, get_separator, topics, columns)
+    original_texts, rating_series = await get_dataset_from_file(file, get_separator, topics, columns)
     logger.info("Dataset loaded and preprocessed.")
     analysis: dict = {}
     analysis["filename"] = file.filename

@@ -50,7 +50,7 @@ export const FileUpload = ({
         Control Panel
       </Typography>
       <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-        Upload a CSV file and optionally filter by topics.
+        Upload a CSV file. You can specify columns (Text, Rating order) or, if left empty, the system will default to 'Text' and 'Rating' columns. Optionally filter by topics.
       </Typography>
 
       <TextField

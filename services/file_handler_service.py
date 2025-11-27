@@ -16,7 +16,7 @@ import pandas as pd
 from fastapi import UploadFile, HTTPException
 
 async def get_dataset_from_file(
-    file: UploadFile, process_columns, get_separator, topics: str, columns: str
+    file: UploadFile, get_separator, topics: str, columns: str
 ):
     if file.filename is None:
         raise HTTPException(
@@ -55,45 +55,33 @@ async def get_dataset_from_file(
                 buffer = io.BytesIO(contents)
                 df = pd.read_excel(buffer)
 
-        if columns:
+        if columns: # User provided columns
             column_names = [col.strip() for col in columns.split(',')]
-            if len(column_names) >= 1:
-                text_column_name = column_names[0]
-                rating_column_name = column_names[1] if len(column_names) > 1 else None
+        else: # No columns provided, use defaults 'Text', 'Rating'
+            column_names = ["Text", "Rating"]
 
-                if text_column_name not in df.columns:
-                    raise HTTPException(status_code=400, detail=f"Text column '{text_column_name}' not found in the file. Available columns: {', '.join(df.columns)}")
+        if len(column_names) < 1:
+            raise HTTPException(status_code=400, detail="Invalid columns parameter. Please provide at least one column name (e.g., 'Text').")
 
-                rename_dict = {text_column_name: "Text"}
-                if rating_column_name and rating_column_name in df.columns:
-                    rename_dict[rating_column_name] = "Rating"
-                elif rating_column_name: # If rating column was specified but not found
-                    raise HTTPException(status_code=400, detail=f"Rating column '{rating_column_name}' not found in the file. Available columns: {', '.join(df.columns)}")
+        text_column_name = column_names[0]
+        rating_column_name = column_names[1] if len(column_names) > 1 else None
 
-                df = df[list(rename_dict.keys())].copy()
-                df.rename(columns=rename_dict, inplace=True)
-            else:
-                raise HTTPException(status_code=400, detail="Invalid columns parameter. Please provide at least one column name (e.g., 'Text, Rating').")
-        else:
-            cols_map = {c.lower().strip(): c for c in df.columns}
-            text_col_exact = cols_map.get("text")
-            rating_col_exact = cols_map.get("rating")
+        if text_column_name not in df.columns:
+            raise HTTPException(status_code=400, detail=f"Text column '{text_column_name}' not found in the file. Available columns: {', '.join(df.columns)}")
 
-            if text_col_exact and rating_col_exact:
-                df = df[[text_col_exact, rating_col_exact]].copy()
-                df.rename(columns={text_col_exact: "Text", rating_col_exact: "Rating"}, inplace=True)
-            else:
-                selected_columns = process_columns(df.columns.tolist())
-                text_col_llm = selected_columns[0]
-                rating_col_llm = selected_columns[1] if len(selected_columns) > 1 else ""
+        columns_to_select = [text_column_name]
+        rename_dict = {text_column_name: "Text"}
 
-                if text_col_llm and text_col_llm in df.columns:
-                    rename_dict = {text_col_llm: "Text"}
-                    if rating_col_llm and rating_col_llm in df.columns:
-                        rename_dict[rating_col_llm] = "Rating"
-                    df.rename(columns=rename_dict, inplace=True)
-                else:
-                    raise HTTPException(status_code=400, detail="Could not detect 'Text' column.")
+        if rating_column_name and rating_column_name in df.columns:
+            columns_to_select.append(rating_column_name)
+            rename_dict[rating_column_name] = "Rating"
+        elif rating_column_name and rating_column_name not in df.columns:
+            # If rating column was specified but not found, log a warning or just ignore it
+            # For now, we'll just not include it.
+            pass
+
+        df = df[columns_to_select].copy()
+        df.rename(columns=rename_dict, inplace=True)
 
         df.dropna(subset=["Text"], inplace=True)
         df = df[df["Text"].astype(str).str.strip() != ""]
