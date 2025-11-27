@@ -907,18 +907,3 @@ def get_processed_columns(list_of_column_names: list[str]) -> list[str]:
         return process_columnes_names(list_of_column_names)
     except Exception:
         return process_columnes_names_cerebras(list_of_column_names)
-
-
-if __name__ == "__main__":
-    # Test examples for the segment_text function
-    example_texts = [
-        "The UI is great but the support is slow.",
-        "The app is fast, however the pricing is too high and support never replies.",
-        "Great product overall.",
-    ]
-
-    for txt in example_texts:
-        segments = segment_text(txt)
-        print(f"Input text: {txt!r}")
-        print("Segments:", segments)
-        print("-" * 40)

@@ -1,6 +1,5 @@
 import re
 import spacy
-from textblob import TextBlob
 
 try:
     nlp = spacy.load("en_core_web_sm")
@@ -9,112 +8,118 @@ except OSError:
     download("en_core_web_sm")
     nlp = spacy.load("en_core_web_sm")
 
-
 def clean_chunk(text: str) -> str:
     text = text.strip()
-    text = text.strip(".,;:!?")
-    text = re.sub(r'\s+', ' ', text)
+    text = text.strip(".,;:!?-")
+    start_stopwords = {
+        "and", "but", "or", "so", "plus", "yet", "nor",
+        "however", "therefore", "thus", "hence", "meanwhile",
+        "consequently", "furthermore", "moreover", "nonetheless",
+        "nevertheless", "otherwise", "instead", "besides", "also",
+        "whereas", "although", "though", "while", "since", "because"
+    }
+    parts = text.split(' ', 1)
+    if parts:
+        first_word = parts[0].lower().strip(".,")
+        if first_word in start_stopwords:
+            text = parts[1] if len(parts) > 1 else ""
+            return clean_chunk(text)
     return text.strip()
-
 
 def is_valid_chunk(text: str) -> bool:
     if not text:
         return False
-
     if len(text) < 3:
         return False
-
-    stop_chunks = {"the", "a", "an", "and", "but", "or", "so", "however", "although"}
-    if text.lower() in stop_chunks:
-        return False
-
+    words = text.split()
+    if len(words) == 1:
+        word = words[0].lower().strip(".,!?:")
+        single_word_blacklist = {
+            "the", "a", "an", "it", "is", "was", "are", "were",
+            "and", "but", "or", "so", "if", "for", "to", "of", "in", "on", "at",
+            "however", "although", "though", "because", "since",
+            "therefore", "consequently", "furthermore", "meanwhile",
+            "this", "that", "there", "here", "just", "very", "too", "while"
+        }
+        if word in single_word_blacklist:
+            return False
     return True
-
 
 def improved_sentence_split(text):
     doc = nlp(text)
-    splits = []
     split_indices = [0]
-    split_adverbs = {"however", "therefore", "meanwhile", "nevertheless", "furthermore", "moreover"}
-
+    hard_splitters = {
+        "however", "nevertheless", "nonetheless", "conversely",
+        "otherwise", "instead", "therefore", "thus", "hence",
+        "accordingly", "consequently", "meanwhile", "furthermore",
+        "moreover", "besides", "whereas", "although", "though", "yet"
+    }
     for token in doc:
-        if token.pos_ == "CCONJ" or token.text in [",", ";"]:
-            next_verb = None
-            for child in token.head.children:
-                if child.i > token.i and child.dep_ == "conj" and child.pos_ in ("VERB", "AUX"):
-                    next_verb = child
-                    break
-
-            if next_verb:
-                has_subj = any(t.dep_ in ("nsubj", "nsubjpass") for t in next_verb.children)
-                if has_subj:
-                    split_indices.append(token.idx)
-
-        elif token.text.lower() in split_adverbs:
+        if token.text.lower() in hard_splitters:
             split_indices.append(token.idx)
-
-        elif token.dep_ in ("nsubj", "nsubjpass"):
-            verb = token.head
-
-            if verb.i > 0:
-                prev_word = doc[token.left_edge.i - 1] if token.left_edge.i > 0 else None
-
-                if prev_word and prev_word.pos_ not in ("CCONJ", "PUNCT") and prev_word.text.lower() not in split_adverbs:
-                    if prev_word.head != verb and prev_word.head != token:
-                        split_indices.append(token.left_edge.idx)
-
+            continue
+        if token.text.lower() == "but":
+            split_indices.append(token.idx)
+            continue
+        if token.text.lower() == "and":
+            right_span = doc[token.i+1:]
+            has_subj = any(t.dep_ in ("nsubj", "nsubjpass", "expl") for t in right_span)
+            has_verb = any(t.pos_ in ("VERB", "AUX") for t in right_span)
+            prev_token = doc[token.i - 1] if token.i > 0 else None
+            if prev_token and prev_token.pos_ in ("NOUN", "PROPN", "ADJ") and \
+               len(right_span) > 0 and right_span[0].pos_ in ("NOUN", "PROPN", "ADJ") and not has_verb:
+                continue
+            if has_subj and has_verb:
+                split_indices.append(token.idx)
+            continue
+        if token.text in [",", ";"]:
+            right_span = doc[token.i+1:]
+            left_span = doc[split_indices[-1]:token.i] if split_indices else doc[:token.i]
+            has_verb_right = any(t.pos_ in ("VERB", "AUX") for t in right_span)
+            has_verb_left = any(t.pos_ in ("VERB", "AUX") for t in left_span)
+            has_subj_right = any(t.dep_ in ("nsubj", "nsubjpass", "expl") for t in right_span)
+            if has_subj_right and has_verb_right:
+                split_indices.append(token.idx + 1)
+            elif not has_verb_left and not has_verb_right:
+                if len(doc[token.i+1:].text) > 10:
+                    split_indices.append(token.idx + 1)
+        if token.dep_ in ("nsubj", "nsubjpass", "expl"):
+            if token.i > 0:
+                prev = doc[token.i - 1]
+                if prev.pos_ in ("VERB", "AUX", "NOUN", "ADJ", "ADV") and \
+                   prev.dep_ not in ("amod", "det", "compound", "poss") and \
+                   prev.head != token and token.head != prev:
+                    split_indices.append(token.left_edge.idx)
     split_indices.append(len(text))
     split_indices = sorted(list(set(split_indices)))
-
+    final_splits = []
     for i in range(len(split_indices) - 1):
-        start = split_indices[i]
-        end = split_indices[i+1]
-        chunk = text[start:end]
-
+        chunk = text[split_indices[i]:split_indices[i+1]]
         cleaned = clean_chunk(chunk)
         if is_valid_chunk(cleaned):
-            splits.append(cleaned)
-
-    return splits
-
+            final_splits.append(cleaned)
+    return final_splits
 
 def test_chunks(text: str) -> list[str]:
     separators = r"[.!?]\s+"
     raw_segments = re.split(separators, text)
+    results = []
 
-    final_list = []
     for seg in raw_segments:
+
         if not seg.strip():
             continue
-        processed = improved_sentence_split(seg)
-        final_list.extend(processed)
+        results.extend(improved_sentence_split(seg))
 
-    return final_list
-
+    return results
 
 def feedback_chunking(feedback_list: list[str]):
-    list = []
+    lst = []
     number_list = []
 
     for feedback in feedback_list:
         text_chunks = test_chunks(feedback)
-        list.extend(text_chunks)
+        lst.extend(text_chunks)
         number_list.append(len(text_chunks))
 
-    return list, number_list
-
-
-
-
-if __name__ == "__main__":
-    print("--- Test 1: However ---")
-    print(test_chunks("The app is fast, however the pricing is too high."))
-
-    print("\n--- Test 2: Run-on sentence ---")
-    print(test_chunks("The product is bad the company is good. Support is excellent."))
-
-    print("\n--- Test 3: Standard 'but' ---")
-    print(test_chunks("I like the design but the speed is slow."))
-
-    print("\n--- Test 4: Comma splice ---")
-    print(test_chunks("The UI is great, it looks very modern."))
+    return lst, number_list
