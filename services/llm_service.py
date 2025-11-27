@@ -411,6 +411,7 @@ def generate_topic_summary_cerebras(topic_texts: list[str], topic_name: str) -> 
                 You are an expert Data Analyst specializing in synthesizing qualitative user feedback into actionable business insights.
                 Analyze the provided list of user feedback comments, which all relate to the single topic of "{topic_name}".
                 Your task is to explain topic name in simple terms, generate a concise, neutral, and informative summary that captures the main points from the feedback list.
+                Find THREE Representative quotes in feedback texts list that thr best describe the cluster.
                 """,
             },
             {
@@ -433,7 +434,8 @@ def generate_topic_summary_cerebras(topic_texts: list[str], topic_name: str) -> 
     )
 
     response_json = json.loads(response.choices[0].message.content)
-    return response_json["summary"]
+    result = "Topic summary: " + response_json["summary"] + '\n'*2 + "Representative quotes: " + '\n  ● ' + '\n  ● '.join(response_json["representative_quotes"])
+    return result
 
 
 def get_topic_summary(topic_texts: list[str], topic_name: str) -> str:
@@ -715,5 +717,14 @@ def get_processed_columns(list_of_column_names: list[str]) -> list[str]:
 
 
 if __name__ == "__main__":
-    a = process_columnes_names_cerebras(["Review Text", "Date", "Rating", "User_ID"])
-    print(a)
+    sample_topic_texts = [
+        "The app crashes when I try to upload a file.",
+        "Loading times are slow during peak hours.",
+        "The UI is intuitive and easy to navigate."
+    ]
+    sample_topic_name = "Performance Issues"
+
+    result = generate_topic_summary_cerebras(sample_topic_texts, sample_topic_name)
+
+    # Вывод результата
+    print(result)

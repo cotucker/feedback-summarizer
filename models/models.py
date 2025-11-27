@@ -126,8 +126,13 @@ TOPIC_SUMMARY_SCHEMA = {
             "type": "string",
             "description": "A concise summary of the content related to this topic.",
         },
+        "representative_quotes": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "List of 3 representative quotes from the feedback texts.",
+        },
     },
-    "required": ["topic", "summary"],
+    "required": ["topic", "summary", "representative_quotes"],
     "additionalProperties": False,
 }
 
