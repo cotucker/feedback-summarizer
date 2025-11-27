@@ -464,7 +464,6 @@ export const Visualization = ({ results, analyzedFilename }) => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {/* Вот сюда вставляем стиль для переноса строк */}
                 <Typography sx={{ whiteSpace: "pre-wrap" }}>
                   {topic.summary}
                 </Typography>

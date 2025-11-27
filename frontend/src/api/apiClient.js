@@ -24,7 +24,6 @@ export const uploadAndAnalyzeCsv = async (
   const formData = new FormData();
   formData.append("file", file);
 
-  // Формируем URL с параметрами
   let url = "/api/feedback/analyze";
   const params = new URLSearchParams();
   if (topics && topics.trim() !== "") {
