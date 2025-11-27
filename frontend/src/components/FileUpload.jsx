@@ -9,8 +9,11 @@ import {
   LinearProgress,
   Alert,
   TextField,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export const FileUpload = ({
   onFileUpload,
@@ -46,12 +49,39 @@ export const FileUpload = ({
         textAlign: "center",
       }}
     >
-      <Typography variant="h6" gutterBottom>
-        Control Panel
-      </Typography>
-      <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-        Upload a CSV file. You can specify columns (Text, Rating order) or, if left empty, the system will default to 'Text' and 'Rating' columns. Optionally filter by topics.
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Typography variant="h6">Control Panel</Typography>
+        <Tooltip
+          title={
+            <Box sx={{ textAlign: "left" }}>
+              <Typography variant="body2" paragraph>
+                Upload a CSV file. You can specify columns (Text, Rating order)
+                or, if left empty, the system will default to 'Text' and 'Rating'
+                columns. Optionally filter by topics.
+              </Typography>
+              <Typography variant="body2">
+                Warning: If column names are duplicated (e.g., 'Text, Text'), the
+                first instance will keep its name, and subsequent duplicates will
+                have an index appended (e.g., 'Text', 'Text.1') to ensure
+                uniqueness.
+              </Typography>
+            </Box>
+          }
+          arrow
+          placement="top"
+        >
+          <IconButton size="small" sx={{ ml: 1 }}>
+            <InfoOutlinedIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </Box>
 
       <TextField
         label="Filter by Topics (comma-separated, e.g., Price, UI)"
