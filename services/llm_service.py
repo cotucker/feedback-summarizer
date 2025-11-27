@@ -709,6 +709,113 @@ def process_columnes_names_cerebras(list_of_column_names: list[str]) -> list[str
     return response_json["items"]
 
 
+def validate_dataset_quality(text_sample: list[str], rating_sample: list[str]) -> DatasetQuality:
+    response = client.models.generate_content(
+        model=f"{MODEL}",
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=f"""
+                        You are a Data Quality Auditor. Your task is to validate a dataset sample to ensure it contains customer feedback related to IT companies/products and numerical ratings.
+                        **OBJECTIVE:**
+                        Analyze the provided `TEXT_SAMPLE` and `RATING_SAMPLE`. Determine if the text data primarily consists of user reviews, comments, or feedback about IT products, services, or companies (e.g., software, apps, hardware, support). Also, verify if the rating data contains valid numerical scores or rating-like values.
+                        **INPUT DATA:**
+                        - **TEXT_SAMPLE:** {text_sample}
+                        - **RATING_SAMPLE:** {rating_sample}
+                        **VALIDATION RULES:**
+                        1.  **CHECK TEXT FIRST (MANDATORY):** The `TEXT_SAMPLE` MUST consist of user reviews or feedback related to IT (software, hardware, apps, support, tech services).
+                            - If the text is about unrelated topics (e.g., food, restaurants, travel, clothing, general news), return `is_valid: False` immediately.
+                            - If the text is gibberish, not human language, or **primarily numerical strings/IDs** (e.g., "123", "456", "ID_1"), return `is_valid: False`.
+
+                        2.  **CHECK RATING (OPTIONAL):**
+                            - If `RATING_SAMPLE` is empty (e.g., `[]`), ignore it. This is VALID. Do NOT fail validation because ratings are missing.
+                            - If `RATING_SAMPLE` contains data, verify they are numerical scores (e.g., "5", "1", "10") or rating words (e.g., "Good", "Bad").
+                            - If `RATING_SAMPLE` contains unrelated text (e.g. dates, names, URLs) instead of ratings, return `is_valid: False`.
+
+                        3.  **FINAL VERDICT:**
+                            - `is_valid: True` ONLY if Text is valid IT feedback AND (Rating is empty OR Rating is valid).
+                            - `is_valid: False` if Text is invalid (e.g., numerical, non-IT) OR (Rating is present AND invalid).
+                            - **CRITICAL:** Do NOT return `False` just because rating is missing. If text is good and rating is empty, return `True`.
+                        **OUTPUT:**
+                        Return a JSON object with:
+                        - `is_valid`: Boolean (True/False)
+                        - `reason`: A concise, human-readable explanation of why the dataset is valid or invalid. Avoid technical terms like `TEXT_SAMPLE` or `RATING_SAMPLE`. Instead, refer to them as 'Text data' or 'Rating data'. For example, if invalid text: 'The text data does not appear to contain feedback related to IT products or services.' If invalid rating: 'The rating data contains non-numerical values instead of ratings.' If both are fine: 'Dataset is valid for IT feedback analysis.'
+                        """,
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": DatasetQuality,
+        },
+    )
+    quality: DatasetQuality = typing.cast(DatasetQuality, response.parsed)
+    return quality
+
+
+def validate_dataset_quality_cerebras(text_sample: list[str], rating_sample: list[str]) -> DatasetQuality:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {
+                "role": "system",
+                "content": """
+                You are a Data Quality Auditor. Your task is to validate a dataset sample to ensure it contains customer feedback related to IT companies/products and numerical ratings.
+                **OBJECTIVE:**
+                Analyze the provided `TEXT_SAMPLE` and `RATING_SAMPLE`. Determine if the text data primarily consists of user reviews, comments, or feedback about IT products, services, or companies (e.g., software, apps, hardware, support). Also, verify if the rating data contains valid numerical scores or rating-like values.
+                **VALIDATION RULES:**
+                1.  **CHECK TEXT FIRST (MANDATORY):** The `TEXT_SAMPLE` MUST consist of user reviews or feedback related to IT (software, hardware, apps, support, tech services).
+                    - If the text is about unrelated topics (e.g., food, restaurants, travel, clothing, general news), return `is_valid: False` immediately.
+                    - If the text is gibberish, not human language, or **primarily numerical strings/IDs** (e.g., "123", "456", "ID_1"), return `is_valid: False`.
+
+                2.  **CHECK RATING (OPTIONAL):**
+                    - If `RATING_SAMPLE` is empty (e.g., `[]`), ignore it. This is VALID. Do NOT fail validation because ratings are missing.
+                    - If `RATING_SAMPLE` contains data, verify they are numerical scores (e.g., "5", "1", "10") or rating words (e.g., "Good", "Bad").
+                    - If `RATING_SAMPLE` contains unrelated text (e.g. dates, names, URLs) instead of ratings, return `is_valid: False`.
+
+                3.  **FINAL VERDICT:**
+                    - `is_valid: True` ONLY if Text is valid IT feedback AND (Rating is empty OR Rating is valid).
+                    - `is_valid: False` if Text is invalid (e.g., numerical, non-IT) OR (Rating is present AND invalid).
+                    - **CRITICAL:** Do NOT return `False` just because rating is missing. If text is good and rating is empty, return `True`.
+                **OUTPUT:**
+                Return a JSON object with:
+                - `is_valid`: Boolean (True/False)
+                - `reason`: A concise, human-readable explanation of why the dataset is valid or invalid. Avoid technical terms like `TEXT_SAMPLE` or `RATING_SAMPLE`. Instead, refer to them as 'Text data' or 'Rating data'. For example, if invalid text: 'The text data does not appear to contain feedback related to IT products or services.' If invalid rating: 'The rating data contains non-numerical values instead of ratings.' If both are fine: 'Dataset is valid for IT feedback analysis.'
+                """,
+            },
+            {
+                "role": "user",
+                "content": f"""
+                **INPUT DATA:**
+                - **TEXT_SAMPLE:** {text_sample}
+                - **RATING_SAMPLE:** {rating_sample}
+                """,
+            },
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "dataset_quality_schema",
+                "strict": True,
+                "schema": DATASET_QUALITY_SCHEMA,
+            },
+        },
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    return DatasetQuality(**response_json)
+
+
+def get_dataset_quality_validation(text_sample: list[str], rating_sample: list[str]) -> DatasetQuality:
+    try:
+        return validate_dataset_quality(text_sample, rating_sample)
+    except Exception:
+        return validate_dataset_quality_cerebras(text_sample, rating_sample)
+
+
 def get_processed_columns(list_of_column_names: list[str]) -> list[str]:
     try:
         return process_columnes_names(list_of_column_names)

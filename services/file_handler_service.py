@@ -16,7 +16,7 @@ import pandas as pd
 from fastapi import UploadFile, HTTPException
 
 async def get_dataset_from_file(
-    file: UploadFile, get_separator, topics: str, columns: str
+    file: UploadFile, get_separator, topics: str, columns: str, get_dataset_quality_validation
 ):
     if file.filename is None:
         raise HTTPException(
@@ -55,9 +55,9 @@ async def get_dataset_from_file(
                 buffer = io.BytesIO(contents)
                 df = pd.read_excel(buffer)
 
-        if columns: # User provided columns
+        if columns:
             column_names = [col.strip() for col in columns.split(',')]
-        else: # No columns provided, use defaults 'Text', 'Rating'
+        else:
             column_names = ["Text", "Rating"]
 
         if len(column_names) < 1:
@@ -76,8 +76,6 @@ async def get_dataset_from_file(
             columns_to_select.append(rating_column_name)
             rename_dict[rating_column_name] = "Rating"
         elif rating_column_name and rating_column_name not in df.columns:
-            # If rating column was specified but not found, log a warning or just ignore it
-            # For now, we'll just not include it.
             pass
 
         df = df[columns_to_select].copy()
@@ -86,6 +84,21 @@ async def get_dataset_from_file(
         df.dropna(subset=["Text"], inplace=True)
         df = df[df["Text"].astype(str).str.strip() != ""]
         df.reset_index(drop=True, inplace=True)
+
+        sample_size = min(20, len(df))
+        sample_df = df.sample(n=sample_size, random_state=42) if sample_size > 0 else df
+
+        text_sample = sample_df["Text"].astype(str).tolist()
+        rating_sample = (
+            sample_df["Rating"].astype(str).tolist() if "Rating" in sample_df.columns else []
+        )
+
+        validation_result = get_dataset_quality_validation(text_sample, rating_sample)
+        if not validation_result.is_valid:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Dataset validation failed: {validation_result.reason}",
+            )
 
     except HTTPException:
         raise

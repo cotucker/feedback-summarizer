@@ -55,6 +55,28 @@ class Subtext(BaseModel):
     topic: str
 
 
+class DatasetQuality(BaseModel):
+    is_valid: bool
+    reason: str
+
+
+DATASET_QUALITY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "is_valid": {
+            "type": "boolean",
+            "description": "True if the dataset contains valid IT feedback and ratings, False otherwise.",
+        },
+        "reason": {
+            "type": "string",
+            "description": "The reason for the validation result.",
+        },
+    },
+    "required": ["is_valid", "reason"],
+    "additionalProperties": False,
+}
+
+
 CLUSTER_DESCRIPTION_SCHEMA = {
     "type": "object",
     "properties": {

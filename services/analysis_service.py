@@ -12,6 +12,7 @@ from services.llm_service import (
     get_total_summary,
     get_processed_columns,
     get_separator,
+    get_dataset_quality_validation
 )
 import logging
 import asyncio
@@ -21,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 async def analysis(file: UploadFile, topics: str = "", columns: str = ""):
-    original_texts, rating_series = await get_dataset_from_file(file, get_separator, topics, columns)
+    original_texts, rating_series = await get_dataset_from_file(file, get_separator, topics, columns, get_dataset_quality_validation)
     logger.info("Dataset loaded and preprocessed.")
     analysis: dict = {}
     analysis["filename"] = file.filename

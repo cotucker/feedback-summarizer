@@ -78,7 +78,7 @@ export const FileUpload = ({
           placement="top"
         >
           <IconButton size="small" sx={{ ml: 1 }}>
-            <InfoOutlinedIcon fontSize="small" />
+            <InfoOutlinedIcon fontSize="medium" color="primary" />
           </IconButton>
         </Tooltip>
       </Box>
