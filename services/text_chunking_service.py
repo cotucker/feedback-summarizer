@@ -2,25 +2,6 @@ import re
 import spacy
 from textblob import TextBlob
 
-nlp = spacy.load("en_core_web_sm")
-
-
-def split_dot(text):
-    separators = r"[.!?]\s+"
-    segments = re.split(separators, text, flags=re.IGNORECASE)
-    cleaned_segments = [s.strip() for s in segments if s and len(s.strip()) > 10]
-    return cleaned_segments
-
-
-def split_feedback_simple(text):
-    separators = (
-        r"\b(and|but|however|though|while|although|yet|plus|also|meanwhile)\b|[.!?]\s+"
-    )
-    segments = re.split(separators, text, flags=re.IGNORECASE)
-    segments = [s.strip() for s in segments if s and len(s.strip()) > 10]
-    return segments
-
-
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
@@ -29,100 +10,92 @@ except OSError:
     nlp = spacy.load("en_core_web_sm")
 
 
-def get_sentiment(text: str) -> str:
-    polarity = TextBlob(text).sentiment.polarity
-    if polarity > 0.1:
-        return "Positive"
-    elif polarity < -0.1:
-        return "Negative"
-    else:
-        return "Neutral"
+def clean_chunk(text: str) -> str:
+    text = text.strip()
+    text = text.strip(".,;:!?")
+    text = re.sub(r'\s+', ' ', text)
+    return text.strip()
 
 
-def find_clause_for_subject(subject, all_subjects):
-    head_verb = subject.head
-    start_index = min([t.i for t in subject.subtree])
-    end_index = max([t.i for t in head_verb.subtree])
-    next_subjects = [s for s in all_subjects if s.i > subject.i and s.i <= end_index]
+def is_valid_chunk(text: str) -> bool:
+    if not text:
+        return False
 
-    if next_subjects:
-        first_next_subject = next_subjects[0]
-        next_subj_start_index = min([t.i for t in first_next_subject.subtree])
-        end_index = next_subj_start_index - 1
+    if len(text) < 3:
+        return False
 
-    clause_span = subject.doc[start_index : end_index + 1]
+    stop_chunks = {"the", "a", "an", "and", "but", "or", "so", "however", "although"}
+    if text.lower() in stop_chunks:
+        return False
 
-    if clause_span and clause_span[-1].dep_ == "cc":
-        return clause_span[:-1].text.strip()
-
-    return clause_span.text.strip()
+    return True
 
 
-def extract_semantic_chunks(text: str) -> list:
+def improved_sentence_split(text):
     doc = nlp(text)
-    results = []
-    subjects = [token for token in doc if token.dep_ == "nsubj"]
-
-    if not subjects:
-        return [text]
-
-    for subject in subjects:
-        clause_text = find_clause_for_subject(subject, subjects)
-
-        if not clause_text:
-            continue
-
-        results.append(clause_text)
-
-    return results
-
-
-def split_sentences_by_conjunctions(text):
-    doc = nlp(text)
-    sentences = []
-    start = 0
+    splits = []
+    split_indices = [0]
+    split_adverbs = {"however", "therefore", "meanwhile", "nevertheless", "furthermore", "moreover"}
 
     for token in doc:
+        if token.pos_ == "CCONJ" or token.text in [",", ";"]:
+            next_verb = None
+            for child in token.head.children:
+                if child.i > token.i and child.dep_ == "conj" and child.pos_ in ("VERB", "AUX"):
+                    next_verb = child
+                    break
 
-        if token.pos_ == "CCONJ" or (token.pos_ == "PUNCT" and token.text == ","):
-            head = token.head
-            is_clause_separator = False
+            if next_verb:
+                has_subj = any(t.dep_ in ("nsubj", "nsubjpass") for t in next_verb.children)
+                if has_subj:
+                    split_indices.append(token.idx)
 
-            if token.pos_ == "CCONJ":
+        elif token.text.lower() in split_adverbs:
+            split_indices.append(token.idx)
 
-                for child in head.children:
-                    if child.dep_ == "conj" and (
-                        child.pos_ == "VERB" or child.pos_ == "AUX"
-                    ):
-                        is_clause_separator = True
-                        break
+        elif token.dep_ in ("nsubj", "nsubjpass"):
+            verb = token.head
 
-            if is_clause_separator:
-                part = doc.text[start : token.idx].strip(" ,")
+            if verb.i > 0:
+                prev_word = doc[token.left_edge.i - 1] if token.left_edge.i > 0 else None
 
-                if part:
-                    sentences.append(part)
-                start = token.idx + len(token.text)
+                if prev_word and prev_word.pos_ not in ("CCONJ", "PUNCT") and prev_word.text.lower() not in split_adverbs:
+                    if prev_word.head != verb and prev_word.head != token:
+                        split_indices.append(token.left_edge.idx)
 
-    last_part = doc.text[start:].strip(" ,")
-    if last_part:
-        sentences.append(last_part)
+    split_indices.append(len(text))
+    split_indices = sorted(list(set(split_indices)))
 
-    return sentences
+    for i in range(len(split_indices) - 1):
+        start = split_indices[i]
+        end = split_indices[i+1]
+        chunk = text[start:end]
+
+        cleaned = clean_chunk(chunk)
+        if is_valid_chunk(cleaned):
+            splits.append(cleaned)
+
+    return splits
 
 
 def test_chunks(text: str) -> list[str]:
-    list = []
+    separators = r"[.!?]\s+"
+    raw_segments = re.split(separators, text)
 
-    for item in split_dot(text):
-        list.extend(split_sentences_by_conjunctions(item))
+    final_list = []
+    for seg in raw_segments:
+        if not seg.strip():
+            continue
+        processed = improved_sentence_split(seg)
+        final_list.extend(processed)
 
-    return list
+    return final_list
 
 
 def feedback_chunking(feedback_list: list[str]):
     list = []
     number_list = []
+
     for feedback in feedback_list:
         text_chunks = test_chunks(feedback)
         list.extend(text_chunks)
@@ -131,7 +104,17 @@ def feedback_chunking(feedback_list: list[str]):
     return list, number_list
 
 
+
+
 if __name__ == "__main__":
-    print(
-        test_chunks("The product is bad but the company is good. Support is excellent.")
-    )
+    print("--- Test 1: However ---")
+    print(test_chunks("The app is fast, however the pricing is too high."))
+
+    print("\n--- Test 2: Run-on sentence ---")
+    print(test_chunks("The product is bad the company is good. Support is excellent."))
+
+    print("\n--- Test 3: Standard 'but' ---")
+    print(test_chunks("I like the design but the speed is slow."))
+
+    print("\n--- Test 4: Comma splice ---")
+    print(test_chunks("The UI is great, it looks very modern."))

@@ -816,6 +816,92 @@ def get_dataset_quality_validation(text_sample: list[str], rating_sample: list[s
         return validate_dataset_quality_cerebras(text_sample, rating_sample)
 
 
+def segment_text_gemini(text: str) -> list[str]:
+    response = client.models.generate_content(
+        model=f"{MODEL}",
+        contents=[
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text="""
+                        You are an expert NLP model specializing in text segmentation.
+                        **OBJECTIVE:**
+                        Split the provided user feedback text into distinct, standalone sub-texts based on different topics or sentiments.
+                        **RULES:**
+                        1.  **Topic Separation:** If a sentence or phrase contains multiple distinct opinions about different things (e.g., "The UI is great but the support is slow"), split them into separate strings (e.g., ["The UI is great", "but the support is slow"]).
+                        2.  **Context Preservation:** Try to make each segment somewhat standalone if possible, but prioritizing splitting different topics is key.
+                        3.  **No Hallucinations:** Do not add words that are not in the text, except for minor conjunction removal if needed for clarity.
+                        4.  **Handling Single Topic:** If the text is about a single topic, return it as a single-item list.
+                        **EXAMPLE:**
+                        Input: "The app is fast, however the pricing is too high and support never replies."
+                        Output: ["The app is fast", "the pricing is too high", "support never replies"]
+                        """,
+                    ),
+                    types.Part(
+                        text=f"""
+                        **INPUT TEXT:** "{text}"
+                        """,
+                    ),
+                ],
+            ),
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": list[str],
+        },
+    )
+    segments: list[str] = typing.cast(list[str], response.parsed)
+    return segments
+
+
+def segment_text_cerebras(text: str) -> list[str]:
+    response = client_cerebras.chat.completions.create(
+        model="gpt-oss-120b",
+        messages=[
+            {
+                "role": "system",
+                "content": """
+                You are an expert NLP model specializing in text segmentation.
+                **OBJECTIVE:**
+                Split the provided user feedback text into distinct, standalone sub-texts based on different topics or sentiments.
+                **RULES:**
+                1.  **Topic Separation:** If a sentence or phrase contains multiple distinct opinions about different things.
+                2.  **Context Preservation:** Try to make each segment somewhat standalone if possible.
+                3.  **Handling Single Topic:** If the text is about a single topic, return it as a single-item list.
+                **EXAMPLE:**
+                Input: "The app is fast, however the pricing is too high."
+                Output: ["The app is fast", "the pricing is too high"]
+                """,
+            },
+            {
+                "role": "user",
+                "content": f"""
+                **INPUT TEXT:** "{text}"
+                """,
+            },
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "list_str_schema",
+                "strict": True,
+                "schema": LIST_STR_SCHEMA,
+            },
+        },
+    )
+
+    response_json = json.loads(response.choices[0].message.content)
+    return response_json["items"]
+
+
+def segment_text(texts: str) -> list[str]:
+    try:
+        return segment_text_gemini(texts)
+    except Exception:
+        return segment_text_cerebras(texts)
+
+
 def get_processed_columns(list_of_column_names: list[str]) -> list[str]:
     try:
         return process_columnes_names(list_of_column_names)
@@ -824,14 +910,15 @@ def get_processed_columns(list_of_column_names: list[str]) -> list[str]:
 
 
 if __name__ == "__main__":
-    sample_topic_texts = [
-        "The app crashes when I try to upload a file.",
-        "Loading times are slow during peak hours.",
-        "The UI is intuitive and easy to navigate."
+    # Test examples for the segment_text function
+    example_texts = [
+        "The UI is great but the support is slow.",
+        "The app is fast, however the pricing is too high and support never replies.",
+        "Great product overall.",
     ]
-    sample_topic_name = "Performance Issues"
 
-    result = generate_topic_summary_cerebras(sample_topic_texts, sample_topic_name)
-
-    # Вывод результата
-    print(result)
+    for txt in example_texts:
+        segments = segment_text(txt)
+        print(f"Input text: {txt!r}")
+        print("Segments:", segments)
+        print("-" * 40)
